@@ -15,3 +15,6 @@ CMakeUserPresets.json
 out/build/x64-debug/*.exe
 out/build/x64-debug/*.pdb
 out/build/x64-debug/*.ilk
+out/build/x64-debug/*.ninja
+out/build/x64-debug/*.log
+out/build/x64-debug/.cmake/
