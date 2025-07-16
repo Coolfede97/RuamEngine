@@ -11,4 +11,7 @@ CTestTestfile.cmake
 _deps
 CMakeUserPresets.json
 
+# Ignore compile outputs
 out/build/x64-debug/*.exe
+out/build/x64-debug/*.pdb
+out/build/x64-debug/*.ilk
