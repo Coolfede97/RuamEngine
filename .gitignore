@@ -10,3 +10,84 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 CMakeUserPresets.json
+
+# Archivos binarios y ejecutables
+*.exe
+*.dll
+*.lib
+*.so
+*.a
+*.o
+*.obj
+*.pdb
+*.idb
+*.ilk
+
+# Archivos intermedios y de compilación
+*.log
+*.tmp
+*.cache
+*.tlog
+*.sbr
+*.rsp
+*.pch
+
+# Carpetas de compilación
+bin/
+obj/
+build/
+out/
+dist/
+Debug/
+Release/
+x64/
+x86/
+
+# Archivos generados por CMake
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+cmake_install.cmake
+CTestTestfile.cmake
+Makefile
+install_manifest.txt
+compile_commands.json
+_deps/
+CMakeLists.txt.user
+CMakeUserPresets.json
+
+# Archivos de Visual Studio
+.vs/
+*.suo
+*.user
+*.sln.docstates
+*.VC.db
+*.VC.opendb
+*.opensdf
+*.sdf
+*.ipch
+*.aps
+*.ncb
+
+# Archivos de entorno y secretos
+.env
+*.key
+*.pem
+*.crt
+
+# Archivos multimedia y pesados (por si acaso)
+*.zip
+*.rar
+*.7z
+*.iso
+*.mp4
+*.mp3
+*.jpg
+*.png
+*.gif
+
+# Archivos del sistema
+Thumbs.db
+Desktop.ini
+.DS_Store
+
