@@ -4,7 +4,8 @@
 
 #include <GLM/glm.hpp>
 #include <GLM/gtc/matrix_transform.hpp>
-
+#include <stb_image.h>
+#include <imgui.h>
 int main(void)
 {
 	GLFWwindow* window;
