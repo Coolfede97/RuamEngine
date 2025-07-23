@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Renderer.h"
-
+#include "FileFunctions.h"
 class Texture
 {
 private:
@@ -11,7 +11,7 @@ private:
 	int m_Width, m_Height, m_BPP; // Bits per pixel
 
 public:
-	Texture(const std::string& path);
+	Texture(const std::string& relativePath); // Relative path from the project root directory
 	~Texture();
 
 	void Bind(unsigned int slot = 0) const;

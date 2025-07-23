@@ -36,6 +36,12 @@ Vec3 Input::m_lastMousePosPix = Vec3::Zero();
 Vec3 Input::m_mousePosNorm = Vec3::Zero();// Mouse normalized position  (-1.0 <-> 1.0)
 Vec3 Input::m_lastMousePosNorm = Vec3::Zero();
 
+bool Input::NullWindow()
+{
+    if (m_window == nullptr) return true;
+    return false;
+}
+
 void Input::SetMouseMode(MouseMode mode)
 {
 	glfwSetInputMode(m_window, GLFW_CURSOR, mode);
@@ -43,6 +49,7 @@ void Input::SetMouseMode(MouseMode mode)
 
 void Input::UpdateInput()
 {
+	ASSERT(!NullWindow()); // ASSERT if there is no window. Input::SetWindow() must be called as soon as the window is created.
     for (const auto& pair : m_keysPressed)
     {
         m_keysPressed[pair.first] = glfwGetKey(m_window, pair.first) == GLFW_PRESS;

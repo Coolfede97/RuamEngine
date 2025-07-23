@@ -19,11 +19,12 @@ using namespace std;
 #include "GLM/gtc/matrix_transform.hpp"
 #include <filesystem>
 
-// Made by CoolFede97
 #include "Vec3.h"
 
 #include "imgui.h"
 #include "imgui_impl_glfw_gl3.h"
+
+#include "Input.h"
 
 int main(void)
 {
@@ -40,6 +41,7 @@ int main(void)
 
 		/* Create a windowed mode window and its OpenGL context */
 		window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+		Input::SetWindow(window);
 
 		if (!window)
 		{
@@ -141,7 +143,7 @@ int main(void)
 		Shader shader("CoolFede97/res/shaders/BasicVertex.glsl", "CoolFede97/res/shaders/BasicFragment.glsl");
 		shader.Bind();
 
-		Texture texture("res/textures/francoKO.jpg");
+		Texture texture("CoolFede97/res/textures/francoKO.jpg");
 		texture.Bind();
 		// The second parameter is 0 because that's the slot where we've created the texture 
 		// (that's why the ir no parameter in bind)
@@ -153,6 +155,8 @@ int main(void)
 		RuamTime time;
 		while (!glfwWindowShouldClose(window))
 		{
+			Input::UpdateInput();
+			if (Input::KeyPressed(KeyCode::SpaceBar)) Input::SetMouseMode(MouseMode::MouseDisabled);
 			time.Update();
 
 			glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -161,6 +165,7 @@ int main(void)
 			shader.Bind();
 
 			float camera_speed = 2.5f * time.DeltaTime();
+			Input::MoveCamera(camera, camera_speed);
 
 			shader.SetUniformMat4f("u_view", camera.GetViewMatrix());
 			shader.SetUniformMat4f("u_projection", camera.GetProjectionMatrix());

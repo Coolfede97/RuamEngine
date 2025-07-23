@@ -120,9 +120,18 @@ target_include_directories(Files INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Files)
 
 # -----------------------------------------------------------------------------------------------------
 
+# Input
+
+file (GLOB INPUT_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Input/*.cpp")
+add_library(Input STATIC ${INPUT_SRC})
+target_link_libraries(Input PUBLIC Rendering Maths)
+target_include_directories(Input INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Input)
+
+# -----------------------------------------------------------------------------------------------------
+
 
 target_link_libraries(RuamCore INTERFACE 
-	Rendering Maths Time Files
+	Rendering Maths Time Files Input
 )
 
 

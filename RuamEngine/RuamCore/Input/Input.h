@@ -114,6 +114,8 @@ private:
     static Vec3 m_mousePosNorm; // Mouse normalized position  (-1.0 <-> 1.0)
     static Vec3 m_lastMousePosNorm;
 
+    static bool NullWindow();
+
 public:
 
     static MouseMode GetCurrentMouseMode() { return Input::m_currentMouseMode; }

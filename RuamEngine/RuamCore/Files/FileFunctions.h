@@ -6,6 +6,6 @@
 #include <sstream>
 #include <iostream>
 
-std::string FileToString(const std::string& filePath);
+std::string FileToString(const std::string& absoluteFilePath);
 
-std::string ProjectFileToString(const std::string& filePath);
+std::string ProjectFileToString(const std::string& relativeFilePath);
