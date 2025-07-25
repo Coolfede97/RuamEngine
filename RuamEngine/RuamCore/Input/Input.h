@@ -122,11 +122,10 @@ public:
     static Vec3 GetMousePosPix() { return m_mousePosPix; }
     static Vec3 GetMousePosNorm() { return m_mousePosNorm; }
     static Vec3 GetMouseDelta() { return m_mousePosPix - m_lastMousePosPix; }
+	static GLFWwindow* GetWindow() { return m_window; }
     static void SetMouseMode(MouseMode mode);
     static void SetWindow(GLFWwindow* newWindow) { m_window = newWindow; }
 	static bool KeyPressed(KeyCode key) { return Input::m_keysPressed[key]; }
 	static void UpdateInput();
-    static void MouseCallback(GLFWwindow* p_window, double posX, double posY);
-	
-    static void MoveCamera(Camera& camera, const float speed);
+    static void MouseCallback(GLFWwindow* p_window, double posX, double posY);	
 };

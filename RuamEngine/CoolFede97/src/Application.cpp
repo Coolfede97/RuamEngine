@@ -26,6 +26,8 @@
 #include "Input.h"
 
 #include "tests/TestClearColor.h"
+#include "tests/TestMovement.h"
+
 
 int main(void)
 {
@@ -156,9 +158,9 @@ int main(void)
 		shader.Unbind();
 
 		Camera camera;
-		ruamTime::Time time;
 
-		test::TestClearColor test;
+		test::TestClearColor clearColor;
+		test::TestMovement testMovement;
 
 		while (!glfwWindowShouldClose(window))
 		{
@@ -167,17 +169,17 @@ int main(void)
 
 			Input::UpdateInput();
 			if (Input::KeyPressed(KeyCode::SpaceBar)) Input::SetMouseMode(MouseMode::MouseDisabled);
-			time.Update();
+			ruamTime::Time::Update();
 
-			test.OnUpdate(time.DeltaTime());
-			test.OnRender();
+			clearColor.Update();
+			clearColor.Render();
 
-			test.OnImGuiRender();
+			clearColor.ImGuiRender();
 
 			shader.Bind();
 
-			float camera_speed = 2.5f * time.DeltaTime();
-			Input::MoveCamera(camera, camera_speed);
+			testMovement.MoveCamera(camera);
+			testMovement.ImGuiRender();
 
 			shader.SetUniformMat4f("u_view", camera.GetViewMatrix());
 			shader.SetUniformMat4f("u_projection", camera.GetProjectionMatrix());

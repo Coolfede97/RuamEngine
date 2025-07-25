@@ -17,18 +17,18 @@ namespace test
 
 	}
 
-	void TestClearColor::OnUpdate(float deltaTime)
+	void TestClearColor::Update()
 	{
 
 	}
 
-	void TestClearColor::OnRender()
+	void TestClearColor::Render()
 	{
 		GLCall(glClearColor(m_ClearColor[0], m_ClearColor[1], m_ClearColor[2], m_ClearColor[3]));
 		GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 	}
 
-	void TestClearColor::OnImGuiRender()
+	void TestClearColor::ImGuiRender()
 	{
 		ImGui::ColorEdit4("Clear Color", m_ClearColor);
 	}

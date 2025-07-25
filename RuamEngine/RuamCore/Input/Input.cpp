@@ -68,28 +68,3 @@ void Input::MouseCallback(GLFWwindow* p_window, double posX, double posY)
 
 }
 
-void Input::MoveCamera(Camera& camera, const float speed)
-{
-	glm::vec3 camera_dir = camera.m_direction;
-	glm::vec3 camera_up = camera.m_up;
-	if (glm::length(glm::cross(camera_dir, camera_up)) == 0.0f)
-		std::cout << "Error: camera_dir and camera_up can't be parallel (because it results in a NaN when normalizing 0)" << "\n";
-	glm::vec3 velocity = glm::vec3(0.0f, 0.0f, 0.0f);
-	if (glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
-	{
-		velocity += speed * glm::normalize(glm::cross(camera_dir, camera_up));
-	}
-	if (glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
-	{
-		velocity -= speed * glm::normalize(glm::cross(camera_dir, camera_up));
-	}
-	if (glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS)
-	{
-		velocity += speed * camera_dir;
-	}
-	if (glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS)
-	{
-		velocity -= speed * camera_dir;
-	}
-	camera.m_position += velocity;
-}

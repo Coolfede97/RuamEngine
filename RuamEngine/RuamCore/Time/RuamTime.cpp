@@ -2,16 +2,9 @@
 
 namespace ruamTime
 {
-	Time::Time()
-		: m_lastFrame(0.0f), m_currentFrame(0.0f)
-	{
 
-	}
-
-	Time::~Time()
-	{
-
-	}
+	float Time::m_currentFrame = 0.0f;
+	float Time::m_lastFrame = 0.0f;
 
 	void Time::Update()
 	{

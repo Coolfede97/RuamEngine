@@ -10,9 +10,9 @@ namespace test
 		TestClearColor();
 		~TestClearColor();
 		
-		void OnUpdate(float deltaTime) override;
-		void OnRender() override;
-		void OnImGuiRender() override;
+		void Update() override;
+		void Render() override;
+		void ImGuiRender() override;
 	private:
 		float m_ClearColor[4];
 	};
