@@ -2,7 +2,6 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <assert.h>
-using namespace std;
 
 #include "Renderer.h"
 
@@ -26,6 +25,8 @@ using namespace std;
 
 #include "Input.h"
 
+#include "tests/TestClearColor.h"
+
 int main(void)
 {
 	GLFWwindow* window;
@@ -42,6 +43,9 @@ int main(void)
 		/* Create a windowed mode window and its OpenGL context */
 		window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
 		Input::SetWindow(window);
+		ImGui::CreateContext();
+		ImGui_ImplGlfwGL3_Init(window, true);
+		ImGui::StyleColorsDark();
 
 		if (!window)
 		{
@@ -56,7 +60,7 @@ int main(void)
 
 		if (glewInit() != GLEW_OK)
 		{
-			cout << "Error!" << "\n";
+			std::cout << "Error!" << "\n";
 		}
 
 		glEnable(GL_DEPTH_TEST);
@@ -152,15 +156,23 @@ int main(void)
 		shader.Unbind();
 
 		Camera camera;
-		RuamTime time;
+		ruamTime::Time time;
+
+		test::TestClearColor test;
+
 		while (!glfwWindowShouldClose(window))
 		{
+			// ImGUI
+			ImGui_ImplGlfwGL3_NewFrame();
+
 			Input::UpdateInput();
 			if (Input::KeyPressed(KeyCode::SpaceBar)) Input::SetMouseMode(MouseMode::MouseDisabled);
 			time.Update();
 
-			glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			test.OnUpdate(time.DeltaTime());
+			test.OnRender();
+
+			test.OnImGuiRender();
 
 			shader.Bind();
 
@@ -180,6 +192,9 @@ int main(void)
 				glDrawArrays(GL_TRIANGLES, 0, 36);
 			}
 
+			ImGui::Render();
+			ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
+
 			glfwSwapBuffers(window);
 
 			glfwPollEvents();
@@ -187,6 +202,9 @@ int main(void)
 		}
 
 	}
+	// Cleanup
+	ImGui_ImplGlfwGL3_Shutdown();
+	ImGui::DestroyContext();
 	glfwTerminate();
 	return 0;
 }

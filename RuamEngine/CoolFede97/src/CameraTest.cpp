@@ -2,7 +2,6 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <assert.h>
-using namespace std;
 
 #include "Renderer.h"
 

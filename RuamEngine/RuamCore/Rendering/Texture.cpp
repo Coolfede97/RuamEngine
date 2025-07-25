@@ -9,11 +9,11 @@ Texture::Texture(const std::string& relativePath)
 	// not at the top-left corner.
 	stbi_set_flip_vertically_on_load(1);
 
-	std::string absolutePath = string(PROJECT_ROOT_DIR) + "/" + relativePath;
+	std::string absolutePath = std::string(PROJECT_ROOT_DIR) + "/" + relativePath;
 	// The last variable are the desired channels we want. We put 4 because of the RGBA channels
 	m_LocalBuffer = stbi_load(absolutePath.c_str(), &m_Width, &m_Height, &m_BPP, 4);
 
-	if (!m_LocalBuffer) cout << "Error: image not found at relative path: " << relativePath  << "\n";
+	if (!m_LocalBuffer) std::cout << "Error: image not found at relative path: " << relativePath  << "\n";
 	
 	GLCall(glGenTextures(1, &m_RendererID));
 	GLCall(glBindTexture(GL_TEXTURE_2D, m_RendererID));

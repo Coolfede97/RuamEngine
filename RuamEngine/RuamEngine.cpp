@@ -3,10 +3,8 @@
 
 #include "RuamEngine.h"
 
-using namespace std;
-
 int main()
 {
-	cout << "Hello CMake." << endl;
+	std::cout << "Hello CMake." << "\n";
 	return 0;
 }

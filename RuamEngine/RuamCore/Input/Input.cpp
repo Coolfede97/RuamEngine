@@ -1,7 +1,7 @@
 #include "Input.h"
 
 
-unordered_map<KeyCode, bool> Input::m_keysPressed = {
+std::unordered_map<KeyCode, bool> Input::m_keysPressed = {
     {SpaceBar, false}, {Quote, false}, {Comma, false}, {Minus, false}, {Period, false}, {Slash, false},
     {Alpha0, false}, {Alpha1, false}, {Alpha2, false}, {Alpha3, false}, {Alpha4, false},
     {Alpha5, false}, {Alpha6, false}, {Alpha7, false}, {Alpha8, false}, {Alpha9, false},
@@ -73,7 +73,7 @@ void Input::MoveCamera(Camera& camera, const float speed)
 	glm::vec3 camera_dir = camera.m_direction;
 	glm::vec3 camera_up = camera.m_up;
 	if (glm::length(glm::cross(camera_dir, camera_up)) == 0.0f)
-		cout << "Error: camera_dir and camera_up can't be parallel (because it results in a NaN when normalizing 0)" << "\n";
+		std::cout << "Error: camera_dir and camera_up can't be parallel (because it results in a NaN when normalizing 0)" << "\n";
 	glm::vec3 velocity = glm::vec3(0.0f, 0.0f, 0.0f);
 	if (glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
 	{

@@ -6,8 +6,6 @@
 #include "IndexBuffer.h"
 #include "Shader.h"
 
-using namespace std;
-
 #define ASSERT(x) if(!(x)) __debugbreak(); 
 #define GLCall(x) GLClearError();\
     x; \

@@ -1,19 +1,22 @@
 #include "RuamTime.h"
 
-RuamTime::RuamTime()
-	: m_lastFrame(0.0f), m_currentFrame(0.0f)
+namespace ruamTime
 {
+	Time::Time()
+		: m_lastFrame(0.0f), m_currentFrame(0.0f)
+	{
 
-}
+	}
 
-RuamTime::~RuamTime()
-{
+	Time::~Time()
+	{
 
-}
+	}
 
-void RuamTime::Update()
-{
-	m_lastFrame = m_currentFrame;
-	m_currentFrame = glfwGetTime();
+	void Time::Update()
+	{
+		m_lastFrame = m_currentFrame;
+		m_currentFrame = glfwGetTime();
+	}
 }
 
