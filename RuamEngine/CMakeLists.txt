@@ -26,6 +26,25 @@ add_library(Vendor INTERFACE)
 
 # -----------------------------------------------------------------------------------------------------
 
+# Libraries paths depending on the configuration (x86 or x64 Debug)
+
+if (CMAKE_SIZEOF_VOID_P EQUAL 8)
+	set(GLFW_SRC_PATH "${CMAKE_SOURCE_DIR}/vendor/GLFW/lib-vc2022/x64")
+	set(GLFW_INCLUDE_PATH "${CMAKE_SOURCE_DIR}/vendor/GLFW/include/x64")
+	set(GLEW_SRC_PATH "${CMAKE_SOURCE_DIR}/vendor/GLEW/lib/x64")
+	set(GLEW_INCLUDE_PATH "${CMAKE_SOURCE_DIR}/vendor/GLEW/include/x64")
+
+else()
+	set(GLFW_SRC_PATH "${CMAKE_SOURCE_DIR}/vendor/GLFW/lib-vc2022/x86")
+	set(GLFW_INCLUDE_PATH "${CMAKE_SOURCE_DIR}/vendor/GLFW/include/x86")
+	set(GLEW_SRC_PATH "${CMAKE_SOURCE_DIR}/vendor/GLEW/lib/x86")
+	set(GLEW_INCLUDE_PATH "${CMAKE_SOURCE_DIR}/vendor/GLEW/include/x86")
+endif()
+
+
+
+# -----------------------------------------------------------------------------------------------------
+
 # IMGUI
 
 # In order to use a library which has cpp and h files, you need to create a library (add_library) and
@@ -35,8 +54,8 @@ add_library(ImGui STATIC ${IMGUI_SRC})
 # In this case, the library has #include <AnotherLibrary> in its cpp files, like GLFW or GLEW, so 
 # we need to indicate where those glfw.h and glew.h files are.
 target_include_directories(ImGui PRIVATE
-    ${CMAKE_SOURCE_DIR}/vendor/GLFW/include
-    ${CMAKE_SOURCE_DIR}/vendor/GLEW/include
+    ${GLEW_INCLUDE_PATH}
+    ${GLFW_INCLUDE_PATH}
 )
 # Lastly, add this new library to the function target_link_directories and also provice the path to 
 # the h files to the target_include_directories function
@@ -46,14 +65,14 @@ target_include_directories(ImGui PRIVATE
 # GLFW
 
 add_library(GLFW INTERFACE)
-target_link_directories(GLFW INTERFACE ${CMAKE_SOURCE_DIR}/vendor/GLFW/lib-vc2022)
-target_include_directories(GLFW INTERFACE ${CMAKE_SOURCE_DIR}/vendor/GLFW/include)
+target_link_directories(GLFW INTERFACE ${GLFW_SRC_PATH})
+target_include_directories(GLFW INTERFACE ${GLFW_INCLUDE_PATH})
 target_link_libraries(GLFW INTERFACE glfw3)
 
 # -----------------------------------------------------------------------------------------------------
 
 target_link_directories(Vendor INTERFACE
-	${CMAKE_SOURCE_DIR}/vendor/GLEW/lib
+	${GLEW_SRC_PATH}
 )
 
 target_link_libraries(Vendor INTERFACE
@@ -61,7 +80,7 @@ target_link_libraries(Vendor INTERFACE
 )
 
 target_include_directories(Vendor INTERFACE 
-	${CMAKE_SOURCE_DIR}/vendor/GLEW/include
+	${GLEW_INCLUDE_PATH}
 	${CMAKE_SOURCE_DIR}/vendor/GLM
 	${CMAKE_SOURCE_DIR}/vendor/stb_image
 	${CMAKE_SOURCE_DIR}/vendor/IMGUI
