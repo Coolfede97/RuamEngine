@@ -16,7 +16,14 @@ namespace test
 
 	TestMovement::~TestMovement()
 	{
-
+		delete[] m_CubeLocalVertices;
+		delete[] m_CubeGlobalPositions;
+		delete m_VAO;
+		delete m_VBO;
+		delete m_Layout;
+		delete m_Shader;
+		delete m_Texture;
+		delete m_Camera;
 	}
 
 	void TestMovement::Start()
