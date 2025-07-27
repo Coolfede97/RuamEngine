@@ -8,6 +8,8 @@
 #include "Input.h"
 #include "Time.h"
 #include "imgui.h"
+#include "Texture.h"
+#include "VertexBufferLayout.h"
 
 namespace test
 {
@@ -16,10 +18,23 @@ namespace test
 	public:
 		TestMovement();
 		~TestMovement();
+		void Start() override;
 		void Update() override;
 		void Render() override;
 		void ImGuiRender() override;
-		void MoveCamera(Camera& camera);
-		float m_cameraSpeed;
+		void MoveCamera();
+	private:
+
+		float* m_CubeLocalVertices;
+		glm::vec3* m_CubeGlobalPositions;
+
+		VertexArray* m_VAO;
+		VertexBuffer* m_VBO;
+		VertexBufferLayout* m_Layout;
+		Shader* m_Shader;
+		Texture* m_Texture;
+		Camera* m_Camera;
+		float m_CubeGlobalPositionsCount;
+		float m_CameraSpeed;
 	};
 }
