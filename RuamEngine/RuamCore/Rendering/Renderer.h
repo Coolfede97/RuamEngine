@@ -6,10 +6,17 @@
 #include "IndexBuffer.h"
 #include "Shader.h"
 
-#define ASSERT(x) if(!(x)) __debugbreak(); 
-#define GLCall(x) GLClearError();\
+#if defined(__WIN32)
+#define ASSERT(x) (if(!(x)) __debugbreak();)
+#elif defined(__linux__)
+#include <csignal>
+#define ASSERT(x) do {if(!(x)) raise(SIGTRAP);} while (false)
+#endif
+
+#define GLCall(x) do { GLClearError();\
     x; \
-    ASSERT(GLLogCall(#x, __FILE__, __LINE__))
+    ASSERT(GLLogCall(#x, __FILE__, __LINE__));\
+	} while(false)
 
 void GLClearError();
 
