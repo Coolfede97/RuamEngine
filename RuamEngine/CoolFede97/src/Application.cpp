@@ -28,6 +28,7 @@
 #include "tests/Test.h"
 #include "tests/TestClearColor.h"
 #include "tests/TestMovement.h"
+#include "tests/Sandbox.h"
 
 
 int main(void)
@@ -77,7 +78,7 @@ int main(void)
 
 		testMenu->RegisterTest<test::TestClearColor>("Clear Color");
 		testMenu->RegisterTest<test::TestMovement>("Movement Test");
-
+		testMenu->RegisterTest<test::Sandbox>("Sandbox");
 
 		while (!glfwWindowShouldClose(window))
 		{

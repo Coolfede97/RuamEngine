@@ -26,10 +26,6 @@ add_subdirectory(CoolFede97)
 # -----------------------------------------------------------------------------------------------------
 
 
-add_library(Vendor INTERFACE)
-
-# -----------------------------------------------------------------------------------------------------
-
 # Libraries paths depending on the configuration (x86 or x64 Debug)
 
 set(VENDOR_PATH "${CMAKE_SOURCE_DIR}/vendor")
@@ -48,6 +44,31 @@ endif()
 
 
 # -----------------------------------------------------------------------------------------------------
+#######################################################################################################
+#######################################################################################################
+# -----------------------------------------------------------------------------------------------------
+
+# Vendor
+
+add_library(Vendor INTERFACE)
+
+
+target_link_directories(Vendor INTERFACE
+	${GLEW_SRC_PATH}
+)
+
+target_include_directories(Vendor INTERFACE 
+	${GLEW_INCLUDE_PATH}
+	${CMAKE_SOURCE_DIR}/vendor/GLM
+	${CMAKE_SOURCE_DIR}/vendor/stb_image
+	${CMAKE_SOURCE_DIR}/vendor/IMGUI
+)
+
+target_compile_definitions(Vendor INTERFACE STB_IMAGE_IMPLEMENTATION)
+target_compile_definitions(Vendor INTERFACE GLEW_STATIC)
+
+
+# ///////////////////////////////////////////////////////////////////////////////////////////////
 
 # IMGUI
 
@@ -64,7 +85,7 @@ target_include_directories(ImGui PRIVATE
 # Lastly, add this new library to the function target_link_directories and also provice the path to 
 # the h files to the target_include_directories function
 
-# -----------------------------------------------------------------------------------------------------
+# ///////////////////////////////////////////////////////////////////////////////////////////////
 
 # GLFW
 
@@ -72,12 +93,12 @@ add_library(GLFW INTERFACE)
 target_link_directories(GLFW INTERFACE ${GLFW_SRC_PATH})
 target_include_directories(GLFW INTERFACE ${GLFW_INCLUDE_PATH})
 
-# -----------------------------------------------------------------------------------------------------
-
 target_link_directories(Vendor INTERFACE
     ${GLEW_SRC_PATH}
 )
+# ///////////////////////////////////////////////////////////////////////////////////////////////
 
+# Linking
 if (UNIX)
     target_link_libraries(Vendor INTERFACE
         glfw GLEW ImGui GL
@@ -88,7 +109,6 @@ if (WIN32)
         GLFW opengl32 ${GLEW_SRC_PATH}/glew32s.lib ImGui
     )
 endif()
-
 target_include_directories(Vendor INTERFACE 
     ${GLEW_INCLUDE_PATH}
     ${VENDOR_PATH}/GLM
@@ -98,7 +118,6 @@ target_include_directories(Vendor INTERFACE
 
 target_compile_definitions(Vendor INTERFACE STB_IMAGE_IMPLEMENTATION)
 target_compile_definitions(Vendor INTERFACE GLEW_STATIC)
-
 
 # -----------------------------------------------------------------------------------------------------
 #######################################################################################################
@@ -115,19 +134,27 @@ add_library(RuamCore INTERFACE)
 
 file (GLOB RENDERING_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Rendering/*.cpp")
 add_library(Rendering STATIC ${RENDERING_SRC})
-target_link_libraries(Rendering PUBLIC Vendor Files)
+target_link_libraries(Rendering PUBLIC Vendor Files Maths)
 target_include_directories(Rendering INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Rendering)
 
-# -----------------------------------------------------------------------------------------------------
+# ///////////////////////////////////////////////////////////////////////////////////////////////
 
 # Maths
 
-file (GLOB MATHS_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Maths/*.cpp")
-add_library(Maths STATIC ${MATHS_SRC})
-target_include_directories(Maths INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Maths)
+# -----------------------------------------------------------------------------------------------------
 
+# Vec
+
+file (GLOB VEC_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Maths/Vec/*.cpp")
+add_library(Vec STATIC ${VEC_SRC})
+target_include_directories(Vec PUBLIC ${CMAKE_SOURCE_DIR}/RuamCore/Maths/Vec)
 
 # -----------------------------------------------------------------------------------------------------
+
+add_library(Maths INTERFACE)
+target_link_libraries(Maths INTERFACE Vec)
+
+# ///////////////////////////////////////////////////////////////////////////////////////////////
 
 # Time
 
@@ -136,7 +163,7 @@ add_library(Time STATIC ${TIME_SRC})
 target_link_libraries(Time PUBLIC GLFW)
 target_include_directories(Time INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Time)
 
-# -----------------------------------------------------------------------------------------------------
+# ///////////////////////////////////////////////////////////////////////////////////////////////
 
 
 # Files
@@ -147,7 +174,7 @@ target_compile_definitions(Files PUBLIC PROJECT_ROOT_DIR="${CMAKE_SOURCE_DIR}")
 target_include_directories(Files INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Files)
 
 
-# -----------------------------------------------------------------------------------------------------
+# ///////////////////////////////////////////////////////////////////////////////////////////////
 
 # Input
 
@@ -156,12 +183,22 @@ add_library(Input STATIC ${INPUT_SRC})
 target_link_libraries(Input PUBLIC Rendering Maths)
 target_include_directories(Input INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Input)
 
-# -----------------------------------------------------------------------------------------------------
 
+# /////////////////////////////////////////////////////////////////////////////////////////////// 
+
+# Linking
 
 target_link_libraries(RuamCore INTERFACE 
 	Rendering Maths Time Files Input
 )
+
+
+# -----------------------------------------------------------------------------------------------------
+#######################################################################################################
+#######################################################################################################
+# -----------------------------------------------------------------------------------------------------
+
+
 
 
 # -----------------------------------------------------------------------------------------------------
