@@ -32,7 +32,6 @@ namespace test
 		VertexBuffer* m_VBO;
 		VertexBufferLayout* m_Layout;
 		Shader* m_Shader;
-		Texture* m_Texture;
 		Camera* m_Camera;
 		float m_CubeGlobalPositionsCount;
 		float m_CameraSpeed;

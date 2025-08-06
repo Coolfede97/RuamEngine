@@ -2,7 +2,9 @@
 
 #include "Test.h"
 #include "Renderer.h"
+#include "Texture.h"
 #include <Vertex.h>
+#include "VertexBufferLayout.h"
 
 namespace test
 {
@@ -17,12 +19,11 @@ namespace test
 		void Render() override;
 		void ImGuiRender() override;
 	private:
-
-		float* m_SquareLocalVertices;
-
 		VertexArray* m_VAO;
 		VertexBuffer* m_VBO;
+		IndexBuffer* m_IBO;
 		VertexBufferLayout* m_Layout;
 		Shader* m_Shader;
-		};
+		Texture* m_Texture;
+	};
 }

@@ -33,7 +33,7 @@ void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& la
 	for (unsigned int i = 0; i < elements.size() ; i++)
 	{
 		const auto& element = elements[i];
-		GLCall(glEnableVertexAttribArray(i));
+		GLCall(glEnableVertexArrayAttrib(m_RendererID, i))
 		GLCall(glVertexAttribPointer
 		(
 			i, 

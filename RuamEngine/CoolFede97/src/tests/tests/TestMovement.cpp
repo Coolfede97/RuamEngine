@@ -22,12 +22,14 @@ namespace test
 		delete m_VBO;
 		delete m_Layout;
 		delete m_Shader;
-		delete m_Texture;
 		delete m_Camera;
 	}
 
 	void TestMovement::Start()
 	{
+		GLCall(glClearColor(0.24f, 0.24f, 0.16f, 1.0f));
+
+
 		float vertices[] = {
 	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 	 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
@@ -149,13 +151,9 @@ namespace test
 		m_Layout->Push<float>(2); // Texture Coordinates
 		m_VAO->AddBuffer(*m_VBO, *m_Layout);
 	
-		m_Shader = new Shader("CoolFede97/res/shaders/BasicVertex.glsl", "CoolFede97/res/shaders/BasicFragment.glsl");
+		m_Shader = new Shader("CoolFede97/res/shaders/camera/CameraVertex.txt", "CoolFede97/res/shaders/camera/CameraFragment.txt");
 		m_Shader->Bind();
 
-		m_Texture = new Texture("CoolFede97/res/textures/francoKO.jpg");
-		m_Texture->Bind();
-
-		m_Shader->SetUniform1i("u_Texture", 0);
 		m_Shader->Unbind();
 		m_Camera = new Camera();
 		m_CameraSpeed = 2.0f;
@@ -168,7 +166,6 @@ namespace test
 
 	void TestMovement::Render()
 	{
-		GLCall(glClearColor(0.2f, 0.2f, 0.2f, 1.0f));
 		GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
 		m_Shader->Bind();
@@ -179,7 +176,6 @@ namespace test
 		for (int i = 0; i < m_CubeGlobalPositionsCount; i++)
 		{
 			glm::mat4 model = glm::mat4(1.0f);
-			//model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(1.0f, 1.0f, 1.0f));
 			model = glm::translate(model, m_CubeGlobalPositions[i]);
 			m_Shader->SetUniformMat4f("u_model", model);
 			m_VAO->Bind();
