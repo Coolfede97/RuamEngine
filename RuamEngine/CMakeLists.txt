@@ -9,11 +9,15 @@ if (POLICY CMP0141)
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
 endif()
 
+# Requerido por Tomy para poder usar lsp
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 project ("RuamEngine")
 # Add source to this project's executable.
 add_executable (RuamEngine "RuamEngine.cpp" "RuamEngine.h")
 
 add_subdirectory(CoolFede97)
+
 
 
 # -----------------------------------------------------------------------------------------------------
@@ -24,19 +28,19 @@ add_subdirectory(CoolFede97)
 
 # Libraries paths depending on the configuration (x86 or x64 Debug)
 
+set(VENDOR_PATH "${CMAKE_SOURCE_DIR}/vendor")
 if (CMAKE_SIZEOF_VOID_P EQUAL 8)
-	set(GLFW_SRC_PATH "${CMAKE_SOURCE_DIR}/vendor/GLFW/lib-vc2022/x64")
-	set(GLFW_INCLUDE_PATH "${CMAKE_SOURCE_DIR}/vendor/GLFW/include/x64")
-	set(GLEW_SRC_PATH "${CMAKE_SOURCE_DIR}/vendor/GLEW/lib/x64")
-	set(GLEW_INCLUDE_PATH "${CMAKE_SOURCE_DIR}/vendor/GLEW/include/x64")
+    set(GLFW_SRC_PATH "${VENDOR_PATH}/GLFW/lib-vc2022/x64")
+    set(GLFW_INCLUDE_PATH "${VENDOR_PATH}/GLFW/include/x64")
+    set(GLEW_SRC_PATH "${VENDOR_PATH}/GLEW/lib/x64")
+    set(GLEW_INCLUDE_PATH "${VENDOR_PATH}/GLEW/include/x64")
 
 else()
-	set(GLFW_SRC_PATH "${CMAKE_SOURCE_DIR}/vendor/GLFW/lib-vc2022/x86")
-	set(GLFW_INCLUDE_PATH "${CMAKE_SOURCE_DIR}/vendor/GLFW/include/x86")
-	set(GLEW_SRC_PATH "${CMAKE_SOURCE_DIR}/vendor/GLEW/lib/x86")
-	set(GLEW_INCLUDE_PATH "${CMAKE_SOURCE_DIR}/vendor/GLEW/include/x86")
+    set(GLFW_SRC_PATH "${VENDOR_PATH}/GLFW/lib-vc2022/x86")
+    set(GLFW_INCLUDE_PATH "${VENDOR_PATH}/GLFW/include/x86")
+    set(GLEW_SRC_PATH "${VENDOR_PATH}/GLEW/lib/x86")
+    set(GLEW_INCLUDE_PATH "${VENDOR_PATH}/GLEW/include/x86")
 endif()
-
 
 
 # -----------------------------------------------------------------------------------------------------
@@ -70,7 +74,7 @@ target_compile_definitions(Vendor INTERFACE GLEW_STATIC)
 
 # In order to use a library which has cpp and h files, you need to create a library (add_library) and
 # give it a source path (with the cpp files). 
-file (GLOB IMGUI_SRC "${CMAKE_SOURCE_DIR}/vendor/IMGUI/*.cpp")
+file (GLOB IMGUI_SRC "${VENDOR_PATH}/IMGUI/*.cpp")
 add_library(ImGui STATIC ${IMGUI_SRC})
 # In this case, the library has #include <AnotherLibrary> in its cpp files, like GLFW or GLEW, so 
 # we need to indicate where those glfw.h and glew.h files are.
@@ -88,16 +92,32 @@ target_include_directories(ImGui PRIVATE
 add_library(GLFW INTERFACE)
 target_link_directories(GLFW INTERFACE ${GLFW_SRC_PATH})
 target_include_directories(GLFW INTERFACE ${GLFW_INCLUDE_PATH})
-target_link_libraries(GLFW INTERFACE glfw3)
 
-
+target_link_directories(Vendor INTERFACE
+    ${GLEW_SRC_PATH}
+)
 # ///////////////////////////////////////////////////////////////////////////////////////////////
 
 # Linking
-
-target_link_libraries(Vendor INTERFACE
-	GLFW opengl32 glew32s ImGui
+if (UNIX)
+    target_link_libraries(Vendor INTERFACE
+        glfw GLEW ImGui GL
+    )
+endif()
+if (WIN32)
+    target_link_libraries(Vendor INTERFACE
+        GLFW opengl32 ${GLEW_SRC_PATH}/glew32s.lib ImGui
+    )
+endif()
+target_include_directories(Vendor INTERFACE 
+    ${GLEW_INCLUDE_PATH}
+    ${VENDOR_PATH}/GLM
+    ${VENDOR_PATH}/stb_image
+    ${VENDOR_PATH}/IMGUI
 )
+
+target_compile_definitions(Vendor INTERFACE STB_IMAGE_IMPLEMENTATION)
+target_compile_definitions(Vendor INTERFACE GLEW_STATIC)
 
 # -----------------------------------------------------------------------------------------------------
 #######################################################################################################

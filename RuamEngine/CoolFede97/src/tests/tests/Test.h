@@ -3,6 +3,7 @@
 #include <functional>
 #include <imgui.h>
 #include <string>
+#include <iostream>
 
 namespace test
 {

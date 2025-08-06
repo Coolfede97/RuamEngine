@@ -12,16 +12,16 @@
 #include "Shader.h"
 #include "Texture.h"
 #include "Camera.h"
-#include "Time.h"
+#include "RuamTime.h"
 
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
+#include "GLM/glm.hpp"
+#include "GLM/gtc/matrix_transform.hpp"
 
 // Made by CoolFede97
 #include "Vec3.h"
 
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_glfw_gl3.h"
+#include "imgui.h"
+#include "imgui_impl_glfw_gl3.h"
 
 #include "Input.h"
 
@@ -55,7 +55,7 @@ int main(void)
 
 		if (glewInit() != GLEW_OK)
 		{
-			cout << "Error!" << "\n";
+			std::cout << "Error!" << "\n";
 		}
 
 		glEnable(GL_DEPTH_TEST);
@@ -154,12 +154,12 @@ int main(void)
 		shader.Unbind();
 
 		Camera camera;
-		Time time;
+		ruamTime::Time time;
 		while (!glfwWindowShouldClose(window))
 		{	
 			Input::UpdateInput();
 			if (Input::KeyPressed(KeyCode::SpaceBar)) Input::SetMouseMode(MouseMode::MouseDisabled);
-			cout << Input::GetMousePosNorm() << "\n";
+			std::cout << Input::GetMousePosNorm() << "\n";
 			time.Update();
 
 			glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -168,7 +168,7 @@ int main(void)
 			shader.Bind();
 
 			float camera_speed = 2.5f * time.DeltaTime();
-			Input::MoveCamera(camera, camera_speed);
+			//Input::MoveCamera(camera, camera_speed);
 
 			shader.SetUniformMat4f("u_view", camera.GetViewMatrix());
 			shader.SetUniformMat4f("u_projection", camera.GetProjectionMatrix());
