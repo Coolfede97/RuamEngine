@@ -3,16 +3,14 @@
 #include <vector>
 #include <memory>
 #include <map>
-#include <typeinfo>
 #include <typeindex>
 
 #include "Component.hpp"
 
 class Object {
 public:
+    Object() : m_id(s_id_count++) {}
     using ComponentVector = std::vector<std::shared_ptr<Component>>;
-
-    const ComponentVector& getComponents() const;
 
     template<class Comp>
     Comp& addComponent() {
@@ -28,18 +26,18 @@ public:
     }
 
     // Returns ptr because a ref can't be null
+    // Returned pointer is non-owning
     // TODO: Find if there's a better way
     template<class Comp>
-    Comp* getComponent() {
+    Comp* getComponent() const {
         auto pair = m_components.find(typeid(Comp));
         if (pair == m_components.end()) {
             return nullptr;
         }
-        ComponentVector& comps = pair->second;
-        if (comps.size() == 0) {
+        if (pair->second.size() == 0) {
             return nullptr;
         }
-        return comps[0];
+        return dynamic_cast<Comp*>(pair->second[0].get());
     }
 
 private:
