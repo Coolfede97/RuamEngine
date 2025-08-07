@@ -40,6 +40,12 @@ public:
         return dynamic_cast<Comp*>(pair->second[0].get());
     }
 
+    unsigned int getId() const;
+
+    bool operator==(const Object& obj) {
+        return this->m_id == obj.m_id;
+    }
+
 private:
     unsigned int m_id;
     static unsigned int s_id_count;
