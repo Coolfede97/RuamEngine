@@ -6,7 +6,6 @@
 #include "Camera.h"
 #include "Renderer.h"
 #include "Input.h"
-#include "RuamTime.h"
 namespace test
 {
 	TestTextures::TestTextures()
