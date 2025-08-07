@@ -68,6 +68,9 @@ CMakeUserPresets.json
 *.aps
 *.ncb
 
+# Archivos de CLion
+.idea/
+
 # Archivos de entorno y secretos
 .env
 *.key
