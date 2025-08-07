@@ -92,7 +92,6 @@ int main(void)
 			ruamTime::Time::Update();
 
 			// OpenGL
-			GLCall(glClearColor(0.2f, 0.2f, 0.2f, 1.0f));
 			GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
 			if (currentTest)

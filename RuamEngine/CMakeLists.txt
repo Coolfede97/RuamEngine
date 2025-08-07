@@ -105,6 +105,7 @@ if (UNIX)
     )
 endif()
 if (WIN32)
+target_link_libraries(GLFW INTERFACE ${GLFW_SRC_PATH}/glfw3.lib)
     target_link_libraries(Vendor INTERFACE
         GLFW opengl32 ${GLEW_SRC_PATH}/glew32s.lib ImGui
     )

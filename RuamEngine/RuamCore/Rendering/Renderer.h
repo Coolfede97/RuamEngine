@@ -6,9 +6,10 @@
 #include "IndexBuffer.h"
 #include "Shader.h"
 
-#if defined(__WIN32)
-#define ASSERT(x) (if(!(x)) __debugbreak();)
-#elif defined(__linux__)
+#if defined(_WIN32)
+#define ASSERT(x) do {if(!(x)) __debugbreak();} while(false)
+#endif
+#ifdef linux
 #include <csignal>
 #define ASSERT(x) do {if(!(x)) raise(SIGTRAP);} while (false)
 #endif
