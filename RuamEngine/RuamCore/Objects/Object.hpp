@@ -11,6 +11,7 @@ class Object {
 public:
     Object() : m_id(s_id_count++) {}
     using ComponentVector = std::vector<std::shared_ptr<Component>>;
+    using ComponentList = std::map<std::type_index, ComponentVector>;
 
     template<class Comp>
     Comp& addComponent() {
@@ -42,13 +43,18 @@ public:
 
     unsigned int getId() const;
 
+	const ComponentList& getComponents();
+
     bool operator==(const Object& obj) {
         return this->m_id == obj.m_id;
     }
+
+	void start();
+	void update();
 
 private:
     unsigned int m_id;
     static unsigned int s_id_count;
 
-    std::map<std::type_index, ComponentVector> m_components;
+    ComponentList m_components;
 };

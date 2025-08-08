@@ -6,17 +6,12 @@
 #include <iterator>
 
 #include "Object.hpp"
-#include "Component.hpp"
 
 class Scene {
 public:
     using SceneList = std::vector<Scene>;
 
     Scene();
-    ~Scene();
-    const SceneList& getScenes() const;
-    // Non-owning reference
-    const Scene* getActiveScene() const;
 
     Object& newObject();
     Object& newObject(unsigned int idx);
@@ -27,12 +22,12 @@ public:
     void deleteObjectByIdx(unsigned int idx);
     void deleteObjectById(unsigned int idx);
 
+	void Start();
+	void Update();
 
 private:
     std::list<std::shared_ptr<Object>> m_objects;
-    unsigned int m_id;
+    const unsigned int m_id;
 
     static unsigned int s_id_count;
-    static SceneList s_scenes;
-    static std::shared_ptr<Scene> s_active_scene;
 };
