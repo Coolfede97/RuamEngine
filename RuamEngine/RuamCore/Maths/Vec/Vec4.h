@@ -5,23 +5,23 @@
 
 struct Vec4
 {
-    double x;
-    double y;
-    double z;
-    double w;
+    float x;
+    float y;
+    float z;
+    float w;
 
     // Constructor
-    Vec4(double xP = 0.0f, double yP = 0.0f, double zP = 0.0f, double wP = 0.0f);
+    Vec4(float xP = 0.0f, float yP = 0.0f, float zP = 0.0f, float wP = 0.0f);
 
     // Basic operators
     Vec4 operator+(Vec4 other) const;
     Vec4 operator-(Vec4 other) const;
     Vec4 operator*(Vec4 other) const;
     Vec4 operator/(Vec4 other) const;
-    Vec4 operator/(double number) const;
+    Vec4 operator/(float number) const;
 
     // Vector operations
-    double Magnitude() const;
+    float Magnitude() const;
     Vec4 Normalized() const;
     Vec4 To(Vec4 target) const;
     float DotProduct(Vec4 other) const;
@@ -44,7 +44,7 @@ struct Vec4
     Vec4& operator-=(Vec4 other);
     Vec4& operator*=(Vec4 other);
     Vec4& operator/=(Vec4 other);
-    Vec4& operator*=(double number);
+    Vec4& operator*=(float number);
 
     // Output
     friend std::ostream& operator<<(std::ostream& os, const Vec4& v);

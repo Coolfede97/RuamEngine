@@ -4,21 +4,21 @@
 
 struct Vec2
 {
-    double x;
-    double y;
+    float x;
+    float y;
 
     // Constructor
-    Vec2(double xP = 0.0, double yP = 0.0);
+    Vec2(float xP = 0.0, float yP = 0.0);
 
     // Basic operators
     Vec2 operator+(Vec2 other) const;
     Vec2 operator-(Vec2 other) const;
     Vec2 operator*(Vec2 other) const;
     Vec2 operator/(Vec2 other) const;
-    Vec2 operator/(double number) const;
+    Vec2 operator/(float number) const;
 
     // Vector operations
-    double Magnitude() const;
+    float Magnitude() const;
     Vec2 Normalized() const;
     Vec2 To(Vec2 target) const;
     float DotProduct(Vec2 other) const;
@@ -37,7 +37,7 @@ struct Vec2
     Vec2& operator-=(Vec2 other);
     Vec2& operator*=(Vec2 other);
     Vec2& operator/=(Vec2 other);
-    Vec2& operator*=(double number);
+    Vec2& operator*=(float number);
 
     // Output
     friend std::ostream& operator<<(std::ostream& os, const Vec2& v);

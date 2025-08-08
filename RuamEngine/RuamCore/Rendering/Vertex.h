@@ -6,18 +6,14 @@
 #include <Vec2.h>
 #include <array>
 
-class Vertex
+struct Vertex
 {
-public:
-	Vertex();
-	~Vertex();
-
 	Vec3 position;  // x, y, z	
-	Vec4 color;     // r, g, b, a
+};
+
+struct VertexWithTex : Vertex
+{
 	Vec2 texCoords; // u, v
-	float texId;    // Texture ID
-
-	static std::array<Vertex, 4> CreateQuad(float x = 0, float y = 0, float texID = 0);
-
-private:
+	float texId;
+	static std::array<VertexWithTex, 4> CreateQuad(float x = 0, float y = 0, float texID = 0);
 };

@@ -4,22 +4,22 @@
 
 struct Vec3
 {
-    double x;
-    double y;
-    double z;
+    float x;
+    float y;
+    float z;
 
     // Constructor
-    Vec3(double xP = 0.0f, double yP = 0.0f, double zP = 0.0f);
+    Vec3(float xP = 0.0f, float yP = 0.0f, float zP = 0.0f);
 
     // Basic operators
     Vec3 operator+(Vec3 other) const;
     Vec3 operator-(Vec3 other) const;
     Vec3 operator*(Vec3 other) const;
     Vec3 operator/(Vec3 other) const;
-    Vec3 operator/(double number) const;
+    Vec3 operator/(float number) const;
 
 	// Vector operations
-    double Magnitude() const;
+    float Magnitude() const;
     Vec3 Normalized() const;
     Vec3 To(Vec3 target) const;
     float DotProduct(Vec3 other) const;
@@ -40,7 +40,7 @@ struct Vec3
     Vec3& operator-=(Vec3 other);
     Vec3& operator*=(Vec3 other);
     Vec3& operator/=(Vec3 other);
-    Vec3& operator*=(double number);
+    Vec3& operator*=(float number);
 
     // Output
     friend std::ostream& operator<<(std::ostream& os, const Vec3& v);

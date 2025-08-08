@@ -1,7 +1,7 @@
 #include "Vec3.h"
 #include <cmath> // Para std::sqrt
 
-Vec3::Vec3(double xP, double yP, double zP) : x(xP), y(yP), z(zP) {}
+Vec3::Vec3(float xP, float yP, float zP) : x(xP), y(yP), z(zP) {}
 
 Vec3 Vec3::operator+(Vec3 other) const {
     return Vec3(x + other.x, y + other.y, z + other.z);
@@ -19,16 +19,16 @@ Vec3 Vec3::operator/(Vec3 other) const {
     return Vec3(x / other.x, y / other.y, z / other.z);
 }
 
-Vec3 Vec3::operator/(double number) const {
+Vec3 Vec3::operator/(float number) const {
     return Vec3(x / number, y / number, z / number);
 }
 
-double Vec3::Magnitude() const {
+float Vec3::Magnitude() const {
     return std::sqrt(x * x + y * y + z * z);
 }
 
 Vec3 Vec3::Normalized() const {
-    double mag = Magnitude();
+    float mag = Magnitude();
     return (mag != 0) ? Vec3(x / mag, y / mag, z / mag) : Zero();
 }
 
@@ -86,7 +86,7 @@ Vec3& Vec3::operator/=(Vec3 other) {
     return *this;
 }
 
-Vec3& Vec3::operator*=(double number) {
+Vec3& Vec3::operator*=(float number) {
     x *= number;
     y *= number;
     z *= number;

@@ -1,6 +1,6 @@
 #include "Vec2.h"
 
-Vec2::Vec2(double xP, double yP) : x(xP), y(yP) {}
+Vec2::Vec2(float xP, float yP) : x(xP), y(yP) {}
 
 Vec2 Vec2::operator+(Vec2 other) const {
     return Vec2(x + other.x, y + other.y);
@@ -18,16 +18,16 @@ Vec2 Vec2::operator/(Vec2 other) const {
     return Vec2(x / other.x, y / other.y);
 }
 
-Vec2 Vec2::operator/(double number) const {
+Vec2 Vec2::operator/(float number) const {
     return Vec2(x / number, y / number);
 }
 
-double Vec2::Magnitude() const {
+float Vec2::Magnitude() const {
     return std::sqrt(x * x + y * y);
 }
 
 Vec2 Vec2::Normalized() const {
-    double mag = Magnitude();
+    float mag = Magnitude();
     return (mag != 0) ? Vec2(x / mag, y / mag) : Zero();
 }
 
@@ -78,7 +78,7 @@ Vec2& Vec2::operator/=(Vec2 other) {
     return *this;
 }
 
-Vec2& Vec2::operator*=(double number) {
+Vec2& Vec2::operator*=(float number) {
     x *= number;
     y *= number;
     return *this;

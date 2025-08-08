@@ -1,6 +1,6 @@
 #include "Vec4.h"
 
-Vec4::Vec4(double xP, double yP, double zP, double wP)
+Vec4::Vec4(float xP, float yP, float zP, float wP)
     : x(xP), y(yP), z(zP), w(wP) {
 }
 
@@ -20,16 +20,16 @@ Vec4 Vec4::operator/(Vec4 other) const {
     return Vec4(x / other.x, y / other.y, z / other.z, w / other.w);
 }
 
-Vec4 Vec4::operator/(double number) const {
+Vec4 Vec4::operator/(float number) const {
     return Vec4(x / number, y / number, z / number, w / number);
 }
 
-double Vec4::Magnitude() const {
+float Vec4::Magnitude() const {
     return std::sqrt(x * x + y * y + z * z + w * w);
 }
 
 Vec4 Vec4::Normalized() const {
-    double mag = Magnitude();
+    float mag = Magnitude();
     return (mag != 0) ? Vec4(x / mag, y / mag, z / mag, w / mag) : Zero();
 }
 
@@ -96,7 +96,7 @@ Vec4& Vec4::operator/=(Vec4 other) {
     return *this;
 }
 
-Vec4& Vec4::operator*=(double number) {
+Vec4& Vec4::operator*=(float number) {
     x *= number;
     y *= number;
     z *= number;
