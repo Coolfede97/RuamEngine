@@ -1,27 +1,8 @@
 #include "Scene.hpp"
 
-std::vector<Scene> Scene::s_scenes;
-std::shared_ptr<Scene> Scene::s_active_scene = nullptr;
 unsigned int Scene::s_id_count = 0;
 
-Scene::Scene() : m_id(s_id_count++) {
-    if (s_active_scene == nullptr) {
-        s_active_scene.reset(this);
-    }
-}
-
-Scene::~Scene() {
-    if (s_active_scene->m_id == this->m_id) {
-        s_active_scene.reset();
-    }
-}
-
-const Scene::SceneList& Scene::getScenes() const {
-    return s_scenes;
-};
-const Scene* Scene::getActiveScene() const {
-    return s_active_scene.get();
-}
+Scene::Scene() : m_id(s_id_count++) {}
 
 Object& Scene::newObject() {
     std::shared_ptr<Object> obj = std::make_shared<Object>();
@@ -54,4 +35,16 @@ Object& Scene::getObjectById(unsigned int id) const {
 
 void Scene::deleteObjectByIdx(unsigned int idx) {
     m_objects.erase(std::next(m_objects.cbegin(), idx));
+}
+
+void Scene::Start() {
+	for (auto& obj : m_objects) {
+		obj->start();
+	}
+}
+
+void Scene::Update() {
+	for (auto& obj : m_objects) {
+		obj->start();
+	}
 }
