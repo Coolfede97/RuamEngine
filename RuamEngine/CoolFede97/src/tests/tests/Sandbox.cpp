@@ -54,7 +54,7 @@ namespace test
 
 
 		m_VAO = new VertexArray();
-		m_VBO = new VertexBuffer(vertices, sizeof(quad));
+		m_VBO = new VertexBuffer(quad.data(), sizeof(quad));
 		/*
 		float bufferData[40];
 		glGetNamedBufferSubData(m_VBO->GetID(), 0, sizeof(bufferData), bufferData);
