@@ -24,7 +24,7 @@ const Scene* Scene::getActiveScene() const {
 }
 
 Object& Scene::newObject() {
-    std::shared_ptr<Object> obj = std::make_shared<Object>(new Object);
+    std::shared_ptr<Object> obj = std::make_shared<Object>();
     m_objects.push_back(obj);
     return *obj.get();
 }
@@ -32,7 +32,7 @@ Object& Scene::newObject() {
 Object& Scene::newObject(unsigned int idx) {
     // Going to have to check this
     //assert(idx < m_objects.size());
-    std::shared_ptr<Object> obj = std::make_shared<Object>(new Object);
+    std::shared_ptr<Object> obj = std::make_shared<Object>();
     auto index = m_objects.cbegin();
     std::advance(index, idx);
     m_objects.insert(index, obj);
@@ -53,10 +53,5 @@ Object& Scene::getObjectById(unsigned int id) const {
 }
 
 void Scene::deleteObjectByIdx(unsigned int idx) {
-    Object& obj = getObjectByIdx(idx);
-    m_objects.remove(obj);
-}
-
-void deleteObjectById(unsigned int idx) {
-
+    m_objects.erase(std::next(m_objects.cbegin(), idx));
 }

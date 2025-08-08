@@ -166,6 +166,13 @@ target_include_directories(Time INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Time)
 
 # ///////////////////////////////////////////////////////////////////////////////////////////////
 
+# Objects
+
+file (GLOB OBJECTS_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Objects/*.cpp")
+add_library(Objects STATIC ${OBJECTS_SRC})
+target_include_directories(Objects INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Objects)
+
+# ///////////////////////////////////////////////////////////////////////////////////////////////
 
 # Files
 
@@ -190,7 +197,7 @@ target_include_directories(Input INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Input)
 # Linking
 
 target_link_libraries(RuamCore INTERFACE 
-	Rendering Maths Time Files Input
+	Rendering Maths Time Files Input Objects
 )
 
 
