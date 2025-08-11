@@ -17,6 +17,7 @@ project ("RuamEngine")
 add_executable (RuamEngine "RuamEngine.cpp" "RuamEngine.h")
 
 add_subdirectory(CoolFede97)
+add_subdirectory(Santinorua)
 
 
 
