@@ -13,6 +13,7 @@ endif()
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 project ("RuamEngine")
+target_link_libraries(RuamEngine PRIVATE RuamCore)
 # Add source to this project's executable.
 add_executable (RuamEngine "RuamEngine.cpp" "RuamEngine.h")
 
