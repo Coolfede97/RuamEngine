@@ -22,8 +22,8 @@ public:
     void deleteObjectByIdx(unsigned int idx);
     void deleteObjectById(unsigned int idx);
 
-	void Start();
-	void Update();
+	void start();
+	void update();
 
 private:
     std::list<std::shared_ptr<Object>> m_objects;

@@ -17,4 +17,8 @@ void SceneManager::setActiveScene(Scene& scene) {
 
 void SceneManager::addScene(Scene& scene) {
 	s_scenes.push_back(scene);
+	if (s_active_scene != nullptr) {
+		return;
+	}
+	s_active_scene.reset(&scene);
 }

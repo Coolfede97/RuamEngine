@@ -37,14 +37,14 @@ void Scene::deleteObjectByIdx(unsigned int idx) {
     m_objects.erase(std::next(m_objects.cbegin(), idx));
 }
 
-void Scene::Start() {
+void Scene::start() {
 	for (auto& obj : m_objects) {
 		obj->start();
 	}
 }
 
-void Scene::Update() {
+void Scene::update() {
 	for (auto& obj : m_objects) {
-		obj->start();
+		obj->update();
 	}
 }

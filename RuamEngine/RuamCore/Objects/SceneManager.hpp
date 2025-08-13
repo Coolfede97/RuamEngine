@@ -4,6 +4,7 @@
 
 class SceneManager {
 public:
+	SceneManager() = delete;
     using SceneList = std::vector<Scene>;
 
 	static const SceneList& sceneList();
