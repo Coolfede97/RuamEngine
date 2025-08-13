@@ -25,3 +25,20 @@ void Object::update() {
 		}
 	}
 }
+
+
+void Object::render() {
+	for (auto& it : m_components) {
+		for (auto& cmp : it.second) {
+			cmp->render();
+		}
+	}
+}
+
+void Object::imguiRender() {
+	for (auto& it : m_components) {
+		for (auto& cmp : it.second) {
+			cmp->imguiRender();
+		}
+	}
+}

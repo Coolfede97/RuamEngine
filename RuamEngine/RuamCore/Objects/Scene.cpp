@@ -48,3 +48,15 @@ void Scene::update() {
 		obj->update();
 	}
 }
+
+void Scene::Render() {
+    for (auto& obj : m_objects) {
+        obj->render();
+    }
+}
+
+void Scene::ImGuiRender() {
+    for (auto& obj : m_objects) {
+        obj->imguiRender();
+    }
+}

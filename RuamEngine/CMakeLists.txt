@@ -16,6 +16,8 @@ project ("RuamEngine")
 # Add source to this project's executable.
 add_executable (RuamEngine "RuamEngine.cpp" "RuamEngine.h")
 
+target_link_libraries(RuamEngine PUBLIC RuamCore)
+
 add_subdirectory(CoolFede97)
 add_subdirectory(Santinorua)
 
