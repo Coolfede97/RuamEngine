@@ -15,7 +15,7 @@ public:
 
     template<class Comp>
     Comp& addComponent() {
-        Comp comp = new Comp;
+        std::shared_ptr<Comp> comp = std::make_shared<Comp>(m_id);
         const std::type_index tidx = typeid(Comp);
         if (m_components.count(tidx) > 0) {
             m_components[tidx].push_back(comp);
@@ -23,7 +23,7 @@ public:
             m_components.insert({tidx, ComponentVector()});
             m_components[tidx].push_back(comp);
         }
-        return comp;
+        return *comp;
     }
 
     // Returns ptr because a ref can't be null
