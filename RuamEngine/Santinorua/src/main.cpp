@@ -18,7 +18,7 @@ int main(void)
         glfwTerminate();
         return -1;
     }
-
+    Input::SetWindow(window);
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
 
@@ -34,9 +34,6 @@ int main(void)
 
         /* Poll for and process events */
         glfwPollEvents();
-        if (getKeyDown(window, GLFW_KEY_E)) {
-            std::cout << "E\n";
-        }
     }
 
     glfwTerminate();
