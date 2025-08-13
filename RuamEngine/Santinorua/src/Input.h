@@ -103,17 +103,22 @@ enum MouseType
 class Input
 {
 public:
+    // Window
     static GLFWwindow* GetWindow() { return m_window; }
+    static void SetWindow(GLFWwindow* newWindow) { m_window = newWindow; }
 
+    // Keyboard
     static bool GetKeyDown(KeyCode key);
     static bool GetKeyUp(KeyCode key);
+
+    //Mouse
+    static void SetMouseType(MouseType );
+
+    // Not Implemented
     static MouseType GetCurrentMouseMode() { return Input::m_currentMouseType; }
     static Vec2 GetMousePosPix() { return m_mousePosPix; }
     static Vec2 GetMousePosNorm() { return m_mousePosNorm; }
     static Vec2 GetMouseDelta() { return m_mousePosPix - m_lastMousePosPix; }
-    static void SetMouseType(MouseType );
-    static void SetWindow(GLFWwindow* newWindow) { m_window = newWindow; }
-    static void UpdateInput();
     static void MouseCallback(GLFWwindow* p_window, double posX, double posY);
 private:
     static GLFWwindow* m_window;
