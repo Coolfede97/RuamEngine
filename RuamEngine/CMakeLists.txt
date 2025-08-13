@@ -16,8 +16,6 @@ project ("RuamEngine")
 # Add source to this project's executable.
 add_executable (RuamEngine "RuamEngine.cpp" "RuamEngine.h")
 
-target_link_libraries(RuamEngine PUBLIC RuamCore)
-
 add_subdirectory(CoolFede97)
 add_subdirectory(Santinorua)
 
@@ -221,5 +219,7 @@ target_link_libraries(RuamCore INTERFACE
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET RuamEngine PROPERTY CXX_STANDARD 20)
 endif()
+
+target_link_libraries(RuamEngine PUBLIC RuamCore)
 
 # TODO: Add tests and install targets if needed.

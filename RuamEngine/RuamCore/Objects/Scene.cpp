@@ -2,7 +2,17 @@
 
 unsigned int Scene::s_id_count = 0;
 
-Scene::Scene() : m_id(s_id_count++) {}
+Scene::Scene() : m_id(s_id_count++), m_name("Sample Scene") {}
+
+Scene::Scene(const char* name) : m_id(s_id_count++), m_name(name) {}
+
+const unsigned int Scene::id() const {
+	return m_id;
+}
+
+const std::string& Scene::name() const {
+	return m_name;
+}
 
 Object& Scene::newObject() {
     std::shared_ptr<Object> obj = std::make_shared<Object>();
@@ -49,7 +59,7 @@ void Scene::update() {
 	}
 }
 
-void Scene::Render() {
+void Scene::render() {
     for (auto& obj : m_objects) {
         obj->render();
     }
