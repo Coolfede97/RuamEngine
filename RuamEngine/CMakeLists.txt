@@ -128,6 +128,7 @@ add_library(ImGui STATIC ${IMGUI_SRC})
 target_include_directories(ImGui PRIVATE
     "${glfw_SOURCE_DIR}/include/GLFW"
 )
+target_link_libraries(ImGui PUBLIC glfw glew_s)
 # Lastly, add this new library to the function target_link_directories and also provice the path to 
 # the h files to the target_include_directories function
 
