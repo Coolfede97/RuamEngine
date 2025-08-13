@@ -1,11 +1,14 @@
 #include "Input.h"
 
-MouseType Input::m_currentMouseType = MouseType::MouseNormal;
 
 GLFWwindow* Input::m_window = nullptr;
-int Input::m_windowWidth = 0;
-int Input::m_windowHeight = 0;
+int key_callback;
 
+void Input::SetUp(GLFWwindow* window) {
+    // Set the window pointer
+    m_window = window;
+
+}
 
 bool Input::NullWindow()
 {
@@ -16,26 +19,27 @@ bool Input::NullWindow()
 bool Input::GetKeyDown(KeyCode key) {
     // Return True if the key is down
 
-    ASSERT(!NullWindow()); // Input::SetWindow() must be called as soon as the window is created.
-
     const int state = glfwGetKey(m_window, key);
     return state == GLFW_PRESS;
 }
 
-bool Input::GetKeyUp(KeyCode key) {
-    // Return True if the key is down
-
-    ASSERT(!NullWindow()); // Input::SetWindow() must be called as soon as the window is created.
+bool Input::GetKeyUp(const KeyCode key) {
+    // Return True if the key is up
 
     const int state = glfwGetKey(m_window, key);
     return state == GLFW_RELEASE;
 }
 
-void Input::SetMouseType(MouseType type)
+void Input::SetCursorMode(const CursorMode mode)
 {
-    m_currentMouseType = type;
-    glfwSetInputMode(m_window, GLFW_CURSOR, type);
+    glfwSetInputMode(m_window, GLFW_CURSOR, mode);
 }
+
+CursorMode Input::GetCursorMode() {
+    return static_cast<CursorMode>(glfwGetInputMode(m_window, GLFW_CURSOR));
+}
+
+
 
 // void Input::MouseCallback(GLFWwindow* p_window, double posX, double posY)
 // {

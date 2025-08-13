@@ -6,8 +6,7 @@
 #include "Renderer.h"
 
 
-enum KeyCode
-{
+const enum KeyCode {
     // These values come from the ones of "glfw3.h"
     // Espaciado y entrada
     SpaceBar_Key = 32,
@@ -92,7 +91,14 @@ enum KeyCode
     Menu_Key = 348
 };
 
-enum MouseType
+const enum MouseCode {
+    Mouse_Left,
+    Mouse_Right,
+    Mouse_Middle,
+    Mouse_Last = 7
+};
+
+enum CursorMode
 {
     // These values come from the ones of "glfw3.h"
     MouseNormal = 0x00034001,
@@ -100,9 +106,11 @@ enum MouseType
     MouseDisabled = 0x00034003,
     MouseCaptured = 0x00034004
 };
-class Input
-{
+
+class Input {
 public:
+    void SetUp(GLFWwindow *window);
+
     // Window
     static GLFWwindow* GetWindow() { return m_window; }
     static void SetWindow(GLFWwindow* newWindow) { m_window = newWindow; }
@@ -110,22 +118,25 @@ public:
     // Keyboard
     static bool GetKeyDown(KeyCode key);
     static bool GetKeyUp(KeyCode key);
+    static bool OnKeyPress(KeyCode key);
 
     //Mouse
-    static void SetMouseType(MouseType );
+    static void SetCursorMode(CursorMode mode);
+    static CursorMode GetCursorMode();
+
+    void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods);
 
     // Not Implemented
-    static MouseType GetCurrentMouseMode() { return Input::m_currentMouseType; }
+
     static Vec2 GetMousePosPix() { return m_mousePosPix; }
     static Vec2 GetMousePosNorm() { return m_mousePosNorm; }
     static Vec2 GetMouseDelta() { return m_mousePosPix - m_lastMousePosPix; }
     static void MouseCallback(GLFWwindow* p_window, double posX, double posY);
+
+
+
 private:
     static GLFWwindow* m_window;
-    static int m_windowWidth;
-    static int m_windowHeight;
-    static MouseType m_currentMouseType;
-
     static Vec2 m_mousePosPix;
     static Vec2 m_lastMousePosPix;
     static Vec2 m_mousePosNorm; // Mouse normalized position  (-1.0 <-> 1.0)
