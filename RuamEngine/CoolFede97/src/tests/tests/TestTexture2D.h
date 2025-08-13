@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Test.h"
-#include "GLM/glm.hpp"
+#include "glm/glm.hpp"
 
 namespace test
 {

@@ -105,6 +105,18 @@ set(BUILD_SHARED_LIBS ON)
 
 # ///////////////////////////////////////////////////////////////////////////////////////////////
 
+# GLM
+
+FetchContent_Populate(
+  glm 
+  URL https://github.com/g-truc/glm/archive/refs/tags/1.0.1.zip
+)
+add_library(glm INTERFACE)
+target_include_directories(glm INTERFACE ${glm_SOURCE_DIR})
+add_library(glm::glm ALIAS glm)
+
+# ///////////////////////////////////////////////////////////////////////////////////////////////
+
 # IMGUI
 
 # In order to use a library which has cpp and h files, you need to create a library (add_library) and
@@ -122,18 +134,26 @@ target_include_directories(ImGui PRIVATE
 # ///////////////////////////////////////////////////////////////////////////////////////////////
 
 # Linking
+#[==========[
+Not used
+
 if (UNIX)
     target_link_libraries(Vendor INTERFACE
-        glfw glew_s ImGui OpenGL::GL
+        glfw glew_s glm ImGui OpenGL::GL
     )
 endif()
 if (WIN32)
     target_link_libraries(Vendor INTERFACE
-        glfw glew_s ImGui OpenGL::GL 
+        glfw glew_s glm ImGui OpenGL::GL 
     )
 endif()
+]==========]
+
+target_link_libraries(Vendor INTERFACE
+        glfw glew_s glm ImGui OpenGL::GL
+)
+
 target_include_directories(Vendor INTERFACE 
-    ${VENDOR_PATH}/GLM
     ${VENDOR_PATH}/stb_image
     ${VENDOR_PATH}/IMGUI
 )

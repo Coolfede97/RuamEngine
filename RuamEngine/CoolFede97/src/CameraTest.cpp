@@ -14,8 +14,8 @@
 #include "Camera.h"
 #include "RuamTime.h"
 
-#include "GLM/glm.hpp"
-#include "GLM/gtc/matrix_transform.hpp"
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
 // Made by CoolFede97
 #include "Vec3.h"
