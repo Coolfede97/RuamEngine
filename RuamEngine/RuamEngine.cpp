@@ -47,13 +47,13 @@ int main(void)
 		// Put Scenes here
 
 
-		test::Test* currentTest = nullptr;
+		/*test::Test* currentTest = nullptr;
 		test::TestMenu* testMenu = new test::TestMenu(currentTest);
 		currentTest = testMenu;
 
 		testMenu->RegisterTest<test::TestClearColor>("Clear Color");
 		testMenu->RegisterTest<test::TestMovement>("Movement Test");
-		testMenu->RegisterTest<test::Sandbox>("Sandbox");
+		testMenu->RegisterTest<test::Sandbox>("Sandbox");*/
 
 		while (!glfwWindowShouldClose(window))
 		{
@@ -69,7 +69,7 @@ int main(void)
 			// OpenGL
 			GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
-			if (currentTest)
+			/*if (currentTest)
 			{
 				currentTest->Update();
 				currentTest->Render();
@@ -81,7 +81,7 @@ int main(void)
 				}
 				currentTest->ImGuiRender();
 				ImGui::End();
-			}
+			}*/
 
 			ImGui::Render();
 			ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
@@ -91,9 +91,9 @@ int main(void)
 			glfwPollEvents();
 
 		}
-		delete currentTest;
+		/*delete currentTest;
 		if (currentTest != testMenu)
-			delete testMenu;
+			delete testMenu;*/
 
 	}
 	// Cleanup
@@ -101,3 +101,4 @@ int main(void)
 	ImGui::DestroyContext();
 	glfwTerminate();
 	return 0;
+}

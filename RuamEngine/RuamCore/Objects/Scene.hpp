@@ -24,6 +24,8 @@ public:
 
 	void Start();
 	void Update();
+    void Render();
+    void ImGuiRender();
 
 private:
     std::list<std::shared_ptr<Object>> m_objects;
