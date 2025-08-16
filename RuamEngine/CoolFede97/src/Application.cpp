@@ -1,5 +1,3 @@
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
 #include <iostream>
 #include <assert.h>
 
@@ -30,47 +28,17 @@
 #include "tests/TestMovement.h"
 #include "tests/Sandbox.h"
 
+using namespace RuamEngine;
 
 int main(void)
 {
-	GLFWwindow* window;
+	Renderer::Init();
 
-	/* Initialize the library */
-	if (!glfwInit())
-		return -1;
-
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	{
-
-		/* Create a windowed mode window and its OpenGL context */
-		window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
-		Input::SetWindow(window);
+		Input::SetWindow(Renderer::GetWindow());
 		ImGui::CreateContext();
-		ImGui_ImplGlfwGL3_Init(window, true);
+		ImGui_ImplGlfwGL3_Init(Renderer::GetWindow(), true);
 		ImGui::StyleColorsDark();
-
-		if (!window)
-		{
-			glfwTerminate();
-			return -1;
-		}
-
-		/* Make the window's context current */
-		glfwMakeContextCurrent(window);
-
-		glfwSwapInterval(1);
-
-		if (glewInit() != GLEW_OK)
-		{
-			std::cout << "Error!" << "\n";
-		}
-
-		glEnable(GL_DEPTH_TEST);
-
-		GLCall(glEnable(GL_BLEND));
-		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
 		test::Test* currentTest = nullptr;
 		test::TestMenu* testMenu = new test::TestMenu(currentTest);
@@ -80,7 +48,7 @@ int main(void)
 		testMenu->RegisterTest<test::TestMovement>("Movement Test");
 		testMenu->RegisterTest<test::Sandbox>("Sandbox");
 
-		while (!glfwWindowShouldClose(window))
+		while (!glfwWindowShouldClose(Renderer::GetWindow()))
 		{
 			// ImGUI
 			ImGui_ImplGlfwGL3_NewFrame();
@@ -91,9 +59,8 @@ int main(void)
 			// Time
 			ruamTime::Time::Update();
 
-			// OpenGL
-			GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
-
+			Renderer::BeginDraw();
+			
 			if (currentTest)
 			{
 				currentTest->Update();
@@ -111,7 +78,7 @@ int main(void)
 			ImGui::Render();
 			ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
 
-			glfwSwapBuffers(window);
+			Renderer::EndDraw();
 
 			glfwPollEvents();
 
@@ -124,6 +91,6 @@ int main(void)
 	// Cleanup
 	ImGui_ImplGlfwGL3_Shutdown();
 	ImGui::DestroyContext();
-	glfwTerminate();
+	Renderer::Shutdown();
 	return 0;
 }
