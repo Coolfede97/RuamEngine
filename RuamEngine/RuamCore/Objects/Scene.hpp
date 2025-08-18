@@ -28,8 +28,6 @@ public:
 
 	void start();
 	void update();
-    void render();
-    void ImGuiRender();
 
 private:
     std::list<std::shared_ptr<Object>> m_objects;
