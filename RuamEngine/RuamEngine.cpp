@@ -1,10 +1,76 @@
-﻿// RuamEngine.cpp : Defines the entry point for the application.
-//
+﻿#include <iostream>
 
 #include "RuamEngine.h"
 
-int main()
+#include "scenes/MenuScene.cpp"
+#include "components/Manager.h"
+using namespace RuamEngine;
+
+int main(void)
 {
-	std::cout << "Hello CMake." << "\n";
+	Renderer::Init();
+
+	{
+		Input::SetWindow(Renderer::GetWindow());
+		ImGui::CreateContext();
+		ImGui_ImplGlfwGL3_Init(Renderer::GetWindow(), true);
+		ImGui::StyleColorsDark();
+
+		Scene menuScene = CreateMenuScene();
+		SceneManager::setActiveScene(menuScene);
+		/*test::Test* currentTest = nullptr;
+		test::TestMenu* testMenu = new test::TestMenu(currentTest);
+		currentTest = testMenu;
+
+		testMenu->RegisterTest<test::TestClearColor>("Clear Color");
+		testMenu->RegisterTest<test::TestMovement>("Movement Test");
+		testMenu->RegisterTest<test::Sandbox>("Sandbox");*/
+
+		while (!glfwWindowShouldClose(Renderer::GetWindow()))
+		{
+			// ImGUI
+			ImGui_ImplGlfwGL3_NewFrame();
+
+			// Input
+			Input::UpdateInput();
+
+			// Time
+			ruamTime::Time::Update();
+
+			Renderer::BeginDraw();
+
+			if (SceneManager::activeScene().expired() != false)
+			{
+				menuScene.update();
+				menuScene.imGuiRender();
+				/*currentTest->Update();
+				currentTest->Render();
+				ImGui::Begin("Test");
+				if (currentTest != testMenu && ImGui::Button("<-"))
+				{
+					delete currentTest;
+					currentTest = testMenu;
+				}
+				currentTest->ImGuiRender();
+				ImGui::End();*/
+			}
+
+			ImGui::Render();
+			ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
+
+			Renderer::EndDraw();
+
+			glfwPollEvents();
+
+		}
+		/*delete currentTest;
+		if (currentTest != testMenu)
+			delete testMenu;*/
+
+	}
+	// Cleanup
+	ImGui_ImplGlfwGL3_Shutdown();
+	ImGui::DestroyContext();
+	Renderer::Shutdown();
 	return 0;
 }

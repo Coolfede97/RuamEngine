@@ -2,7 +2,7 @@
 
 unsigned int Scene::s_id_count = 0;
 
-Scene::Scene() : m_id(s_id_count++) {}
+Scene::Scene() : m_id(s_id_count++), m_name("Cool Scene") {}
 
 Object& Scene::newObject() {
     std::shared_ptr<Object> obj = std::make_shared<Object>();
@@ -47,4 +47,10 @@ void Scene::update() {
 	for (auto& obj : m_objects) {
 		obj->update();
 	}
+}
+
+void Scene::imGuiRender() {
+    for (auto& obj : m_objects) {
+        obj->imGuiRender();
+    }
 }

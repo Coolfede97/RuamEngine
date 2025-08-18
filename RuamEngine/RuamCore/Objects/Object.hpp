@@ -7,9 +7,11 @@
 
 #include "Component.hpp"
 
+#include <string>
+
 class Object {
 public:
-    Object() : m_id(s_id_count++) {}
+    Object();
     using ComponentVector = std::vector<std::shared_ptr<Component>>;
     using ComponentList = std::map<std::type_index, ComponentVector>;
 
@@ -43,6 +45,7 @@ public:
 
     unsigned int getId() const;
 
+
 	const ComponentList& getComponents();
 
     bool operator==(const Object& obj) {
@@ -51,7 +54,9 @@ public:
 
 	void start();
 	void update();
+    void imGuiRender();
 
+    std::string m_name;
 private:
     unsigned int m_id;
     static unsigned int s_id_count;
