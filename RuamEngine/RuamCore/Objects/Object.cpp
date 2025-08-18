@@ -1,9 +1,18 @@
 #include "Object.hpp"
 
 unsigned int Object::s_id_count = 0;
+const std::string Object::s_default_name = "Object";
 
-unsigned int Object::getId() const {
+unsigned int Object::id() const {
 	return m_id;
+}
+
+const std::string& Object::name() const {
+	return m_name;
+}
+
+void Object::setName(std::string& name) {
+	m_name = name;
 }
 
 const Object::ComponentList& Object::getComponents() {

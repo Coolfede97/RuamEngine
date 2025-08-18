@@ -11,6 +11,8 @@ protected:
 
 class BaseRenderer : public Component {
 public:
+	using Component::Component;
+
 	virtual void render() = 0;
 
 	void start() {};

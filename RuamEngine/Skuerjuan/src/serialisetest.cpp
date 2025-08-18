@@ -20,8 +20,8 @@ int main() {
 	
 	obj.addComponent<TestComponent>();
 	std::cout << "wawa" << std::endl;
-	SceneManager::activeScene().lock()->start();
+	SceneManager::activeScene()->start();
 	while(true) {
-		SceneManager::activeScene().lock()->update();
+		SceneManager::activeScene()->update();
 	}
 }

@@ -7,9 +7,13 @@
 
 #include "Component.hpp"
 
+#include <string>
+
 class Object {
 public:
-	Object() : m_id(s_id_count++) {}
+	Object() : m_id(s_id_count++), m_name(s_default_name) {}
+	Object(std::string& name) : m_id(s_id_count++), m_name(name) {}
+
 	using ComponentVector = std::vector<std::shared_ptr<Component>>;
 	using ComponentList = std::map<std::type_index, ComponentVector>;
 
@@ -41,7 +45,9 @@ public:
 		return dynamic_cast<Comp*>(pair->second[0].get());
 	}
 
-	unsigned int getId() const;
+	unsigned int id() const;
+	const std::string& name() const;
+	void setName(std::string& newstr);
 
 	const ComponentList& getComponents();
 
@@ -51,9 +57,13 @@ public:
 
 	void start();
 	void update();
+
 private:
 	unsigned int m_id;
 	static unsigned int s_id_count;
+    std::string m_name;
 
 	ComponentList m_components;
+
+	static const std::string s_default_name;
 };

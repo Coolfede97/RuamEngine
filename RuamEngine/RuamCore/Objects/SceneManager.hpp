@@ -8,7 +8,7 @@ public:
     using SceneList = std::vector<Scene>;
 
 	static const SceneList& sceneList();
-	static std::weak_ptr<Scene> activeScene();
+	static std::shared_ptr<Scene> activeScene();
 
 	static void setActiveScene(Scene& scene);
 

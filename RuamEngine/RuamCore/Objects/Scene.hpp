@@ -5,6 +5,8 @@
 #include <memory>
 #include <iterator>
 
+#include <string>
+
 #include "Object.hpp"
 
 class Scene {
@@ -26,13 +28,15 @@ public:
     void deleteObjectByIdx(unsigned int idx);
     void deleteObjectById(unsigned int idx);
 
+    std::string name() { return m_name; }
+
 	void start();
 	void update();
-
 private:
     std::list<std::shared_ptr<Object>> m_objects;
 	const std::string m_name;
     const unsigned int m_id;
-
     static unsigned int s_id_count;
+
+	static const std::string s_default_name;
 };
