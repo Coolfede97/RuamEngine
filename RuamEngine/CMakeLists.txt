@@ -20,8 +20,6 @@ add_subdirectory(CoolFede97)
 add_subdirectory(Santinorua)
 add_subdirectory(Skuerjuan)
 
-
-
 # -----------------------------------------------------------------------------------------------------
 #######################################################################################################
 #######################################################################################################
@@ -219,5 +217,7 @@ target_link_libraries(RuamEngine PRIVATE RuamCore)
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET RuamEngine PROPERTY CXX_STANDARD 20)
 endif()
+
+target_link_libraries(RuamEngine PUBLIC RuamCore)
 
 # TODO: Add tests and install targets if needed.

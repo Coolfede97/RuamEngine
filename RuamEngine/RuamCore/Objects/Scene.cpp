@@ -1,8 +1,19 @@
 #include "Scene.hpp"
 
 unsigned int Scene::s_id_count = 0;
+const std::string Scene::s_default_name = "Sample Scene";
 
-Scene::Scene() : m_id(s_id_count++), m_name("Cool Scene") {}
+Scene::Scene() : m_id(s_id_count++), m_name(s_default_name) {}
+
+Scene::Scene(const char* name) : m_id(s_id_count++), m_name(name) {}
+
+const unsigned int Scene::id() const {
+	return m_id;
+}
+
+const std::string& Scene::name() const {
+	return m_name;
+}
 
 Object& Scene::newObject() {
     std::shared_ptr<Object> obj = std::make_shared<Object>();
@@ -27,7 +38,7 @@ Object& Scene::getObjectByIdx(unsigned int idx) const {
 
 Object& Scene::getObjectById(unsigned int id) const {
     auto obj = m_objects.begin();
-    while (obj->get()->getId() != id) {
+    while (obj->get()->id() != id) {
         std::advance(obj, 1);
     }
     return *obj->get();
@@ -47,10 +58,4 @@ void Scene::update() {
 	for (auto& obj : m_objects) {
 		obj->update();
 	}
-}
-
-void Scene::imGuiRender() {
-    for (auto& obj : m_objects) {
-        obj->imGuiRender();
-    }
 }

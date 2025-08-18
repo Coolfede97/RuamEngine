@@ -4,12 +4,6 @@
 #include "SceneManager.hpp"
 #include "../components/Manager.h"
 
-static Scene CreateMenuScene()
+std::shared_ptr<Scene> CreateMenuScene()
 {
-	Scene scene;
-	scene.setName("Menu Scene");
-	Object& manager = scene.newObject();
-	manager.m_name = "Manager";
-	manager.addComponent<Manager>();
-	return scene;
 }

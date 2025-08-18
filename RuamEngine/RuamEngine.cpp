@@ -16,16 +16,10 @@ int main(void)
 		ImGui_ImplGlfwGL3_Init(Renderer::GetWindow(), true);
 		ImGui::StyleColorsDark();
 
-		Scene menuScene = CreateMenuScene();
+		Scene menuScene("Menu Scene");
+		Object& manager = menuScene.newObject();
+		manager.addComponent<Manager>();
 		SceneManager::setActiveScene(menuScene);
-		/*test::Test* currentTest = nullptr;
-		test::TestMenu* testMenu = new test::TestMenu(currentTest);
-		currentTest = testMenu;
-
-		testMenu->RegisterTest<test::TestClearColor>("Clear Color");
-		testMenu->RegisterTest<test::TestMovement>("Movement Test");
-		testMenu->RegisterTest<test::Sandbox>("Sandbox");*/
-
 		while (!glfwWindowShouldClose(Renderer::GetWindow()))
 		{
 			// ImGUI
@@ -39,22 +33,13 @@ int main(void)
 
 			Renderer::BeginDraw();
 
-			if (SceneManager::activeScene().expired() != false)
+			if (SceneManager::activeScene() != nullptr)
 			{
-				menuScene.update();
-				menuScene.imGuiRender();
-				/*currentTest->Update();
-				currentTest->Render();
-				ImGui::Begin("Test");
-				if (currentTest != testMenu && ImGui::Button("<-"))
-				{
-					delete currentTest;
-					currentTest = testMenu;
-				}
-				currentTest->ImGuiRender();
-				ImGui::End();*/
-			}
+				SceneManager::activeScene()->update();
 
+				ImGui::Begin("Test");
+				ImGui::End();
+			}
 			ImGui::Render();
 			ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
 

@@ -5,11 +5,32 @@
 #include "SceneManager.hpp"
 #include "imgui.h"
 
-class Manager : public Component
-{
-	public:
-	Manager(unsigned int obj_id) : Component(obj_id) {}
-	void start() override { /* implementación */ }
-	void update() override { /* implementación */ }
-	void imGuiRender() override {}
+#include <iostream>
+
+class Manager : public BaseRenderer {
+public:
+	using BaseRenderer::BaseRenderer;
+	Manager(unsigned int obj_id) : BaseRenderer(obj_id) {};
+	void render() {
+		std::cout << "Hola" << "\n";
+		for (const Scene& scene : SceneManager::sceneList())
+		{
+			if (ImGui::Button(scene.name().c_str()))
+			{
+				SceneManager::setActiveScene(const_cast<Scene&>(scene));
+			}
+		}
+	};
+};
+
+class Counter : public Component {
+public:
+	using Component::Component;
+	void start() {
+		std::cout << "Inici\n";
+	}
+
+	void update() {
+		std::cout << "hello\n";
+	}
 };
