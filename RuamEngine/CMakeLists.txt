@@ -134,6 +134,19 @@ target_link_libraries(ImGui PUBLIC glfw glew_s)
 
 # ///////////////////////////////////////////////////////////////////////////////////////////////
 
+# OpenAl-soft
+FetchContent_Declare(
+    openal-soft
+    GIT_REPOSITORY https://github.com/kcat/openal-soft.git
+    GIT_TAG         dc7d7054a5b4f3bec1dc23a42fd616a0847af948
+    FIND_PACKAGE_ARGS NAMES OpenAl
+)
+
+set(LIBTYPE "STATIC")
+FetchContent_MakeAvailable(openal-soft)
+
+# ///////////////////////////////////////////////////////////////////////////////////////////////
+
 # Linking
 #[==========[
 Not used
@@ -151,12 +164,13 @@ endif()
 ]==========]
 
 target_link_libraries(Vendor INTERFACE
-        glfw glew_s glm ImGui OpenGL::GL
+        glfw glew_s glm ImGui OpenGL::GL OpenAL::OpenAL
 )
 
 target_include_directories(Vendor INTERFACE 
     ${VENDOR_PATH}/stb_image
     ${VENDOR_PATH}/IMGUI
+    ${openal-soft_SOURCE_DIR}/include
 )
 
 target_compile_definitions(Vendor INTERFACE STB_IMAGE_IMPLEMENTATION)
