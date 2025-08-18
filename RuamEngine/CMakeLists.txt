@@ -143,6 +143,8 @@ FetchContent_Declare(
 )
 
 set(LIBTYPE "STATIC")
+set(ALSOFT_BUILD_EXAMPLES OFF)
+set(ALSOFT_BUILD_TESTS OFF)
 FetchContent_MakeAvailable(openal-soft)
 
 # ///////////////////////////////////////////////////////////////////////////////////////////////
