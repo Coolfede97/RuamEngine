@@ -11,3 +11,4 @@ std::shared_ptr<Scene> CreateMenuScene()
 	manager.addComponent<Manager>();
 	return std::make_shared<Scene>(menuScene);
 }
+

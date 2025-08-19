@@ -21,11 +21,6 @@
 
 #include "Renderer.h"
 
-#include "Object.hpp"
-#include "Scene.hpp"
-#include "SceneManager.hpp"
-#include "Component.hpp"
-
 #include "VertexBuffer.h"
 #include "VertexBufferLayout.h"
 #include "IndexBuffer.h" 

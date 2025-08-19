@@ -12,7 +12,7 @@ std::shared_ptr<Scene> SceneManager::activeScene() {
 }
 
 void SceneManager::setActiveScene(Scene& scene) {
-	s_active_scene.reset(&scene);
+	s_active_scene = std::make_shared<Scene>(scene);
 }
 
 void SceneManager::addScene(Scene& scene) {

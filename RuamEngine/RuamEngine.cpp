@@ -3,6 +3,7 @@
 #include "RuamEngine.h"
 
 #include "scenes/MenuScene.cpp"
+#include "scenes/TestScene.cpp"
 #include "components/Manager.h"
 using namespace RuamEngine;
 
@@ -19,6 +20,8 @@ int main(void)
 		std::shared_ptr<Scene> menuScene = CreateMenuScene();
 		SceneManager::setActiveScene(*menuScene);
 		SceneManager::addScene(*menuScene);
+		std::shared_ptr<Scene> testScene = CreateTestScene();
+		SceneManager::addScene(*testScene);
 
 		while (!glfwWindowShouldClose(Renderer::GetWindow()))
 		{
@@ -45,10 +48,6 @@ int main(void)
 			glfwPollEvents();
 
 		}
-		/*delete currentTest;
-		if (currentTest != testMenu)
-			delete testMenu;*/
-
 	}
 	// Cleanup
 	ImGui_ImplGlfwGL3_Shutdown();
