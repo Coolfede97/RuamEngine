@@ -2,12 +2,21 @@
 
 #include <Component.hpp>
 
-class Manager : public Component
+class Manager : public BaseRenderer
 {
-	void update() override;
-	void render() override;
-	void imguiRender() override;
-
-	// Heredado vía Component
-	void start() override;
+	void update() override
+	{
+		BaseRenderer::update();
+	}
+	void render() 
+	{
+		for (const Scene& scene : SceneManager::sceneList())
+		{
+			if (ImGui::Button(scene.name().c_str()))
+			{
+				SceneManager::setActiveScene(const_cast<Scene&>(scene));
+			}
+		}
+	};
+	void start() {};
 };

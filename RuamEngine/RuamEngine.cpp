@@ -16,10 +16,10 @@ int main(void)
 		ImGui_ImplGlfwGL3_Init(Renderer::GetWindow(), true);
 		ImGui::StyleColorsDark();
 
-		Scene menuScene("Menu Scene");
-		Object& manager = menuScene.newObject();
-		manager.addComponent<Manager>();
-		SceneManager::setActiveScene(menuScene);
+		std::shared_ptr<Scene> menuScene = CreateMenuScene();
+		SceneManager::setActiveScene(*menuScene);
+		SceneManager::addScene(*menuScene);
+
 		while (!glfwWindowShouldClose(Renderer::GetWindow()))
 		{
 			// ImGUI
@@ -36,9 +36,6 @@ int main(void)
 			if (SceneManager::activeScene() != nullptr)
 			{
 				SceneManager::activeScene()->update();
-
-				ImGui::Begin("Test");
-				ImGui::End();
 			}
 			ImGui::Render();
 			ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());

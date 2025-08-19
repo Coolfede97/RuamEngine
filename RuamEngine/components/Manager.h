@@ -13,7 +13,7 @@ public:
 	Manager(unsigned int obj_id) : BaseRenderer(obj_id) {};
 	void render() {
 		std::cout << "Hola" << "\n";
-		for (const Scene& scene : SceneManager::sceneList())
+		for (const Scene& scene : SceneManager::sceneList()) 
 		{
 			if (ImGui::Button(scene.name().c_str()))
 			{
