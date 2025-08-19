@@ -4,11 +4,6 @@
 GLFWwindow* Input::m_window = nullptr;
 int key_callback;
 
-void Input::SetUp(GLFWwindow* window) {
-    // Set the window pointer
-    m_window = window;
-}
-
 bool Input::NullWindow()
 {
     if (m_window == nullptr) return true;
@@ -48,6 +43,31 @@ bool Input::GetButtonUp(const MouseCode button) {
     return glfwGetMouseButton(m_window, button) == GLFW_RELEASE;
 }
 
+void Input::KeyEvent(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    // Handle key events
+    if (action == GLFW_PRESS) {
+        // Key pressed
+        std::cout << "Key pressed: " << key << std::endl;
+    } else if (action == GLFW_RELEASE) {
+        // Key released
+        std::cout << "Key released: " << key << std::endl;
+    }
+}
+
+void Input::SetUp(GLFWwindow* window) {
+    // Set the window pointer
+    m_window = window;
+
+
+}
+
+void Input::UpdateInput() {
+    if (NullWindow()) {
+        return;
+    }
+
+    glfwSetKeyCallback(m_window, KeyEvent);
+}
 
 
 // void Input::MouseCallback(GLFWwindow* p_window, double posX, double posY)

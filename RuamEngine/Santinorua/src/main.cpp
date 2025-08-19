@@ -33,14 +33,8 @@ int main(void) {
 
         /* Poll for and process events */
         glfwPollEvents();
+        Input::UpdateInput();
 
-        if (Input::GetButtonDown(Mouse_Left)) {
-            std::cout << "Left mouse button pressed!" << std::endl;
-        }
-
-        if (Input::GetKeyDown(E_Key)) {
-            std::cout << "E key pressed!" << std::endl;
-        }
     }
 
     glfwTerminate();

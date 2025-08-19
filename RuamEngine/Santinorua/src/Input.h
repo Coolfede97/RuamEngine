@@ -110,6 +110,7 @@ enum CursorMode
 class Input {
 public:
     void SetUp(GLFWwindow *window);
+    static void UpdateInput();
 
     // Window
     static GLFWwindow* GetWindow() { return m_window; }
@@ -144,5 +145,6 @@ private:
     static Vec2 m_mousePosNorm; // Mouse normalized position  (-1.0 <-> 1.0)
     static Vec2 m_lastMousePosNorm;
 
+    static void KeyEvent(GLFWwindow* window, int key, int scancode, int action, int mods);
     static bool NullWindow();
 };
