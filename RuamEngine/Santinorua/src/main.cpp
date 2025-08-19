@@ -3,8 +3,7 @@
 #include <GLFW/glfw3.h>
 #include "input.h"
 
-int main(void)
-{
+int main(void) {
     GLFWwindow* window;
 
     /* Initialize the library */
@@ -35,6 +34,13 @@ int main(void)
         /* Poll for and process events */
         glfwPollEvents();
 
+        if (Input::GetButtonDown(Mouse_Left)) {
+            std::cout << "Left mouse button pressed!" << std::endl;
+        }
+
+        if (Input::GetKeyDown(E_Key)) {
+            std::cout << "E key pressed!" << std::endl;
+        }
     }
 
     glfwTerminate();

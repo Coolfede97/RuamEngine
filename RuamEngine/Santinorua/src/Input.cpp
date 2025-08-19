@@ -7,7 +7,6 @@ int key_callback;
 void Input::SetUp(GLFWwindow* window) {
     // Set the window pointer
     m_window = window;
-
 }
 
 bool Input::NullWindow()
@@ -19,15 +18,13 @@ bool Input::NullWindow()
 bool Input::GetKeyDown(KeyCode key) {
     // Return True if the key is down
 
-    const int state = glfwGetKey(m_window, key);
-    return state == GLFW_PRESS;
+    return glfwGetKey(m_window, key) == GLFW_PRESS;
 }
 
 bool Input::GetKeyUp(const KeyCode key) {
     // Return True if the key is up
 
-    const int state = glfwGetKey(m_window, key);
-    return state == GLFW_RELEASE;
+    return glfwGetKey(m_window, key) == GLFW_RELEASE;
 }
 
 void Input::SetCursorMode(const CursorMode mode)
@@ -37,6 +34,18 @@ void Input::SetCursorMode(const CursorMode mode)
 
 CursorMode Input::GetCursorMode() {
     return static_cast<CursorMode>(glfwGetInputMode(m_window, GLFW_CURSOR));
+}
+
+bool Input::GetButtonDown(MouseCode button) {
+    // Return True if the mouse button is down
+
+    return glfwGetMouseButton(m_window, button) == GLFW_PRESS;
+}
+
+bool Input::GetButtonUp(const MouseCode button) {
+    // Return True if the key is up
+
+    return glfwGetMouseButton(m_window, button) == GLFW_RELEASE;
 }
 
 

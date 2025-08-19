@@ -123,8 +123,10 @@ public:
     //Mouse
     static void SetCursorMode(CursorMode mode);
     static CursorMode GetCursorMode();
+    static bool GetButtonDown(MouseCode button);
+    static bool GetButtonUp(MouseCode button);
 
-    void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods);
+    //void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods);
 
     // Not Implemented
 
