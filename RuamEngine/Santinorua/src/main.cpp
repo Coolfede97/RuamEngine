@@ -21,8 +21,10 @@ int main(void) {
     Input::SetWindow(window);
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
-
     /* Loop until the user closes the window */
+    Input::eventManager.subscribe<OnKeyPress>([](const OnKeyPress& event) {
+        std::cout << "Key Pressed: " << event.key << std::endl;
+    });
     while (!glfwWindowShouldClose(window))
     {
 
@@ -34,9 +36,9 @@ int main(void) {
 
         /* Poll for and process events */
         glfwPollEvents();
-        EventManager::subscribe<OnKeyPress>([](const OnKeyPress& event) {
-            std::cout << "Key Pressed: " << event.key << std::endl;
-        });
+        Input::UpdateInput();
+
+
 
     }
 
