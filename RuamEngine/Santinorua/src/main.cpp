@@ -25,6 +25,10 @@ int main(void) {
     Input::eventManager.subscribe<OnKeyPress>([](const OnKeyPress& event) {
         std::cout << "Key Pressed: " << event.key << std::endl;
     });
+
+    Input::eventManager.subscribe<OnKeyRelease>([](const OnKeyRelease& event) {
+        std::cout << "Key Released: " << event.key << std::endl;
+    });
     while (!glfwWindowShouldClose(window))
     {
 

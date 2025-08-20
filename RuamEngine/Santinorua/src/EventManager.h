@@ -14,6 +14,12 @@ struct OnKeyPress : public Event {
     OnKeyPress(int key) : key(key) {}
 };
 
+struct OnKeyRelease : public Event {
+    int key;
+
+    OnKeyRelease(int key) : key(key) {}
+};
+
 
 class EventManager {
 public:
@@ -29,7 +35,7 @@ public:
     }
 
     template <typename EventType>
-    void publish(EventType& event) {
+    void publish(const EventType& event) {
         auto thisTypeEvents = subscribers.find(typeid(EventType));
         if (thisTypeEvents != subscribers.end()) {
             for (auto& listener : thisTypeEvents->second) {
