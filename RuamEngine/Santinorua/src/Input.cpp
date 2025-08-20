@@ -47,7 +47,8 @@ void Input::KeyEvent(GLFWwindow* window, int key, int scancode, int action, int 
     // Handle key events
     if (action == GLFW_PRESS) {
         // Key pressed
-        std::cout << "Key pressed: " << key << std::endl;
+        // std::cout << "Key pressed: " << key << std::endl;
+        // EventManager::publish();
     } else if (action == GLFW_RELEASE) {
         // Key released
         std::cout << "Key released: " << key << std::endl;
@@ -57,7 +58,6 @@ void Input::KeyEvent(GLFWwindow* window, int key, int scancode, int action, int 
 void Input::SetUp(GLFWwindow* window) {
     // Set the window pointer
     m_window = window;
-
 
 }
 

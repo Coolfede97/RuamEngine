@@ -4,6 +4,7 @@
 #include "Vec2.h"
 #include "Vec3.h"
 #include "Renderer.h"
+#include "EventManager.h"
 
 
 const enum KeyCode {
@@ -109,9 +110,6 @@ enum CursorMode
 
 class Input {
 public:
-    void SetUp(GLFWwindow *window);
-    static void UpdateInput();
-
     // Window
     static GLFWwindow* GetWindow() { return m_window; }
     static void SetWindow(GLFWwindow* newWindow) { m_window = newWindow; }
@@ -119,7 +117,7 @@ public:
     // Keyboard
     static bool GetKeyDown(KeyCode key);
     static bool GetKeyUp(KeyCode key);
-    static bool OnKeyPress(KeyCode key);
+    
 
     //Mouse
     static void SetCursorMode(CursorMode mode);
@@ -144,6 +142,9 @@ private:
     static Vec2 m_lastMousePosPix;
     static Vec2 m_mousePosNorm; // Mouse normalized position  (-1.0 <-> 1.0)
     static Vec2 m_lastMousePosNorm;
+
+    void SetUp(GLFWwindow *window);
+    static void UpdateInput();
 
     static void KeyEvent(GLFWwindow* window, int key, int scancode, int action, int mods);
     static bool NullWindow();

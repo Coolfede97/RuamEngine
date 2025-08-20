@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 #include "input.h"
 
+
 int main(void) {
     GLFWwindow* window;
 
@@ -33,7 +34,9 @@ int main(void) {
 
         /* Poll for and process events */
         glfwPollEvents();
-        Input::UpdateInput();
+        EventManager::subscribe<OnKeyPress>([](const OnKeyPress& event) {
+            std::cout << "Key Pressed: " << event.key << std::endl;
+        });
 
     }
 
