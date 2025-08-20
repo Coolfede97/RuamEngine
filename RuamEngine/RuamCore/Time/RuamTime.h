@@ -7,11 +7,11 @@ namespace ruamTime
 	class Time
 	{
 	private:
-		static float m_currentFrame;
-		static float m_lastFrame;
+		static double m_currentFrame;
+		static double m_lastFrame;
 	public:
 		static void Update();
-		static float DeltaTime() { return m_currentFrame - m_lastFrame; }
+		static double DeltaTime() { return m_currentFrame - m_lastFrame; }
 	};
 }
 
