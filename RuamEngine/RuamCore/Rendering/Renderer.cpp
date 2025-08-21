@@ -20,7 +20,6 @@ bool GLLogCall(const char* function, const char* file, int line)
 }
 namespace RuamEngine
 {
-
     RendererConfig Renderer::m_config;
 	GLFWwindow* Renderer::m_window = nullptr;
     void Renderer::Init()
@@ -107,5 +106,14 @@ namespace RuamEngine
         {
 			GLCall(glDisable(GL_BLEND));
         }
+    }
+
+    void Renderer::Draw()
+    {
+        m_state.m_shader->Bind();
+        m_state.m_vertexArray->Bind();
+        m_state.m_indexBuffer->Bind();
+
+        GLCall(glDrawElements(GL_TRIANGLES, m_state.m_indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr));
     }
 }
