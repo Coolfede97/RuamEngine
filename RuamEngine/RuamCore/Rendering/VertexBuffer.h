@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Renderer.h"
+
 class VertexBuffer
 {
 private:
@@ -7,6 +9,8 @@ private:
 public:
 	VertexBuffer(const void* data, unsigned int size);
 	~VertexBuffer();
+
+	void SetData(unsigned int offset, const void* data);
 
 	void Bind() const; 
 	void Unbind() const;

@@ -4,29 +4,23 @@
 #include <array>
 #include <GL/glew.h>
 #include "GLFW/glfw3.h"
+#include "VertexBuffer.h"
 #include "VertexArray.h"
 #include "IndexBuffer.h"
+#include "VertexBufferLayout.h"
+
 #include "Shader.h"
 
 #include "GLM/glm.hpp"
 #include "GLM/gtc/matrix_transform.hpp"
 
-#if defined(_WIN32)
-#define ASSERT(x) do {if(!(x)) __debugbreak();} while(false)
-#endif
-#ifdef linux
-#include <csignal>
-#define ASSERT(x) do {if(!(x)) raise(SIGTRAP);} while (false)
-#endif
+#include "RuamUtils.h"
 
-#define GLCall(x) do { GLClearError();\
-    x; \
-    ASSERT(GLLogCall(#x, __FILE__, __LINE__));\
-	} while(false)
-
-void GLClearError();
-
-bool GLLogCall(const char* function, const char* file, int line);
+class VertexBuffer;
+class VertexArray;
+class IndexBuffer;
+class Shader;
+class VertexBufferLayout;
 
 namespace RuamEngine
 {
@@ -68,13 +62,13 @@ namespace RuamEngine
 
         GLenum primitiveType = GL_TRIANGLES;
 
-        Shader* m_shader;
-        VertexArray* m_vertexArray;
-        VertexBuffer* m_vertexBuffer;
-        VertexBufferLayout* m_layout;
-		IndexBuffer* m_indexBuffer;
+        Shader* m_shader = nullptr;
+        VertexArray* m_vertexArray = nullptr;
+        VertexBuffer* m_vertexBuffer = nullptr;
+        VertexBufferLayout* m_layout = nullptr;
+		IndexBuffer* m_indexBuffer = nullptr;
 
-        std::array<uint32_t, maxTextureSlots> textureSlots;
+        std::array<uint32_t, maxTextureSlots> textureSlots = {};
         
         // Which texture slot we can insert our new texture into
         uint32_t textureSlotIndex = 1;
@@ -89,61 +83,35 @@ namespace RuamEngine
         static void EndDraw();
         static void Clear();
 
-        static void CreateWindow(); // Should be called just once
-
 		// Setters for RendererConfig
         static void SetWindowSize(int width, int height);
         static void SetWindowTitle(const char* title);
         static void SetClearColor(const glm::vec4& color);
         static void SetDepthTest(bool enable);
         static void SetBlend(bool enable, GLenum sfactor = GL_SRC_ALPHA, GLenum dfactor = GL_ONE_MINUS_SRC_ALPHA);
-        
-
-        // Setters for RendererState
-        void SetPrimitiveType(GLenum type) { m_state.primitiveType = type; }
-        void SetShader(Shader* shader) { m_state.m_shader = shader; }
-        void SetVertexArray(VertexArray* vertexArray) { m_state.m_vertexArray = vertexArray; }
-        void SetVertexBuffer(VertexBuffer* vertexBuffer) { m_state.m_vertexBuffer = vertexBuffer; }
-        void SetLayout(VertexBufferLayout* layout) { m_state.m_layout = layout; }
-        void SetIndexBuffer(IndexBuffer* indexBuffer) { m_state.m_indexBuffer = indexBuffer; }
-        void SetTextureSlots(const std::array<uint32_t, maxTextureSlots>& slots) { m_state.textureSlots = slots; }
-        void SetTextureSlotIndex(uint32_t index) { m_state.textureSlotIndex = index; }
-
+       
 
 		// Getters for RendererConfig
-        int GetWindowWidth() const { return m_config.windowWidth; }
-        int GetWindowHeight() const { return m_config.windowHeight; }
-        const char* GetWindowTitle() const { return m_config.windowTitle; }
-        glm::vec4 GetClearColor() const { return m_config.clearColor; }
-        bool GetUseClearColor() const { return m_config.useClearColor; }
-        bool GetDepthTest() const { return m_config.depthTest; }
-        bool GetBlend() const { return m_config.blend; }
-        GLFWmonitor* GetMonitor() const { return m_config.monitor; }
-        GLFWwindow* GetShare() const { return m_config.share; }
-        GLenum GetBlendSFactor() const { return m_config.blendSFactor; }
-        GLenum GetBlendDFactor() const { return m_config.blendDFactor; }
-
-
-		// Getters for RendererState
-        GLenum GetPrimitiveType() const { return m_state.primitiveType; }
-        Shader* GetShader() const { return m_state.m_shader; }
-        VertexArray* GetVertexArray() const { return m_state.m_vertexArray; }
-        VertexBuffer* GetVertexBuffer() const { return m_state.m_vertexBuffer; }
-        VertexBufferLayout* GetLayout() const { return m_state.m_layout; }
-        IndexBuffer* GetIndexBuffer() const { return m_state.m_indexBuffer; }
-        const std::array<uint32_t, maxTextureSlots>& GetTextureSlots() const { return m_state.textureSlots; }
-        uint32_t GetTextureSlotIndex() const { return m_state.textureSlotIndex; }
-
-
+        static int GetWindowWidth() { return m_config.windowWidth; }
+        static int GetWindowHeight()  { return m_config.windowHeight; }
+        static const char* GetWindowTitle()  { return m_config.windowTitle; }
+        static glm::vec4 GetClearColor()  { return m_config.clearColor; }
+        static bool GetUseClearColor()  { return m_config.useClearColor; }
+        static bool GetDepthTest()  { return m_config.depthTest; }
+        static bool GetBlend()  { return m_config.blend; }
+        static GLFWmonitor* GetMonitor()  { return m_config.monitor; }
+        static GLFWwindow* GetShare()  { return m_config.share; }
+        static GLenum GetBlendSFactor()  { return m_config.blendSFactor; }
+        static GLenum GetBlendDFactor()  { return m_config.blendDFactor; }
 
 
 		static GLFWwindow* GetWindow() { return m_window; }
 
-        void Draw();
+        static void Draw();
 
+        static RendererState m_state;
     private:
         static RendererConfig m_config;
-		static RendererState m_state;
         static GLFWwindow* m_window;
     };
 

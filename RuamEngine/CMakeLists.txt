@@ -135,7 +135,7 @@ add_library(RuamCore INTERFACE)
 
 file (GLOB RENDERING_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Rendering/*.cpp")
 add_library(Rendering STATIC ${RENDERING_SRC})
-target_link_libraries(Rendering PUBLIC Vendor Files Maths)
+target_link_libraries(Rendering PUBLIC Vendor Files Maths RuamUtils)
 target_include_directories(Rendering INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Rendering)
 
 # ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -194,10 +194,18 @@ target_include_directories(Input INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Input)
 
 # /////////////////////////////////////////////////////////////////////////////////////////////// 
 
+# Utils
+
+add_library(RuamUtils INTERFACE)
+target_include_directories(RuamUtils INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/RuamUtils)
+
+
+# /////////////////////////////////////////////////////////////////////////////////////////////// 
+
 # Linking
 
 target_link_libraries(RuamCore INTERFACE 
-	Rendering Maths Time Files Input Objects
+	Rendering Maths Time Files Input Objects RuamUtils
 )
 
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "Renderer.h"
+#include "RuamUtils.h"
 
 // Think of rows when thinking about every vertex array element.
 // Every row contains how to read the buffer.

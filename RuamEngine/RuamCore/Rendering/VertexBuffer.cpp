@@ -1,6 +1,7 @@
 #include "VertexBuffer.h"
-#include "Renderer.h"
 #include "VertexBufferLayout.h"
+
+using namespace RuamEngine;
 
 VertexBuffer::VertexBuffer(const void* data, unsigned int size)
 {
@@ -12,6 +13,11 @@ VertexBuffer::VertexBuffer(const void* data, unsigned int size)
 VertexBuffer::~VertexBuffer() 
 {
     GLCall(glDeleteBuffers(1, &m_RendererID));
+}
+
+void VertexBuffer::SetData(unsigned int offset, const void* data)
+{
+    glBufferSubData(GL_ARRAY_BUFFER, offset, maxVertexCount * vertexSize * sizeof(float), data);
 }
 
 void VertexBuffer::Bind() const

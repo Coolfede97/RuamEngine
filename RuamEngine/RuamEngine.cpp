@@ -2,9 +2,9 @@
 
 #include "RuamEngine.h"
 
-#include "scenes/MenuScene.cpp"
-#include "scenes/TestScene.cpp"
-#include "components/Manager.h"
+#include "assets/scenes/MenuScene.cpp"
+#include "assets/scenes/TestScene.cpp"
+#include "assets/components/Manager.h"
 using namespace RuamEngine;
 
 int main(void)

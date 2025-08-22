@@ -21,6 +21,7 @@ bool GLLogCall(const char* function, const char* file, int line)
 namespace RuamEngine
 {
     RendererConfig Renderer::m_config;
+    RendererState Renderer::m_state;
 	GLFWwindow* Renderer::m_window = nullptr;
     void Renderer::Init()
     {
@@ -44,6 +45,15 @@ namespace RuamEngine
         {
             GLCall(glEnable(GL_BLEND));
             GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+        }
+
+
+        {
+			m_state.m_vertexArray = new VertexArray();
+			m_state.m_vertexBuffer = new VertexBuffer(nullptr, maxVertexCount * vertexSize * sizeof(float));
+			m_state.m_layout = new VertexBufferLayout();
+			m_state.m_indexBuffer = new IndexBuffer(nullptr, maxIndexCount);
+			//m_state.m_shader = new Shader("assets/shaders/Basic.shader");
         }
 
     }
