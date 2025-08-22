@@ -5,11 +5,11 @@
 #include "../components/Manager.h"
 #include "../components/Counter.h"
 
-std::shared_ptr<Scene> CreateTestScene()
+SceneManager::ScenePtr CreateTestScene()
 {
-	Scene testScene("Test Scene");
-	Object& manager = testScene.newObject();
+	SceneManager::ScenePtr testScene = std::make_shared<Scene>("Test Scene");
+	Object& manager = testScene->newObject();
 	manager.addComponent<Counter>();
 	manager.addComponent<Manager>();
-	return std::make_shared<Scene>(testScene);
+	return testScene;
 }

@@ -1,20 +1,27 @@
 #pragma once
 
 #include "Scene.hpp"
+#include <unordered_map>
 
 class SceneManager {
 public:
+	using ScenePtr = std::shared_ptr<Scene>;
+	using SceneCreator = ScenePtr (*)();
+    using SceneList = std::unordered_map<unsigned int, SceneCreator>;
+
 	SceneManager() = delete;
-    using SceneList = std::vector<Scene>;
 
 	static const SceneList& sceneList();
-	static std::shared_ptr<Scene> activeScene();
 
-	static void setActiveScene(Scene& scene);
+	static void SetActiveScene(unsigned int id);
+	static ScenePtr ActiveScene();
 
-	static void addScene(Scene& scene);
+	/* Returns idx */
+	static unsigned int AddScene(unsigned int id, SceneCreator scene);
+
+	static ScenePtr EmptyScene();
 
 private:
 	static SceneList s_scenes;
-	static std::shared_ptr<Scene> s_active_scene;
+	static ScenePtr s_active_scene;
 };

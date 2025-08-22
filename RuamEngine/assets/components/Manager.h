@@ -12,12 +12,14 @@ public:
 	using BaseRenderer::BaseRenderer;
 	Manager(unsigned int obj_id) : BaseRenderer(obj_id) {};
 	void render() {
-		for (const Scene& scene : SceneManager::sceneList()) 
+		int i = 0;
+		for (const auto& scene : SceneManager::sceneList()) 
 		{
-			if (ImGui::Button(scene.name().c_str()))
+			if (ImGui::Button(scene.second()->name().c_str()))
 			{
-				SceneManager::setActiveScene(const_cast<Scene&>(scene));
+				SceneManager::SetActiveScene(i);
 			}
+			i++;
 		}
 	};
 };

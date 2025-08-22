@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Renderer.h"
+#include "RendererCore.h"
 
 class VertexBuffer
 {

@@ -1,9 +1,11 @@
 #pragma once
 #include <string>
-#include "Renderer.h"
-#include "GLFW/glfw3.h"
+#include <unordered_map>
+
+#include "RendererCore.h"
 #include "Camera.h"
 #include "Vec3.h"
+
 enum KeyCode
 {
     // These values come from the ones of "glfw3.h"

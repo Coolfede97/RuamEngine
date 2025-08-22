@@ -12,16 +12,20 @@ public:
 	}
 };
 
-int main() {
-	Scene s;
-	SceneManager::addScene(s);
-	SceneManager::setActiveScene(s);
-	Object obj = s.newObject();
+SceneManager::ScenePtr SampleScene() {
+	SceneManager::ScenePtr s = std::make_shared<Scene>("Sample Scene");
+	Object& obj = s->newObject();
 	
 	obj.addComponent<TestComponent>();
-	std::cout << "wawa" << std::endl;
-	SceneManager::activeScene()->start();
+	return s;
+}
+
+int main() {
+	int s = SceneManager::AddScene(1, SampleScene);
+	SceneManager::SetActiveScene(s);
+	std::cout << "wawa\n";
+	SceneManager::ActiveScene()->start();
 	while(true) {
-		SceneManager::activeScene()->update();
+		SceneManager::ActiveScene()->update();
 	}
 }

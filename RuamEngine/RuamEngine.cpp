@@ -5,6 +5,7 @@
 #include "assets/scenes/MenuScene.cpp"
 #include "assets/scenes/TestScene.cpp"
 #include "assets/components/Manager.h"
+
 using namespace RuamEngine;
 
 int main(void)
@@ -17,11 +18,9 @@ int main(void)
 		ImGui_ImplGlfwGL3_Init(Renderer::GetWindow(), true);
 		ImGui::StyleColorsDark();
 
-		std::shared_ptr<Scene> menuScene = CreateMenuScene();
-		SceneManager::setActiveScene(*menuScene);
-		SceneManager::addScene(*menuScene);
-		std::shared_ptr<Scene> testScene = CreateTestScene();
-		SceneManager::addScene(*testScene);
+		const unsigned int menuScene = SceneManager::AddScene(0, CreateMenuScene);
+		SceneManager::SetActiveScene(menuScene);
+		const unsigned int testScene = SceneManager::AddScene(1, CreateTestScene);
 
 		while (!glfwWindowShouldClose(Renderer::GetWindow()))
 		{
@@ -36,9 +35,9 @@ int main(void)
 
 			Renderer::BeginDraw();
 
-			if (SceneManager::activeScene() != nullptr)
+			if (SceneManager::ActiveScene() != nullptr)
 			{
-				SceneManager::activeScene()->update();
+				SceneManager::ActiveScene()->update();
 			}
 			ImGui::Render();
 			ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
