@@ -11,8 +11,14 @@ std::string FileToString(const std::string& absoluteFilePath)
 }
 
 // This function reads a file from the project root directory and returns its content as a string.
-std::string ProjectFileToString(const std::string& relativeFilePath)
+std::string RelativeFileToString(const std::string& relativeFilePath)
 {
-	return FileToString(std::string(PROJECT_ROOT_DIR) + "/" + relativeFilePath);
+	return FileToString(GlobalizePath(relativeFilePath));
+}
+
+// Relative from the RuamEngine root directory
+std::string GlobalizePath(const std::string& relativeFilePath)
+{
+	return std::string(PROJECT_ROOT_DIR) + "/" + relativeFilePath;
 }
 

@@ -4,12 +4,13 @@
 #include "SceneManager.hpp"
 #include "../components/Manager.h"
 #include "../components/Counter.h"
+#include "../components/SandboxCom.h"
 
-SceneManager::ScenePtr CreateTestScene()
+SceneManager::ScenePtr CreateSandboxScene()
 {
-	SceneManager::ScenePtr testScene = std::make_shared<Scene>("Test Scene");
+	SceneManager::ScenePtr testScene = std::make_shared<Scene>("Sandbox Scene");
 	Object& manager = testScene->newObject();
-	manager.addComponent<Counter>();
+	manager.addComponent<SandboxCom>();
 	manager.addComponent<Manager>();
 	return testScene;
 }

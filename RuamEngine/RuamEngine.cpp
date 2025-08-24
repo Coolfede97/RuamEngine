@@ -3,7 +3,7 @@
 #include "RuamEngine.h"
 
 #include "assets/scenes/MenuScene.cpp"
-#include "assets/scenes/TestScene.cpp"
+#include "assets/scenes/SandboxScene.cpp"
 #include "assets/components/Manager.h"
 
 using namespace RuamEngine;
@@ -20,7 +20,7 @@ int main(void)
 
 		const unsigned int menuScene = SceneManager::AddScene(0, CreateMenuScene);
 		SceneManager::SetActiveScene(menuScene);
-		const unsigned int testScene = SceneManager::AddScene(1, CreateTestScene);
+		const unsigned int sandboxScene = SceneManager::AddScene(1, CreateSandboxScene);
 
 		while (!glfwWindowShouldClose(Renderer::GetWindow()))
 		{

@@ -49,11 +49,11 @@ namespace RuamEngine
 
 
         {
-			m_state.m_vertexArray = new VertexArray();
-			m_state.m_vertexBuffer = new VertexBuffer(nullptr, maxVertexCount * vertexSize * sizeof(float));
-			m_state.m_layout = new VertexBufferLayout();
-			m_state.m_indexBuffer = new IndexBuffer(nullptr, maxIndexCount);
-			//m_state.m_shader = new Shader("assets/shaders/Basic.shader");
+			m_state.m_vertexArray = std::make_shared<VertexArray>();
+			m_state.m_vertexBuffer = std::make_shared<VertexBuffer>(nullptr, maxVertexSize * maxVertexCount);
+			m_state.m_layout = std::make_shared<VertexBufferLayout>();
+			m_state.m_indexBuffer = std::make_shared<IndexBuffer>(nullptr, maxIndexCount);
+            m_state.m_shader = std::make_shared<Shader>("assets/shaders/GeneralVertexShader.glsl", "assets/shaders/GeneralFragmentShader.glsl");
         }
 
     }
@@ -120,10 +120,11 @@ namespace RuamEngine
 
     void Renderer::Draw()
     {
-        m_state.m_shader->Bind();
         m_state.m_vertexArray->Bind();
+        m_state.m_shader->Bind();
         m_state.m_indexBuffer->Bind();
 
-        GLCall(glDrawElements(GL_TRIANGLES, m_state.m_indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr));
+        // PREGUNTAR CHONA
+        GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
     }
 }

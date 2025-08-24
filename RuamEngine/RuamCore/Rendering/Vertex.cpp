@@ -6,17 +6,17 @@ std::array<Vertex, 4> Vertex::CreateQuad(float x, float y, Vec4 color)
 	float size = 1.0f;
 	float half = size / 2;
 	Vertex v0;
-	v0.position = { x - half, y - half, 0.0f };
-	v0.color = new Vec4(0.49f, 0.55f, 0.52f, 1.0f);
+	v0.m_position = { x - half, y - half, 0.0f };
+	v0.m_color = color;
 	Vertex v1;
-	v1.position = { x + half, y - half, 0.0f };
-	v1.color = new Vec4(0.49f, 0.55f, 0.52f, 1.0f);
+	v1.m_position = { x + half, y - half, 0.0f };
+	v1.m_color = color;
 	Vertex v2;
-	v2.position = { x + half, y + half, 0.0f };
-	v2.color = new Vec4(0.49f, 0.55f, 0.52f, 1.0f);
+	v2.m_position = { x + half, y + half, 0.0f };
+	v2.m_color = color;
 	Vertex v3;
-	v3.position = { x - half, y + half, 0.0f };
-	v3.color = new Vec4(0.49f, 0.55f, 0.52f, 1.0f);
+	v3.m_position = { x - half, y + half, 0.0f };
+	v3.m_color = color;
 	return { v0, v1, v2, v3 };
 }
 
@@ -26,24 +26,24 @@ std::array<VertexWithTex, 4> VertexWithTex::CreateQuad(float x, float y, float t
 	float half = size/2;
 
 	VertexWithTex v0;
-	v0.position = { x - half, y - half, 0.0f };
-	v0.texCoords = { 0.0f, 0.0f };
-	v0.texId = texID;
+	v0.m_position = { x - half, y - half, 0.0f };
+	v0.m_texCoords = { 0.0f, 0.0f };
+	v0.m_tex_id = texID;
 
 	VertexWithTex v1;
-	v1.position = { x + half, y - half, 0.0f };
-	v1.texCoords = { 1.0f, 0.0f };
-	v1.texId = texID;
+	v1.m_position = { x + half, y - half, 0.0f };
+	v1.m_texCoords = { 1.0f, 0.0f };
+	v1.m_tex_id = texID;
 
 	VertexWithTex v2;
-	v2.position = { x + half, y + half, 0.0f };
-	v2.texCoords = { 1.0f, 1.0f };
-	v2.texId = texID;
+	v2.m_position = { x + half, y + half, 0.0f };
+	v2.m_texCoords = { 1.0f, 1.0f };
+	v2.m_tex_id = texID;
 
 	VertexWithTex v3;
-	v3.position = { x - half, y + half, 0.0f };
-	v3.texCoords = { 0.0f, 1.0f };
-	v3.texId = texID;
+	v3.m_position = { x - half, y + half, 0.0f };
+	v3.m_texCoords = { 0.0f, 1.0f };
+	v3.m_tex_id = texID;
 
 	return { v0, v1, v2, v3 };
 }

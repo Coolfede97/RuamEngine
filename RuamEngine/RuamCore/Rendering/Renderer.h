@@ -41,7 +41,8 @@ namespace RuamEngine
         
     };
 
-    static const size_t vertexSize = 3;
+	static const size_t maxVertexAtribs = (3 + 4 + 2 + 1); // Position, Color, TexCoords, TexID
+	static const size_t maxVertexSize = sizeof(float) * maxVertexAtribs; // 3 position, 4 color, 2 tex coords, 1 tex id
     static const size_t maxQuadCount = 1000;
     static const size_t maxVertexCount = maxQuadCount * 4;
     static const size_t maxIndexCount = maxQuadCount * 6;
@@ -54,11 +55,11 @@ namespace RuamEngine
 
         GLenum primitiveType = GL_TRIANGLES;
 
-        Shader* m_shader = nullptr;
-        VertexArray* m_vertexArray = nullptr;
-        VertexBuffer* m_vertexBuffer = nullptr;
-        VertexBufferLayout* m_layout = nullptr;
-		IndexBuffer* m_indexBuffer = nullptr;
+        ShaderPtr m_shader = nullptr;
+        VertexArrayPtr m_vertexArray = nullptr;
+        VertexBufferPtr m_vertexBuffer = nullptr;
+        VertexBufferLayoutPtr m_layout = nullptr;
+		IndexBufferPtr m_indexBuffer = nullptr;
 
         std::array<uint32_t, maxTextureSlots> textureSlots = {};
         

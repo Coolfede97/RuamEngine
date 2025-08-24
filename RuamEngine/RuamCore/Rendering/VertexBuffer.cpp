@@ -17,10 +17,22 @@ VertexBuffer::~VertexBuffer()
     GLCall(glDeleteBuffers(1, &m_RendererID));
 }
 
-void VertexBuffer::SetData(unsigned int offset, const void* data)
+void VertexBuffer::SetSubData(unsigned int offset, unsigned int size, const void* data)
 {
-    glBufferSubData(GL_ARRAY_BUFFER, offset, maxVertexCount * vertexSize * sizeof(float), data);
+    ASSERT(offset + size <= maxVertexSize * maxVertexCount);
+
+	GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_RendererID));
+
+    GLCall(glBufferSubData(GL_ARRAY_BUFFER, offset, size, data));
 }
+
+void VertexBuffer::SetData(const void* data, unsigned int size, GLenum usage)
+{
+    Renderer::m_state.m_layout->Reset();
+    GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_RendererID));
+    GLCall(glBufferData(GL_ARRAY_BUFFER, size, data, usage));
+}
+
 
 void VertexBuffer::Bind() const
 {
