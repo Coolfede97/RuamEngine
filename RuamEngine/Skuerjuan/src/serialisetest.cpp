@@ -14,6 +14,7 @@ public:
 
 SceneManager::ScenePtr SampleScene() {
 	SceneManager::ScenePtr s = std::make_shared<Scene>("Sample Scene");
+	//Object& obj = s->newObject();
 	Object& obj = s->newObject();
 	
 	obj.addComponent<TestComponent>();

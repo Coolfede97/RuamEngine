@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector>
+#include "RendererCore.h"
 #include "RuamUtils.h"
 #include "GLFW/glfw3.h"
 

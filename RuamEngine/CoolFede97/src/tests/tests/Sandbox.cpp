@@ -55,7 +55,7 @@ namespace test
 	{
 		m_Shader->Bind();
 		m_VAO->Bind();
-		glDrawElements(GL_TRIANGLES, m_IBO->GetCount(), GL_UNSIGNED_INT, nullptr);
+		//glDrawElements(GL_TRIANGLES, m_IBO->GetCount(), GL_UNSIGNED_INT, nullptr);
 	}
 
 	void Sandbox::ImGuiRender()

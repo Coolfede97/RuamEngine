@@ -2,6 +2,9 @@
 
 #include <iostream>
 #include <array>
+#include <memory>
+#include <vector>
+
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"
 
@@ -9,3 +12,4 @@
 #include "GLM/gtc/matrix_transform.hpp"
 
 #include "RuamUtils.h"
+
