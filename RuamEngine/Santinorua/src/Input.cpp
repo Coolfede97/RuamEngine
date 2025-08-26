@@ -48,10 +48,10 @@ void Input::KeyEvent(GLFWwindow* window, int key, int scancode, int action, int 
     if (action == GLFW_PRESS) {
         // Key pressed
         // std::cout << "Key pressed: " << key << std::endl;
-        eventManager.publish(OnKeyPress(key));
+        eventManager.publish(OnKeyPressEvent(key));
     } else if (action == GLFW_RELEASE) {
         // Key released
-        eventManager.publish(OnKeyRelease(key));
+        eventManager.publish(OnKeyReleaseEvent(key));
     }
 }
 
@@ -67,6 +67,7 @@ void Input::UpdateInput() {
     }
 
     glfwSetKeyCallback(m_window, KeyEvent);
+
 }
 
 

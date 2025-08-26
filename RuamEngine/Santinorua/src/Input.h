@@ -9,9 +9,8 @@
 
 const enum KeyCode {
     // These values come from the ones of "glfw3.h"
-    // Espaciado y entrada
     SpaceBar_Key = 32,
-    Quote_Key = 39,     // Apostrophe
+    Quote_Key = 39,
     Comma_Key = 44,
     Minus_Key = 45,
     Period_Key = 46,
@@ -122,7 +121,6 @@ public:
     // Keyboard
     static bool GetKeyDown(KeyCode key);
     static bool GetKeyUp(KeyCode key);
-    
 
     //Mouse
     static void SetCursorMode(CursorMode mode);

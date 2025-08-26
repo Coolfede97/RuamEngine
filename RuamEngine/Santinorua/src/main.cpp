@@ -22,11 +22,14 @@ int main(void) {
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
     /* Loop until the user closes the window */
-    Input::eventManager.subscribe<OnKeyPress>([](const OnKeyPress& event) {
+
+
+    // Test event subscriptions
+    Input::eventManager.subscribe<OnKeyPressEvent>([](const OnKeyPressEvent& event) {
         std::cout << "Key Pressed: " << event.key << std::endl;
     });
 
-    Input::eventManager.subscribe<OnKeyRelease>([](const OnKeyRelease& event) {
+    Input::eventManager.subscribe<OnKeyReleaseEvent>([](const OnKeyReleaseEvent& event) {
         std::cout << "Key Released: " << event.key << std::endl;
     });
     while (!glfwWindowShouldClose(window))
@@ -40,6 +43,8 @@ int main(void) {
 
         /* Poll for and process events */
         glfwPollEvents();
+
+        // Update input
         Input::UpdateInput();
 
 
