@@ -2,7 +2,9 @@
 
 #include <typeindex>
 #include <functional>
-#include "Input.h"
+#include <queue>
+
+enum KeyCode;
 
 struct Event {
     virtual ~Event() = default;
@@ -24,36 +26,32 @@ struct OnKeyReleaseEvent : public Event {
 class EventManager {
 public:
 
-    // template <typename EventType>
-    // void subscribe(std::function<void(const EventType&)> listener) {
-    //     auto& listeners = subscribers[typeid(EventType)];
-    //     subscribers[typeid(EventType)].push_back(
-    //         [listener](const Event& e) {
-    //             listener(static_cast<const EventType&>(e));
-    //         }
-    //     );
-    // }
-
-    template<typename EventType>
-    void getEvent(std::function<void>(const EventType&)> callback) {
-        
-
+    template <typename EventType>
+    void InstantSubscribe(std::function<void(const EventType&)> listener) {
+        auto& listeners = instantSubscribers[typeid(EventType)];
+        instantSubscribers[typeid(EventType)].push_back(
+            [listener](const Event& e) {
+                listener(static_cast<const EventType&>(e));
+            }
+        );
     }
 
+
+
     template <typename EventType>
-    void publish(const EventType& event);
-    // void publish(const EventType& event) {
-        // auto thisTypeEvents = subscribers.find(typeid(EventType));
-        // if (thisTypeEvents != subscribers.end()) {
-        //     for (auto& listener : thisTypeEvents->second) {
-        //         listener(event);
-        //     }
-        // }
-    // }
+    void InstantPublish(const EventType& event) {
+        auto thisTypeEvents = instantSubscribers.find(typeid(EventType));
+        if (thisTypeEvents != instantSubscribers.end()) {
+            for (auto& listener : thisTypeEvents->second) {
+                listener(event);
+            }
+        }
+    }
 
     void OnKeyPress(KeyCode key, std::function<void(const OnKeyPressEvent&)> callback);
 
 private:
+    std::unordered_map<std::type_index, std::vector<std::function<void(const Event&)>>> instantSubscribers;
     std::unordered_map<std::type_index, std::vector<std::function<void(const Event&)>>> subscribers;
-    std::unordered_map<std::type_index, std::vector<Event>> eventQueue;
+    std::queue<Event*> eventQueue;
 };

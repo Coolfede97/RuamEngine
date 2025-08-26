@@ -7,7 +7,7 @@
 #include "EventManager.h"
 
 
-const enum KeyCode {
+enum KeyCode {
     // These values come from the ones of "glfw3.h"
     SpaceBar_Key = 32,
     Quote_Key = 39,
@@ -91,7 +91,7 @@ const enum KeyCode {
     Menu_Key = 348
 };
 
-const enum MouseCode {
+enum MouseCode {
     Mouse_Left,
     Mouse_Right,
     Mouse_Middle,
