@@ -127,13 +127,14 @@ public:
     static CursorMode GetCursorMode();
     static bool GetButtonDown(MouseCode button);
     static bool GetButtonUp(MouseCode button);
+    static Vec2 GetCursorPosPix();
 
     //void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods);
 
     // Not Implemented
 
-    static Vec2 GetMousePosPix() { return m_mousePosPix; }
-    static Vec2 GetMousePosNorm() { return m_mousePosNorm; }
+
+    // static Vec2 GetMousePosNorm() { return m_mousePosNorm; }
     static Vec2 GetMouseDelta() { return m_mousePosPix - m_lastMousePosPix; }
     static void MouseCallback(GLFWwindow* p_window, double posX, double posY);
 
@@ -143,7 +144,6 @@ private:
     static GLFWwindow* m_window;
     static Vec2 m_mousePosPix;
     static Vec2 m_lastMousePosPix;
-    static Vec2 m_mousePosNorm; // Mouse normalized position  (-1.0 <-> 1.0)
     static Vec2 m_lastMousePosNorm;
 
 

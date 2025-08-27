@@ -58,7 +58,7 @@ public:
     }
 
     template <typename EventType>
-    void Publish(EventType& event) {
+    void Publish(const EventType& event) {
         eventQueue.push(std::make_unique<EventType>(event));
     }
 

@@ -22,6 +22,17 @@ bool Input::GetKeyUp(const KeyCode key) {
     return glfwGetKey(m_window, key) == GLFW_RELEASE;
 }
 
+void Input::KeyEvent(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    // Handle key events
+    if (action == GLFW_PRESS) {
+        // Key pressed
+        eventManager.Publish(OnKeyPressEvent(key));
+    } else if (action == GLFW_RELEASE) {
+        // Key released
+        eventManager.Publish(OnKeyReleaseEvent(key));
+    }
+}
+
 void Input::SetCursorMode(const CursorMode mode)
 {
     glfwSetInputMode(m_window, GLFW_CURSOR, mode);
@@ -43,17 +54,13 @@ bool Input::GetButtonUp(const MouseCode button) {
     return glfwGetMouseButton(m_window, button) == GLFW_RELEASE;
 }
 
-void Input::KeyEvent(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    // Handle key events
-    if (action == GLFW_PRESS) {
-        // Key pressed
-        // std::cout << "Key pressed: " << key << std::endl;
-        eventManager.Publish(OnKeyPressEvent(key));
-    } else if (action == GLFW_RELEASE) {
-        // Key released
-        eventManager.Publish(OnKeyReleaseEvent(key));
-    }
+Vec2 Input::GetCursorPosPix() {
+    double xpos, ypos;
+    glfwGetCursorPos(m_window, &xpos, &ypos);
+    return Vec2((float)xpos, (float)ypos);
 }
+
+
 
 void Input::SetUp(GLFWwindow* window) {
     // Set the window pointer

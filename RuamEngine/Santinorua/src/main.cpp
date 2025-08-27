@@ -3,7 +3,6 @@
 #include <GLFW/glfw3.h>
 #include "input.h"
 
-
 int main(void) {
     GLFWwindow* window;
 
