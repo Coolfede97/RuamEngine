@@ -5,42 +5,27 @@
 
 class SceneManager {
 public:
-	using ScenePtr = std::unique_ptr<Scene>;
+	using ScenePtr = std::shared_ptr<Scene>;
 	using SceneCreator = ScenePtr (*)();
-	using SceneList = std::unordered_map<unsigned int, SceneCreator>;
+    using SceneList = std::unordered_map<unsigned int, SceneCreator>;
 
 	SceneManager() = delete;
 
 	static const SceneList& sceneList();
 
-	static void setActiveScene(unsigned int id);
+	static void SetActiveScene(unsigned int id);
+	static ScenePtr ActiveScene();
 
 	/* Returns idx */
-	static unsigned int addScene(unsigned int id, SceneCreator scene);
+	static unsigned int AddScene(unsigned int id, SceneCreator scene);
 
-	static ScenePtr emptyScene();
+	static ScenePtr EmptyScene();
 
-	/* Active scene interface */
-
-	static bool nullScene();
-
-	/* calls active scene's start */
-	static void start();
-
-	/* Updates active scene */
-	static void update();
-
-	static const unsigned int id();
-	static const std::string& name();
-
-    static Object& newObject();
-    static Object& newObject(unsigned int idx);
-
-    static Object& getObjectByIdx(unsigned int idx);
-    static Object& getObjectById(unsigned int id);
-
-    static void deleteObjectByIdx(unsigned int idx);
-    static void deleteObjectById(unsigned int id);
+	template<char* Name, class Comp>
+	ScenePtr SceneCreate() {
+		ScenePtr scene = std::make_shared<Scene>(Name);
+		scene->newObject().addComponent<Comp>();
+	}
 
 private:
 	static SceneList s_scenes;

@@ -18,9 +18,9 @@ int main(void)
 		ImGui_ImplGlfwGL3_Init(Renderer::GetWindow(), true);
 		ImGui::StyleColorsDark();
 
-		const unsigned int menuScene = SceneManager::addScene(0, CreateMenuScene);
-		SceneManager::setActiveScene(menuScene);
-		const unsigned int sandboxScene = SceneManager::addScene(1, CreateSandboxScene);
+		const unsigned int menuScene = SceneManager::AddScene(0, CreateMenuScene);
+		SceneManager::SetActiveScene(menuScene);
+		const unsigned int sandboxScene = SceneManager::AddScene(1, CreateSandboxScene);
 
 		while (!glfwWindowShouldClose(Renderer::GetWindow()))
 		{
@@ -35,7 +35,10 @@ int main(void)
 
 			Renderer::BeginDraw();
 
-			SceneManager::update();
+			if (SceneManager::ActiveScene() != nullptr)
+			{
+				SceneManager::ActiveScene()->update();
+			}
 			ImGui::Render();
 			ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
 

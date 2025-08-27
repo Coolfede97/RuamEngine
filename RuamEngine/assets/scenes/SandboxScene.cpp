@@ -8,9 +8,9 @@
 
 SceneManager::ScenePtr CreateSandboxScene()
 {
-	Scene testScene("Sandbox Scene");
-	Object& manager = testScene.newObject();
+	SceneManager::ScenePtr testScene = std::make_shared<Scene>("Sandbox Scene");
+	Object& manager = testScene->newObject();
 	manager.addComponent<SandboxCom>();
 	manager.addComponent<Manager>();
-	return std::make_unique<Scene>(testScene);
+	return testScene;
 }

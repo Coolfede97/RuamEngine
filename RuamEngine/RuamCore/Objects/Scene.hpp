@@ -28,6 +28,8 @@ public:
     void deleteObjectByIdx(unsigned int idx);
     void deleteObjectById(unsigned int idx);
 
+    std::string name() { return m_name; }
+
 	void start();
 	void update();
 private:

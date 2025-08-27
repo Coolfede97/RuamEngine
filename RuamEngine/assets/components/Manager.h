@@ -17,7 +17,7 @@ public:
 		{
 			if (ImGui::Button(scene.second()->name().c_str()))
 			{
-				SceneManager::setActiveScene(i);
+				SceneManager::SetActiveScene(i);
 			}
 			i++;
 		}
