@@ -48,10 +48,10 @@ void Input::KeyEvent(GLFWwindow* window, int key, int scancode, int action, int 
     if (action == GLFW_PRESS) {
         // Key pressed
         // std::cout << "Key pressed: " << key << std::endl;
-        eventManager.InstantPublish(OnKeyPressEvent(key));
+        eventManager.Publish(OnKeyPressEvent(key));
     } else if (action == GLFW_RELEASE) {
         // Key released
-        eventManager.InstantPublish(OnKeyReleaseEvent(key));
+        eventManager.Publish(OnKeyReleaseEvent(key));
     }
 }
 

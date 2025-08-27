@@ -3,6 +3,7 @@
 #include <typeindex>
 #include <functional>
 #include <queue>
+#include <memory>
 
 enum KeyCode;
 
@@ -36,6 +37,14 @@ public:
         );
     }
 
+    template <typename EventType>
+    void Subscribe(std::function<void(const EventType&)> listener) {
+        subscribers[typeid(EventType)].push_back(
+            [listener](const Event& e) {
+                listener(static_cast<const EventType&>(e));
+            }
+        );
+    }
 
 
     template <typename EventType>
@@ -48,10 +57,28 @@ public:
         }
     }
 
+    template <typename EventType>
+    void Publish(EventType& event) {
+        eventQueue.push(std::make_unique<EventType>(event));
+    }
+
+    void HandleEvents() {
+        while (!eventQueue.empty()) {
+            auto& eventPtr = eventQueue.front();
+            auto thisTypeEvents = subscribers.find(typeid(*eventPtr));
+            if (thisTypeEvents != subscribers.end()) {
+                for (auto& listener : thisTypeEvents->second) {
+                    listener(*eventPtr);
+                }
+            }
+            eventQueue.pop();
+        }
+    }
+
     void OnKeyPress(KeyCode key, std::function<void(const OnKeyPressEvent&)> callback);
 
 private:
     std::unordered_map<std::type_index, std::vector<std::function<void(const Event&)>>> instantSubscribers;
     std::unordered_map<std::type_index, std::vector<std::function<void(const Event&)>>> subscribers;
-    std::queue<Event*> eventQueue;
+    std::queue<std::unique_ptr<Event>> eventQueue;
 };

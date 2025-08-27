@@ -25,11 +25,11 @@ int main(void) {
 
 
     // Test event subscriptions
-    Input::eventManager.InstantSubscribe<OnKeyPressEvent>([](const OnKeyPressEvent& event) {
+    Input::eventManager.Subscribe<OnKeyPressEvent>([](const OnKeyPressEvent& event) {
         std::cout << "Key Pressed: " << event.key << std::endl;
     });
 
-    Input::eventManager.InstantSubscribe<OnKeyReleaseEvent>([](const OnKeyReleaseEvent& event) {
+    Input::eventManager.Subscribe<OnKeyReleaseEvent>([](const OnKeyReleaseEvent& event) {
         std::cout << "Key Released: " << event.key << std::endl;
     });
     while (!glfwWindowShouldClose(window))
@@ -47,7 +47,7 @@ int main(void) {
         // Update input
         Input::UpdateInput();
 
-
+        Input::eventManager.HandleEvents();
 
     }
 
