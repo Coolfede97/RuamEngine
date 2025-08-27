@@ -45,7 +45,16 @@ Object& Scene::getObjectById(unsigned int id) const {
 }
 
 void Scene::deleteObjectByIdx(unsigned int idx) {
-    m_objects.erase(std::next(m_objects.cbegin(), idx));
+    m_objects.erase(std::next(m_objects.begin(), idx));
+}
+
+void Scene::deleteObjectById(unsigned int id) {
+	unsigned int i = 0;
+	for (auto& obj : m_objects) {
+		if (obj->id() == id) break;
+		i++;
+	}
+	m_objects.erase(std::next(m_objects.begin(), i));
 }
 
 void Scene::start() {
