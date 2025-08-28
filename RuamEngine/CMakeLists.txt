@@ -21,13 +21,7 @@ include(FindOpenGL)
 
 add_subdirectory(CoolFede97)
 add_subdirectory(Santinorua)
-
-# -----------------------------------------------------------------------------------------------------
-#######################################################################################################
-#######################################################################################################
-# -----------------------------------------------------------------------------------------------------
-
-# OpenGL
+add_subdirectory(Skuerjuan)
 
 # -----------------------------------------------------------------------------------------------------
 #######################################################################################################
@@ -193,7 +187,7 @@ add_library(RuamCore INTERFACE)
 
 file (GLOB RENDERING_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Rendering/*.cpp")
 add_library(Rendering STATIC ${RENDERING_SRC})
-target_link_libraries(Rendering PUBLIC Vendor Files Maths)
+target_link_libraries(Rendering PUBLIC Vendor Files Maths RuamUtils)
 target_include_directories(Rendering INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Rendering)
 
 # ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -252,10 +246,18 @@ target_include_directories(Input INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Input)
 
 # /////////////////////////////////////////////////////////////////////////////////////////////// 
 
+# Utils
+
+add_library(RuamUtils INTERFACE)
+target_include_directories(RuamUtils INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/RuamUtils)
+
+
+# /////////////////////////////////////////////////////////////////////////////////////////////// 
+
 # Linking
 
 target_link_libraries(RuamCore INTERFACE 
-	Rendering Maths Time Files Input Objects
+	Rendering Maths Time Files Input Objects RuamUtils
 )
 
 
@@ -265,16 +267,17 @@ target_link_libraries(RuamCore INTERFACE
 # -----------------------------------------------------------------------------------------------------
 
 
-
+target_link_libraries(RuamEngine PRIVATE RuamCore)
 
 # -----------------------------------------------------------------------------------------------------
 #######################################################################################################
 #######################################################################################################
 # -----------------------------------------------------------------------------------------------------
-
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET RuamEngine PROPERTY CXX_STANDARD 20)
 endif()
+
+target_link_libraries(RuamEngine PUBLIC RuamCore)
 
 # TODO: Add tests and install targets if needed.

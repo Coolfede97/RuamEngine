@@ -1,10 +1,56 @@
-﻿// RuamEngine.cpp : Defines the entry point for the application.
-//
+﻿#include <iostream>
 
 #include "RuamEngine.h"
 
-int main()
+#include "assets/scenes/MenuScene.cpp"
+#include "assets/scenes/SandboxScene.cpp"
+#include "assets/components/Manager.h"
+
+using namespace RuamEngine;
+
+int main(void)
 {
-	std::cout << "Hello CMake." << "\n";
+	Renderer::Init();
+
+	{
+		Input::SetWindow(Renderer::GetWindow());
+		ImGui::CreateContext();
+		ImGui_ImplGlfwGL3_Init(Renderer::GetWindow(), true);
+		ImGui::StyleColorsDark();
+
+		const unsigned int menuScene = SceneManager::AddScene(0, CreateMenuScene);
+		SceneManager::SetActiveScene(menuScene);
+		const unsigned int sandboxScene = SceneManager::AddScene(1, CreateSandboxScene);
+
+		while (!glfwWindowShouldClose(Renderer::GetWindow()))
+		{
+			// ImGUI
+			ImGui_ImplGlfwGL3_NewFrame();
+
+			// Input
+			Input::UpdateInput();
+
+			// Time
+			ruamTime::Time::Update();
+
+			Renderer::BeginDraw();
+
+			if (SceneManager::ActiveScene() != nullptr)
+			{
+				SceneManager::ActiveScene()->update();
+			}
+			ImGui::Render();
+			ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
+
+			Renderer::EndDraw();
+
+			glfwPollEvents();
+
+		}
+	}
+	// Cleanup
+	ImGui_ImplGlfwGL3_Shutdown();
+	ImGui::DestroyContext();
+	Renderer::Shutdown();
 	return 0;
 }

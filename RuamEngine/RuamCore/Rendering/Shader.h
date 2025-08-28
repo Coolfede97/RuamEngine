@@ -1,9 +1,14 @@
 #pragma once
 
+#include <iostream>
+
 #include <string>
 #include <unordered_map>
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+
+#include "RendererCore.h"
+
 
 class Shader
 {
@@ -14,6 +19,9 @@ private:
 	std::string m_fFilePath;
 	// caching for uniforms
 public:
+	
+
+	// Los paths son relativos a la carpeta RuamEngine
 	Shader(const std::string& vertexPath, const std::string& fragmentPath);
 	~Shader();
 
@@ -30,3 +38,7 @@ private:
 	unsigned int CreateShader(const std::string& vertexShader, const std::string& fragmentShader);
 	int GetUniformLocation(const std::string& name);
 };
+
+using ShaderPtr = std::shared_ptr<Shader>;
+
+

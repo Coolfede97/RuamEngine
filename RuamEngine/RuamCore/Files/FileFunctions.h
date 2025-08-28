@@ -8,4 +8,6 @@
 
 std::string FileToString(const std::string& absoluteFilePath);
 
-std::string ProjectFileToString(const std::string& relativeFilePath);
+std::string RelativeFileToString(const std::string& relativeFilePath);
+
+std::string GlobalizePath(const std::string& relativeFilePath);

@@ -3,7 +3,7 @@
 #include "Renderer.h"
 
 Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
-	: m_vFilePath(vertexPath), m_fFilePath(fragmentPath), m_RendererID(0)
+	: m_vFilePath(GlobalizePath(vertexPath)), m_fFilePath(GlobalizePath(fragmentPath)), m_RendererID(0)
 {
 	m_RendererID = CreateShader(vertexPath, fragmentPath);
 }
@@ -47,8 +47,8 @@ unsigned int Shader::CompileShader(unsigned int type, const std::string& source)
 unsigned int Shader::CreateShader(const std::string& vertexPath, const std::string& fragmentPath)
 {
 	unsigned int program = glCreateProgram();
-	unsigned int vs = CompileShader(GL_VERTEX_SHADER, ProjectFileToString(vertexPath));
-	unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, ProjectFileToString(fragmentPath));
+	unsigned int vs = CompileShader(GL_VERTEX_SHADER, RelativeFileToString(vertexPath));
+	unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, RelativeFileToString(fragmentPath));
 
 	// A program is a group of glsl that can run on the GPU
 	GLCall(glAttachShader(program, vs));

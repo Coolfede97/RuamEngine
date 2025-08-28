@@ -1,24 +1,26 @@
 #include "SceneManager.hpp"
 
 SceneManager::SceneList SceneManager::s_scenes;
-std::shared_ptr<Scene> SceneManager::s_active_scene = std::shared_ptr<Scene>(nullptr);
+SceneManager::ScenePtr SceneManager::s_active_scene = nullptr;
 
 const SceneManager::SceneList& SceneManager::sceneList() {
 	return s_scenes;
 }
 
-std::weak_ptr<Scene> SceneManager::activeScene() {
+void SceneManager::SetActiveScene(unsigned int id) {
+	s_active_scene = s_scenes[id]();
+	s_active_scene->start();
+}
+
+SceneManager::ScenePtr SceneManager::ActiveScene() {
 	return s_active_scene;
 }
 
-void SceneManager::setActiveScene(Scene& scene) {
-	s_active_scene.reset(&scene);
+unsigned int SceneManager::AddScene(unsigned int id, SceneCreator scene) {
+	s_scenes.insert({id, scene});
+	return id;
 }
 
-void SceneManager::addScene(Scene& scene) {
-	s_scenes.push_back(scene);
-	if (s_active_scene != nullptr) {
-		return;
-	}
-	s_active_scene.reset(&scene);
+SceneManager::ScenePtr SceneManager::EmptyScene() {
+	return std::make_shared<Scene>();
 }

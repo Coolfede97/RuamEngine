@@ -1,7 +1,8 @@
 #pragma once
 
-#include <vector>
-#include "Renderer.h"
+#include "RendererCore.h"
+#include "RuamUtils.h"
+#include "GLFW/glfw3.h"
 
 // Think of rows when thinking about every vertex array element.
 // Every row contains how to read the buffer.
@@ -32,6 +33,7 @@ struct VertexBufferElement
 	}
 };
 
+
 // One VertexBufferLayout object Layout defines how to read one buffer to draw multiple vertexes.
 class VertexBufferLayout
 {
@@ -48,8 +50,16 @@ private:
 	// There, the stride would be 6 * 4 bytes, since we have 6 floats, and each float is 4 bytes.
 	unsigned int m_Stride;
 public:
+
 	VertexBufferLayout()
 		: m_Stride(0) {}
+
+
+	void Reset()
+	{
+		m_Stride = 0;
+		m_Elements.clear();
+	}
 
 	template<typename T>
 	void Push(unsigned int count)
@@ -82,3 +92,5 @@ public:
 	inline const std::vector<VertexBufferElement> GetElements() const& { return m_Elements; }
 	inline unsigned int GetStride() const { return m_Stride; }
 };
+
+using VertexBufferLayoutPtr = std::shared_ptr<VertexBufferLayout>;
