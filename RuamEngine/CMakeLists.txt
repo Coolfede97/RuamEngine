@@ -136,9 +136,9 @@ FetchContent_Declare(
     FIND_PACKAGE_ARGS NAMES OpenAl
 )
 
-set(LIBTYPE "STATIC")
-set(ALSOFT_BUILD_EXAMPLES OFF)
-set(ALSOFT_BUILD_TESTS OFF)
+set(ALSOFT_EXAMPLES         OFF)
+set(ALSOFT_UTILS            OFF)
+set(ALSOFT_NO_CONFIG_UTIL   ON)
 FetchContent_MakeAvailable(openal-soft)
 
 # ///////////////////////////////////////////////////////////////////////////////////////////////

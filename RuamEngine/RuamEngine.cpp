@@ -8,10 +8,10 @@
 
 using namespace RuamEngine;
 
-int main(void)
+int main()
 {
 	Renderer::Init();
-
+	
 	{
 		Input::SetWindow(Renderer::GetWindow());
 		ImGui::CreateContext();
@@ -45,12 +45,12 @@ int main(void)
 			Renderer::EndDraw();
 
 			glfwPollEvents();
-
 		}
 	}
 	// Cleanup
 	ImGui_ImplGlfwGL3_Shutdown();
 	ImGui::DestroyContext();
 	Renderer::Shutdown();
+
 	return 0;
 }
