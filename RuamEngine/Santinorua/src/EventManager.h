@@ -4,6 +4,7 @@
 #include <functional>
 #include <queue>
 #include <memory>
+#include "Vec2.h"
 
 enum KeyCode;
 
@@ -23,6 +24,12 @@ struct OnKeyReleaseEvent : public Event {
     OnKeyReleaseEvent(int key) : key(key) {}
 };
 
+struct OnMouseMoveEvent : public Event {
+    Vec2 positionPix;
+    Vec2 positionNorm;
+
+    OnMouseMoveEvent(Vec2 posPix, Vec2 posNorm) : positionPix(posPix), positionNorm(posNorm) {}
+};
 
 class EventManager {
 public:

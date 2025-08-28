@@ -31,6 +31,8 @@ int main(void) {
     Input::eventManager.Subscribe<OnKeyReleaseEvent>([](const OnKeyReleaseEvent& event) {
         std::cout << "Key Released: " << event.key << std::endl;
     });
+
+    //Input::SetCursorMode(MouseDisabled);
     while (!glfwWindowShouldClose(window))
     {
 
@@ -46,8 +48,12 @@ int main(void) {
         // Update input
         Input::UpdateInput();
 
-        Input::eventManager.HandleEvents();
+        //std::cout << "Mouse Position: " << Input::GetCursorPosPix().x << ", " << Input::GetCursorPosPix().y << std::endl;
+        //std::cout << "Mouse Normalized: " << Input::GetCursorPosNorm().x << ", " << Input::GetCursorPosNorm().y << std::endl;
 
+
+
+        Input::eventManager.HandleEvents();
     }
 
     glfwTerminate();

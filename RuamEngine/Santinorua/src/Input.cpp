@@ -10,6 +10,19 @@ bool Input::NullWindow()
     return false;
 }
 
+Vec2 Input::GetPixToNorm(Vec2 pix) {
+    int width, height;
+    glfwGetWindowSize(m_window, &width, &height);
+    return Vec2((pix.x / (float)width) * 2.0f - 1.0f, (1.0f - (pix.y / (float)height)) * 2.0f - 1.0f);
+}
+
+Vec2 Input::GetNormToPix(Vec2 norm) {
+    int width, height;
+    glfwGetWindowSize(m_window, &width, &height);
+    return Vec2(((norm.x + 1.0f) / 2.0f) * (float)width, ((1.0f - norm.y) / 2.0f) * (float)height);
+}
+
+
 bool Input::GetKeyDown(KeyCode key) {
     // Return True if the key is down
 
@@ -54,13 +67,37 @@ bool Input::GetButtonUp(const MouseCode button) {
     return glfwGetMouseButton(m_window, button) == GLFW_RELEASE;
 }
 
+Vec2 Input::GetMouseDeltaPix() {
+    return GetCursorPosPix() - m_lastMousePosPix;
+}
+
+Vec2 Input::GetMouseDeltaNorm() {
+    return GetCursorPosNorm() - m_lastMousePosNorm;
+}
+
 Vec2 Input::GetCursorPosPix() {
     double xpos, ypos;
     glfwGetCursorPos(m_window, &xpos, &ypos);
     return Vec2((float)xpos, (float)ypos);
 }
 
+Vec2 Input::GetCursorPosNorm() {
+    double xpos, ypos;
+    glfwGetCursorPos(m_window, &xpos, &ypos);
+    return GetPixToNorm(Vec2((float)xpos, (float)ypos));
+}
 
+void Input::SetCursorPosNorm(const Vec2& newPos) {
+    Vec2 position = GetNormToPix(newPos);
+    glfwSetCursorPos(m_window, position.x, position.y);
+}
+
+void Input::CursorPosEvent(GLFWwindow* window, double xpos, double ypos) {
+    Vec2 position = Vec2(xpos, ypos);
+    Vec2 positionNormalized = GetPixToNorm(position);
+
+    eventManager.Publish(OnMouseMoveEvent(position, positionNormalized));
+}
 
 void Input::SetUp(GLFWwindow* window) {
     // Set the window pointer
@@ -74,7 +111,10 @@ void Input::UpdateInput() {
     }
 
     glfwSetKeyCallback(m_window, KeyEvent);
-
+    glfwSetCursorPosCallback(m_window, CursorPosEvent);
+    // Update mouse position
+    m_lastMousePosPix = GetCursorPosPix();
+    m_lastMousePosNorm = GetCursorPosNorm();
 }
 
 

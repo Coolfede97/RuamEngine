@@ -110,13 +110,15 @@ enum CursorMode
 class Input {
 public:
 
-    void SetUp(GLFWwindow *window);
+    static void SetUp(GLFWwindow *window);
     static void UpdateInput();
 
     static inline EventManager eventManager;
     // Window
     static GLFWwindow* GetWindow() { return m_window; }
     static void SetWindow(GLFWwindow* newWindow) { m_window = newWindow; }
+    static Vec2 GetPixToNorm(Vec2 pix);
+    static Vec2 GetNormToPix(Vec2 Norm);
 
     // Keyboard
     static bool GetKeyDown(KeyCode key);
@@ -125,29 +127,32 @@ public:
     //Mouse
     static void SetCursorMode(CursorMode mode);
     static CursorMode GetCursorMode();
+
     static bool GetButtonDown(MouseCode button);
     static bool GetButtonUp(MouseCode button);
-    static Vec2 GetCursorPosPix();
 
-    //void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods);
+    static Vec2 GetCursorPosPix();
+    static Vec2 GetCursorPosNorm();
+    static Vec2 GetMouseDeltaPix();
+    static Vec2 GetMouseDeltaNorm();
+    static void SetCursorPosPix(const Vec2& newPos) { glfwSetCursorPos(m_window, newPos.x, newPos.y); }
+    static void SetCursorPosNorm(const Vec2& newPos);
 
     // Not Implemented
 
 
-    // static Vec2 GetMousePosNorm() { return m_mousePosNorm; }
-    static Vec2 GetMouseDelta() { return m_mousePosPix - m_lastMousePosPix; }
+
     static void MouseCallback(GLFWwindow* p_window, double posX, double posY);
 
 
 
 private:
     static GLFWwindow* m_window;
-    static Vec2 m_mousePosPix;
     static Vec2 m_lastMousePosPix;
     static Vec2 m_lastMousePosNorm;
 
 
-
     static void KeyEvent(GLFWwindow* window, int key, int scancode, int action, int mods);
+    static void CursorPosEvent(GLFWwindow* window, double xpos, double ypos);
     static bool NullWindow();
 };
