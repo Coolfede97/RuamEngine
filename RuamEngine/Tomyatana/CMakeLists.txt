@@ -6,3 +6,4 @@ file(GLOB TOMY_SRC "${CMAKE_SOURCE_DIR}/Tomyatana/src/*.cpp")
 add_executable(${TOMY_EXE_NAME} ${TOMY_SRC})
 
 target_link_libraries(${TOMY_EXE_NAME} PRIVATE RuamCore)
+target_include_directories(${TOMY_EXE_NAME} PRIVATE "${CMAKE_SOURCE_DIR}/Tomyatana/include")

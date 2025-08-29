@@ -1,5 +1,6 @@
-#include "AL/al.h"
-#include "AL/alc.h"
+#include "al-wrapper.h"
+#include "alc-wrapper.h"
 
 int main() {
+	
 }
