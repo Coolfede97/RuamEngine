@@ -9,7 +9,7 @@ const SceneManager::SceneList& SceneManager::sceneList() {
 
 void SceneManager::SetActiveScene(unsigned int id) {
 	s_active_scene = s_scenes[id]();
-	s_active_scene->start();
+	//s_active_scene->start();
 }
 
 SceneManager::ScenePtr SceneManager::ActiveScene() {

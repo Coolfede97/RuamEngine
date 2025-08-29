@@ -6,6 +6,7 @@
 #include <iterator>
 
 #include <string>
+#include <iostream>
 
 #include "Object.hpp"
 
@@ -29,6 +30,10 @@ public:
     void deleteObjectById(unsigned int idx);
 
     std::string name() { return m_name; }
+
+	void serialise(char* filename) const;
+
+	static Scene deserialise(char* filename);
 
 	void start();
 	void update();

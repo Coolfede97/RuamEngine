@@ -1,5 +1,4 @@
-#include "../../RuamCore/Objects/SceneManager.hpp"
-#include <iostream>
+#include "SceneManager.hpp"
 
 class TestComponent : public Component {
 public:
@@ -8,25 +7,27 @@ public:
 		std::cout << "TestComponent started on object " << std::endl;
 	}
 	void update() {
-		std::cout << "TestComponent updated on object " << std::endl;
+		//
 	}
 };
 
-SceneManager::ScenePtr SampleScene() {
-	SceneManager::ScenePtr s = std::make_shared<Scene>("Sample Scene");
-	//Object& obj = s->newObject();
-	Object& obj = s->newObject();
-	
-	obj.addComponent<TestComponent>();
+SceneManager::ScenePtr SceneA() {
+	SceneManager::ScenePtr s = std::make_shared<Scene>("SceneA");
+
 	return s;
 }
 
-int main() {
-	int s = SceneManager::AddScene(1, SampleScene);
+void createA() {
+	int s = SceneManager::AddScene(1, SceneA);
 	SceneManager::SetActiveScene(s);
-	std::cout << "wawa\n";
-	SceneManager::ActiveScene()->start();
-	while(true) {
-		SceneManager::ActiveScene()->update();
-	}
+	SceneManager::ScenePtr scene = SceneManager::ActiveScene();
+
+	Object& obj = scene->newObject();
+	obj.addComponent<TestComponent>();
+
+	scene->serialise("anashe.txt");
+
+	scene->start();
+	while (true) {
+		scene->update();
 }
