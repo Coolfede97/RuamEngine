@@ -45,11 +45,17 @@ public:
 		return dynamic_cast<Comp*>(pair->second[0].get());
 	}
 
+	template<class Comp>
+	void removeComponent() {
+		auto pair = m_components.find(typeid(Comp));
+		if (pair == m_components.end()) return;
+		if (pair->second.size() == 0) return;
+		pair->second.pop_back();
+	}
+
 	unsigned int id() const;
 	const std::string& name() const;
-	void setName(std::string& newstr);
-
-	const ComponentList& getComponents();
+	void setName(std::string& newstr); const ComponentList& getComponents();
 
 	bool operator==(const Object& obj) {
 		return this->m_id == obj.m_id;

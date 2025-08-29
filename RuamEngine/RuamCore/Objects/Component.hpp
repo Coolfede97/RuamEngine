@@ -2,11 +2,15 @@
 
 class Component {
 public:
-    Component(unsigned int obj_id) : m_object_id(obj_id) {};
+    Component(unsigned int obj_id) : m_object_id(obj_id), m_id(s_id_count++) {};
     virtual void start() = 0;
     virtual void update() = 0;
+	bool operator==(const Component& other);
+	unsigned int id();
 protected:
-    unsigned int m_object_id;
+    const unsigned int m_object_id;
+	const unsigned int m_id;
+	static unsigned int s_id_count;
 };
 
 class BaseRenderer : public Component {
