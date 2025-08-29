@@ -113,7 +113,6 @@ public:
     static void SetUp(GLFWwindow *window);
     static void UpdateInput();
 
-    static inline EventManager eventManager;
     // Window
     static GLFWwindow* GetWindow() { return m_window; }
     static void SetWindow(GLFWwindow* newWindow) { m_window = newWindow; }
@@ -128,8 +127,8 @@ public:
     static void SetCursorMode(CursorMode mode);
     static CursorMode GetCursorMode();
 
-    static bool GetButtonDown(MouseCode button);
-    static bool GetButtonUp(MouseCode button);
+    static bool GetMouseButtonDown(MouseCode button);
+    static bool GetMouseButtonUp(MouseCode button);
 
     static Vec2 GetCursorPosPix();
     static Vec2 GetCursorPosNorm();
@@ -142,7 +141,6 @@ public:
 
 
 
-    static void MouseCallback(GLFWwindow* p_window, double posX, double posY);
 
 
 
@@ -154,5 +152,7 @@ private:
 
     static void KeyEvent(GLFWwindow* window, int key, int scancode, int action, int mods);
     static void CursorPosEvent(GLFWwindow* window, double xpos, double ypos);
+    static void MouseButtonEvent(GLFWwindow* window, int button, int action, int mods);
+
     static bool NullWindow();
 };

@@ -4,9 +4,12 @@
 #include <functional>
 #include <queue>
 #include <memory>
+
 #include "Vec2.h"
 
+
 enum KeyCode;
+enum MouseCode;
 
 struct Event {
     virtual ~Event() = default;
@@ -31,11 +34,27 @@ struct OnMouseMoveEvent : public Event {
     OnMouseMoveEvent(Vec2 posPix, Vec2 posNorm) : positionPix(posPix), positionNorm(posNorm) {}
 };
 
+struct OnMouseButtonDownEvent : public Event {
+    Vec2 positionPix;
+    Vec2 positionNorm;
+    MouseCode button;
+
+    OnMouseButtonDownEvent(Vec2 posPix, Vec2 posNorm, MouseCode button) : positionPix(posPix), positionNorm(posNorm), button(button) {}
+};
+
+struct OnMouseButtonUpEvent : public Event {
+    Vec2 positionPix;
+    Vec2 positionNorm;
+    MouseCode button;
+
+    OnMouseButtonUpEvent(Vec2 posPix, Vec2 posNorm, MouseCode button) : positionPix(posPix), positionNorm(posNorm), button(button) {}
+};
+
 class EventManager {
 public:
 
     template <typename EventType>
-    void InstantSubscribe(std::function<void(const EventType&)> listener) {
+    static void InstantSubscribe(std::function<void(const EventType&)> listener) {
         auto& listeners = instantSubscribers[typeid(EventType)];
         instantSubscribers[typeid(EventType)].push_back(
             [listener](const Event& e) {
@@ -45,7 +64,7 @@ public:
     }
 
     template <typename EventType>
-    void Subscribe(std::function<void(const EventType&)> listener) {
+    static void Subscribe(std::function<void(const EventType&)> listener) {
         subscribers[typeid(EventType)].push_back(
             [listener](const Event& e) {
                 listener(static_cast<const EventType&>(e));
@@ -55,7 +74,7 @@ public:
 
 
     template <typename EventType>
-    void InstantPublish(const EventType& event) {
+    static void InstantPublish(const EventType& event) {
         auto thisTypeEvents = instantSubscribers.find(typeid(EventType));
         if (thisTypeEvents != instantSubscribers.end()) {
             for (auto& listener : thisTypeEvents->second) {
@@ -65,11 +84,11 @@ public:
     }
 
     template <typename EventType>
-    void Publish(const EventType& event) {
+    static void Publish(const EventType& event) {
         eventQueue.push(std::make_unique<EventType>(event));
     }
 
-    void HandleEvents() {
+    static void HandleEvents() {
         while (!eventQueue.empty()) {
             auto& eventPtr = eventQueue.front();
             auto thisTypeEvents = subscribers.find(typeid(*eventPtr));
@@ -82,10 +101,10 @@ public:
         }
     }
 
-    void OnKeyPress(KeyCode key, std::function<void(const OnKeyPressEvent&)> callback);
+    static void OnKeyPress(KeyCode key, std::function<void(const OnKeyPressEvent&)> callback);
 
 private:
-    std::unordered_map<std::type_index, std::vector<std::function<void(const Event&)>>> instantSubscribers;
-    std::unordered_map<std::type_index, std::vector<std::function<void(const Event&)>>> subscribers;
-    std::queue<std::unique_ptr<Event>> eventQueue;
+    static std::unordered_map<std::type_index, std::vector<std::function<void(const Event&)>>> instantSubscribers;
+    static std::unordered_map<std::type_index, std::vector<std::function<void(const Event&)>>> subscribers;
+    static std::queue<std::unique_ptr<Event>> eventQueue;
 };

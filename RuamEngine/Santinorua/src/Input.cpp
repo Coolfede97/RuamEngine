@@ -2,7 +2,8 @@
 
 
 GLFWwindow* Input::m_window = nullptr;
-int key_callback;
+Vec2 Input::m_lastMousePosPix = Vec2(0.0f, 0.0f);
+Vec2 Input::m_lastMousePosNorm = Vec2(0.0f, 0.0f);
 
 bool Input::NullWindow()
 {
@@ -39,10 +40,10 @@ void Input::KeyEvent(GLFWwindow* window, int key, int scancode, int action, int 
     // Handle key events
     if (action == GLFW_PRESS) {
         // Key pressed
-        eventManager.Publish(OnKeyPressEvent(key));
+        EventManager::Publish(OnKeyPressEvent(key));
     } else if (action == GLFW_RELEASE) {
         // Key released
-        eventManager.Publish(OnKeyReleaseEvent(key));
+        EventManager::Publish(OnKeyReleaseEvent(key));
     }
 }
 
@@ -55,13 +56,13 @@ CursorMode Input::GetCursorMode() {
     return static_cast<CursorMode>(glfwGetInputMode(m_window, GLFW_CURSOR));
 }
 
-bool Input::GetButtonDown(MouseCode button) {
+bool Input::GetMouseButtonDown(MouseCode button) {
     // Return True if the mouse button is down
 
     return glfwGetMouseButton(m_window, button) == GLFW_PRESS;
 }
 
-bool Input::GetButtonUp(const MouseCode button) {
+bool Input::GetMouseButtonUp(const MouseCode button) {
     // Return True if the key is up
 
     return glfwGetMouseButton(m_window, button) == GLFW_RELEASE;
@@ -96,7 +97,18 @@ void Input::CursorPosEvent(GLFWwindow* window, double xpos, double ypos) {
     Vec2 position = Vec2(xpos, ypos);
     Vec2 positionNormalized = GetPixToNorm(position);
 
-    eventManager.Publish(OnMouseMoveEvent(position, positionNormalized));
+    EventManager::Publish(OnMouseMoveEvent(position, positionNormalized));
+}
+
+void Input::MouseButtonEvent(GLFWwindow* window, int button, int action, int mods) {
+    Vec2 positionPix = GetCursorPosPix();
+    Vec2 positionNorm = GetCursorPosNorm();
+
+    if (action == GLFW_PRESS) {
+        EventManager::Publish(OnMouseButtonDownEvent(positionPix, positionNorm, static_cast<MouseCode>(button)));
+    } else if (action == GLFW_RELEASE) {
+        EventManager::Publish(OnMouseButtonUpEvent(positionPix, positionNorm, static_cast<MouseCode>(button)));
+    }
 }
 
 void Input::SetUp(GLFWwindow* window) {
@@ -112,20 +124,9 @@ void Input::UpdateInput() {
 
     glfwSetKeyCallback(m_window, KeyEvent);
     glfwSetCursorPosCallback(m_window, CursorPosEvent);
+    glfwSetMouseButtonCallback(m_window, MouseButtonEvent);
+
     // Update mouse position
     m_lastMousePosPix = GetCursorPosPix();
     m_lastMousePosNorm = GetCursorPosNorm();
 }
-
-
-// void Input::MouseCallback(GLFWwindow* p_window, double posX, double posY)
-// {
-//     glfwGetWindowSize(m_window, &m_windowWidth, &m_windowHeight);
-//
-//     m_lastMousePosPix = m_mousePosPix;
-//     m_mousePosPix = Vec2(posX - m_windowWidth / 2.0f, (m_windowHeight / 2.0f) - posY);
-//
-//     m_lastMousePosNorm = m_mousePosNorm;
-//     m_mousePosNorm = Vec2(posX / (m_windowWidth / 2.0f) - 1.0f, 1.0f - (posY / (m_windowHeight / 2.0f)));
-//
-// }

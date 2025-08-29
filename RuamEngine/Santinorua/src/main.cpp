@@ -24,12 +24,20 @@ int main(void) {
 
 
     // Test event subscriptions
-    Input::eventManager.Subscribe<OnKeyPressEvent>([](const OnKeyPressEvent& event) {
+    EventManager::Subscribe<OnKeyPressEvent>([](const OnKeyPressEvent& event) {
         std::cout << "Key Pressed: " << event.key << std::endl;
     });
 
-    Input::eventManager.Subscribe<OnKeyReleaseEvent>([](const OnKeyReleaseEvent& event) {
+    EventManager::Subscribe<OnKeyReleaseEvent>([](const OnKeyReleaseEvent& event) {
         std::cout << "Key Released: " << event.key << std::endl;
+    });
+
+    EventManager::Subscribe<OnMouseMoveEvent>([](const OnMouseMoveEvent& event) {
+        //std::cout << "Mouse position: " << event.positionNorm.x << ", " << event.positionNorm.y << std::endl;
+    });
+
+    EventManager::Subscribe<OnMouseButtonDownEvent>([](const OnMouseButtonDownEvent& event) {
+        std::cout << "Mouse Button Down: " << event.button << " at " << event.positionNorm.x << ", " << event.positionNorm.y << std::endl;
     });
 
     //Input::SetCursorMode(MouseDisabled);
@@ -53,7 +61,7 @@ int main(void) {
 
 
 
-        Input::eventManager.HandleEvents();
+        EventManager::HandleEvents();
     }
 
     glfwTerminate();

@@ -1,9 +1,5 @@
 #include "EventManager.h"
 
-// void OnKeyPress(KeyCode key, std::function<void(const OnKeyPressEvent&)> callback) {
-//     this.subscribe<OnKeyPressEvent>([key, callback](const OnKeyPressEvent& event) {
-//         if (event.key == static_cast<int>(key)) {
-//             callback(event);
-//         }
-//     });
-//}
+std::unordered_map<std::type_index, std::vector<std::function<void(const Event&)>>> EventManager::instantSubscribers = {};
+std::unordered_map<std::type_index, std::vector<std::function<void(const Event&)>>> EventManager::subscribers = {};
+std::queue<std::unique_ptr<Event>> EventManager::eventQueue = {};
