@@ -64,6 +64,8 @@ public:
 	void start();
 	void update();
 
+	void destroy();
+
 private:
 	unsigned int m_id;
 	static unsigned int s_id_count;

@@ -34,3 +34,13 @@ void Object::update() {
 		}
 	}
 }
+
+void Object::destroy() {
+	for (auto& comp_v : m_components) {
+		for (auto& comp : comp_v.second) {
+			delete &(*comp);
+			comp.reset();
+		}
+		comp_v.second.clear();
+	}
+}

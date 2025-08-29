@@ -21,12 +21,6 @@ public:
 
 	static ScenePtr EmptyScene();
 
-	template<char* Name, class Comp>
-	ScenePtr SceneCreate() {
-		ScenePtr scene = std::make_shared<Scene>(Name);
-		scene->newObject().addComponent<Comp>();
-	}
-
 private:
 	static SceneList s_scenes;
 	static ScenePtr s_active_scene;
