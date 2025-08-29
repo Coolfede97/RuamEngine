@@ -22,6 +22,7 @@ include(FindOpenGL)
 add_subdirectory(CoolFede97)
 add_subdirectory(Santinorua)
 add_subdirectory(Skuerjuan)
+add_subdirectory(Tomyatana)
 
 # -----------------------------------------------------------------------------------------------------
 #######################################################################################################
