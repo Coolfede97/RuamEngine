@@ -48,23 +48,28 @@ namespace RuamEngine
     static const size_t maxIndexCount = maxQuadCount * 6;
     static const size_t maxTextureSlots = 32; // Note for CoolFede97: Remember to change this according to the machine you are using!
 
-    // Data for current drawing
-    struct RendererState
+
+
+    // Base class for storing the data to be drawn, and the way to be drawn.
+    class RenderData
     {
         // Primitives data
-
+    protected:
         GLenum primitiveType = GL_TRIANGLES;
-
-        ShaderPtr m_shader = nullptr;
-        VertexArrayPtr m_vertexArray = nullptr;
-        VertexBufferPtr m_vertexBuffer = nullptr;
-        VertexBufferLayoutPtr m_layout = nullptr;
-		IndexBufferPtr m_indexBuffer = nullptr;
+        VertexArrayPtr m_vertexArray = std::make_shared<VertexArray>();
+        VertexBufferPtr m_vertexBuffer = std::make_shared<VertexBuffer>();
+        VertexBufferLayoutPtr m_layout = std::make_shared<VertexBufferLayout>();
+        IndexBufferPtr m_indexBuffer = std::make_shared<IndexBuffer>(nullptr, maxIndexCount);
 
         std::array<uint32_t, maxTextureSlots> textureSlots = {};
-        
+
         // Which texture slot we can insert our new texture into
         uint32_t textureSlotIndex = 1;
+    };
+    
+    class BasicObjectRenderData : public RenderData
+    {
+  
     };
 
     class Renderer
@@ -102,7 +107,7 @@ namespace RuamEngine
 
         static void Draw();
 
-        static RendererState m_state;
+        static std::unordered_map<>
     private:
         static RendererConfig m_config;
         static GLFWwindow* m_window;
