@@ -49,7 +49,7 @@ namespace RuamEngine
     static const size_t maxTextureSlots = 32; // Note for CoolFede97: Remember to change this according to the machine you are using!
 
     // Data for current drawing
-    struct RendererState
+    struct DrawingData
     {
         // Primitives data
 
@@ -70,12 +70,16 @@ namespace RuamEngine
     class Renderer
     {
     public:
+        
         static void Init();
         static void Shutdown();
         static void BeginDraw();
         static void EndDraw();
+        static void BeginBatch();
+        static void EndBatch();
         static void Clear();
 
+        
 		// Setters for RendererConfig
         static void SetWindowSize(int width, int height);
         static void SetWindowTitle(const char* title);
@@ -101,8 +105,9 @@ namespace RuamEngine
 		static GLFWwindow* GetWindow() { return m_window; }
 
         static void Draw();
+		static void DrawQuads();
 
-        static RendererState m_state;
+        static DrawingData m_quadsData;
     private:
         static RendererConfig m_config;
         static GLFWwindow* m_window;

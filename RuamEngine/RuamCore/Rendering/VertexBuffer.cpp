@@ -17,7 +17,16 @@ VertexBuffer::~VertexBuffer()
     GLCall(glDeleteBuffers(1, &m_RendererID));
 }
 
-void VertexBuffer::SetSubData(unsigned int offset, unsigned int size, const void* data)
+void VertexBuffer::AddBatchData(const void* data, unsigned int size)
+{
+    if (m_size + size <= maxVertexSize * maxVertexCount) Renderer::EndBatch();
+
+    GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_RendererID));
+	SetSubData(data, m_size, size);
+	m_size += size;
+}
+
+void VertexBuffer::SetSubData(const void* data, unsigned int offset, unsigned int size)
 {
     ASSERT(offset + size <= maxVertexSize * maxVertexCount);
 

@@ -70,6 +70,14 @@ namespace RuamEngine
     {
         glfwSwapBuffers(m_window);
     }
+    void Renderer::BeginBatch()
+    {
+
+    }
+    void Renderer::EndBatch()
+    {
+
+	}
     void Renderer::Clear()
     {
         if (m_config.useClearColor) GLCall(glClear(GL_COLOR_BUFFER_BIT));
@@ -126,5 +134,10 @@ namespace RuamEngine
 
         // PREGUNTAR CHONA
         GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
+    }
+
+    void Renderer::DrawQuads()
+    {
+        
     }
 }
