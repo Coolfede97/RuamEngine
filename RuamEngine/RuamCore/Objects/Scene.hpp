@@ -31,10 +31,6 @@ public:
 
     std::string name() { return m_name; }
 
-	void serialise(char* filename) const;
-
-	static Scene deserialise(char* filename);
-
 	void start();
 	void update();
 private:

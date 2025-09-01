@@ -60,29 +60,3 @@ void Scene::update() {
 		obj->update();
 	}
 }
-
-void Scene::serialise(char* filename) const {
-	std::ofstream file(filename, std::ios::binary);
-    if (!file.is_open()) {
-        std::cerr << "Failed to open file for writing: " << filename << std::endl;
-        return;
-	}
-
-    file.write(reinterpret_cast<const char*>(this),
-        sizeof(*this));
-	std::cout << "Scene written to " << filename << std::endl;
-	file.close();
-}
-
-Scene Scene::deserialise(char* filename) {
-	Scene s;
-	std::ifstream file(filename, std::ios::binary);
-    if (!file.is_open()) {
-        std::cerr << "Failed to open file for reading: " << filename << std::endl;
-        return s;
-    }
-    file.read(reinterpret_cast<char*>(&s),
-		sizeof(s));
-	file.close();
-	return s;
-}
