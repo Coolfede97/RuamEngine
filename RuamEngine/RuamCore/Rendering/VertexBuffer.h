@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RendererCore.h"
+#include "RenderingCore.h"
 
 class VertexBuffer
 {
@@ -24,6 +24,7 @@ public:
 	void Bind() const; 
 	void Unbind() const;
 	unsigned int GetID() const { return m_RendererID; }
+	unsigned int GetSize() const { return m_size; }
 };
 
 using VertexBufferPtr = std::shared_ptr<VertexBuffer>;

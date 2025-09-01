@@ -76,8 +76,10 @@ namespace RuamEngine
     }
     void Renderer::EndBatch()
     {
-
-	}
+		m_trianglesData.m_vertexArray->Bind();
+		GLCall(glDrawElements(GL_TRIANGLES, m_trianglesData.m_indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, nullptr));
+	    
+    }
     void Renderer::Clear()
     {
         if (m_config.useClearColor) GLCall(glClear(GL_COLOR_BUFFER_BIT));

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "RendererCore.h"
+#include "RenderingCore.h"
 #include "VertexBuffer.h"
 #include "VertexArray.h"
 #include "IndexBuffer.h"
 #include "VertexBufferLayout.h"
-
+#include "DrawingData.h"
 #include "Shader.h"
 
 class VertexBuffer;
@@ -48,25 +48,6 @@ namespace RuamEngine
     static const size_t maxIndexCount = maxQuadCount * 6;
     static const size_t maxTextureSlots = 32; // Note for CoolFede97: Remember to change this according to the machine you are using!
 
-    // Data for current drawing
-    struct DrawingData
-    {
-        // Primitives data
-
-        GLenum primitiveType = GL_TRIANGLES;
-
-        ShaderPtr m_shader = nullptr;
-        VertexArrayPtr m_vertexArray = nullptr;
-        VertexBufferPtr m_vertexBuffer = nullptr;
-        VertexBufferLayoutPtr m_layout = nullptr;
-		IndexBufferPtr m_indexBuffer = nullptr;
-
-        std::array<uint32_t, maxTextureSlots> textureSlots = {};
-        
-        // Which texture slot we can insert our new texture into
-        uint32_t textureSlotIndex = 1;
-    };
-
     class Renderer
     {
     public:
@@ -107,7 +88,7 @@ namespace RuamEngine
         static void Draw();
 		static void DrawQuads();
 
-        static DrawingData m_quadsData;
+        static DrawingData m_trianglesData;
     private:
         static RendererConfig m_config;
         static GLFWwindow* m_window;
