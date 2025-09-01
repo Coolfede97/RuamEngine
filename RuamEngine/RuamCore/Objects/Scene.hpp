@@ -13,6 +13,8 @@
 class Scene {
 public:
     using SceneList = std::vector<Scene>;
+    using ObjectPtr = std::shared_ptr<Object>;
+    using ObjectPtrList = std::list<ObjectPtr>;
 
     Scene();
     Scene(const char* name);
@@ -26,6 +28,8 @@ public:
     Object& getObjectByIdx(unsigned int idx) const;
     Object& getObjectById(unsigned int id) const;
 
+	ObjectPtrList& getObjects() const { return const_cast<ObjectPtrList&>(m_objects); }
+
     void deleteObjectByIdx(unsigned int idx);
     void deleteObjectById(unsigned int idx);
 
@@ -34,7 +38,7 @@ public:
 	void start();
 	void update();
 private:
-    std::list<std::shared_ptr<Object>> m_objects;
+    ObjectPtrList m_objects;
 	const std::string m_name;
     const unsigned int m_id;
     static unsigned int s_id_count;
