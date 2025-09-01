@@ -1,4 +1,5 @@
 #include "serialise.hpp"
+#include "Serial.hpp"
 
 using sm = SceneManager;
 
@@ -13,21 +14,9 @@ public:
 	}
 };
 
-void serial() {
-	createA();
-	SceneManager::ScenePtr scene = SceneManager::ActiveScene();
-	Object& obj = scene->newObject();
-	obj.addComponent<TestComponent>();
-
-	scene->serialise("anashe.txt");
-}
-
 int main() {
-
-	Scene scene = Scene::deserialise("anashe.txt");
-
-	scene.start();
-	while (true) {
-		scene.update();
-	}
+	createA();
+	sm::ScenePtr scene = sm::ActiveScene();
+	json j = *scene;
+	std::cout << j << std::endl;
 }

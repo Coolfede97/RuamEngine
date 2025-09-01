@@ -14,7 +14,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 project ("RuamEngine")
 # Add source to this project's executable.
-add_executable (RuamEngine "RuamEngine.cpp" "RuamEngine.h" "RuamCore/Objects/Serial.cpp")
+add_executable (RuamEngine "RuamEngine.cpp" "RuamEngine.h")
 
 include(FetchContent)
 include(FindOpenGL)
@@ -42,6 +42,8 @@ set(VENDOR_PATH "${CMAKE_SOURCE_DIR}/vendor")
 #######################################################################################################
 #######################################################################################################
 # -----------------------------------------------------------------------------------------------------
+
+# Json
 
 FetchContent_Declare(
   json
@@ -77,7 +79,7 @@ FetchContent_Populate(
   URL https://github.com/nigels-com/glew/releases/download/glew-2.2.0/glew-2.2.0.zip
 )
 add_library(glew_s STATIC ${glew_SOURCE_DIR}/src/glew.c
-                          ${glew_SOURCE_DIR}/src/glewinfo.c "RuamCore/Objects/Serial.cpp")
+                          ${glew_SOURCE_DIR}/src/glewinfo.c)
 target_include_directories(glew_s PUBLIC ${glew_SOURCE_DIR}/include)
 target_compile_definitions(
   glew_s
@@ -128,7 +130,7 @@ add_library(glm::glm ALIAS glm)
 # In order to use a library which has cpp and h files, you need to create a library (add_library) and
 # give it a source path (with the cpp files). 
 file (GLOB IMGUI_SRC "${VENDOR_PATH}/IMGUI/*.cpp")
-add_library(ImGui STATIC ${IMGUI_SRC} "RuamCore/Objects/Serial.cpp")
+add_library(ImGui STATIC ${IMGUI_SRC})
 # In this case, the library has #include <AnotherLibrary> in its cpp files, like GLFW or GLEW, so 
 # we need to indicate where those glfw.h and glew.h files are.
 target_include_directories(ImGui PRIVATE
@@ -198,7 +200,7 @@ add_library(RuamCore INTERFACE)
 # Rendering
 
 file (GLOB RENDERING_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Rendering/*.cpp")
-add_library(Rendering STATIC ${RENDERING_SRC} "RuamCore/Objects/Serial.cpp")
+add_library(Rendering STATIC ${RENDERING_SRC})
 target_link_libraries(Rendering PUBLIC Vendor Files Maths RuamUtils)
 target_include_directories(Rendering INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Rendering)
 
@@ -211,7 +213,7 @@ target_include_directories(Rendering INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Rend
 # Vec
 
 file (GLOB VEC_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Maths/Vec/*.cpp")
-add_library(Vec STATIC ${VEC_SRC} "RuamCore/Objects/Serial.cpp")
+add_library(Vec STATIC ${VEC_SRC})
 target_include_directories(Vec PUBLIC ${CMAKE_SOURCE_DIR}/RuamCore/Maths/Vec)
 
 # -----------------------------------------------------------------------------------------------------
@@ -224,7 +226,7 @@ target_link_libraries(Maths INTERFACE Vec)
 # Time
 
 file (GLOB TIME_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Time/*.cpp")
-add_library(Time STATIC ${TIME_SRC} "RuamCore/Objects/Serial.cpp")
+add_library(Time STATIC ${TIME_SRC})
 target_link_libraries(Time PUBLIC glfw)
 target_include_directories(Time INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Time)
 
@@ -233,7 +235,7 @@ target_include_directories(Time INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Time)
 # Objects
 
 file (GLOB OBJECTS_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Objects/*.cpp")
-add_library(Objects STATIC ${OBJECTS_SRC} "RuamCore/Objects/Serial.cpp")
+add_library(Objects STATIC ${OBJECTS_SRC})
 target_include_directories(Objects INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Objects)
 target_link_libraries(Objects PUBLIC Vendor)
 
@@ -242,7 +244,7 @@ target_link_libraries(Objects PUBLIC Vendor)
 # Files
 
 file (GLOB FILES_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Files/*.cpp")
-add_library(Files STATIC ${FILES_SRC} "RuamCore/Objects/Serial.cpp")
+add_library(Files STATIC ${FILES_SRC})
 target_compile_definitions(Files PUBLIC PROJECT_ROOT_DIR="${CMAKE_SOURCE_DIR}")
 target_include_directories(Files INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Files)
 
@@ -252,7 +254,7 @@ target_include_directories(Files INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Files)
 # Input
 
 file (GLOB INPUT_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Input/*.cpp")
-add_library(Input STATIC ${INPUT_SRC} "RuamCore/Objects/Serial.cpp")
+add_library(Input STATIC ${INPUT_SRC})
 target_link_libraries(Input PUBLIC Rendering Maths)
 target_include_directories(Input INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Input)
 

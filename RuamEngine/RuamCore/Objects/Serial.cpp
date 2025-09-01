@@ -1,4 +1,8 @@
-#include "Scene.hpp"  
-#include <nlohmann/json.hpp>
+#include "Serial.hpp"
 
-using json = nlohmann::json; 
+void to_json(json& j, const sm::ScenePtr& s) {
+	j = json{
+		{"name", s->name()},
+		{"objects", s->objects}
+	};
+}
