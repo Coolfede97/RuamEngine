@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RendererCore.h"
+#include "RenderingCore.h"
 
 struct Vertex
 {

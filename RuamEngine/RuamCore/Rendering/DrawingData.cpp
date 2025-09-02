@@ -1,11 +1,13 @@
 #include "DrawingData.h"
 
-namespace RuamEngine
+void RuamEngine::DrawingData::Flush()
 {
-	void DrawingData::Flush()
-	{
-		m_vertexBuffer->Flush();
-		m_indexBuffer->Flush();
-	}
+	m_vertexBuffer->Flush();
+	m_indexBuffer->Flush();
 }
+
+RuamEngine::DrawingData::DrawingData()
+{
+}
+
 

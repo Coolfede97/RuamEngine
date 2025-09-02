@@ -21,7 +21,7 @@ bool GLLogCall(const char* function, const char* file, int line)
 namespace RuamEngine
 {
     RendererConfig Renderer::m_config;
-    RendererState Renderer::m_state;
+    DrawingData Renderer::m_trianglesData;
 	GLFWwindow* Renderer::m_window = nullptr;
     void Renderer::Init()
     {
@@ -49,11 +49,11 @@ namespace RuamEngine
 
 
         {
-			m_state.m_vertexArray = std::make_shared<VertexArray>();
-			m_state.m_vertexBuffer = std::make_shared<VertexBuffer>(nullptr, maxVertexSize * maxVertexCount);
-			m_state.m_layout = std::make_shared<VertexBufferLayout>();
-			m_state.m_indexBuffer = std::make_shared<IndexBuffer>(nullptr, maxIndexCount);
-            m_state.m_shader = std::make_shared<Shader>("assets/shaders/GeneralVertexShader.glsl", "assets/shaders/GeneralFragmentShader.glsl");
+			m_trianglesData.m_vertexArray = std::make_shared<VertexArray>();
+			m_trianglesData.m_vertexBuffer = std::make_shared<VertexBuffer>(nullptr, maxVertexSize * maxVertexCount);
+			m_trianglesData.m_layout = std::make_shared<VertexBufferLayout>();
+			m_trianglesData.m_indexBuffer = std::make_shared<IndexBuffer>(nullptr, maxIndexCount);
+            m_trianglesData.m_shader = std::make_shared<Shader>("assets/shaders/GeneralVertexShader.glsl", "assets/shaders/GeneralFragmentShader.glsl");
         }
 
     }
@@ -78,7 +78,7 @@ namespace RuamEngine
     void Renderer::EndBatch()
     {
         Draw();
-		m_trianglesData.Flush();
+		Renderer::m_trianglesData.Flush();
     }
     void Renderer::Clear()
     {

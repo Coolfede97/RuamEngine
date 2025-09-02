@@ -2,7 +2,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "RendererCore.h"
+#include "RenderingCore.h"
 #include "Camera.h"
 #include "Vec3.h"
 

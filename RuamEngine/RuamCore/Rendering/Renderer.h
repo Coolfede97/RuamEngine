@@ -13,6 +13,7 @@ class VertexArray;
 class IndexBuffer;
 class Shader;
 class VertexBufferLayout;
+class DrawingData;
 
 namespace RuamEngine
 {

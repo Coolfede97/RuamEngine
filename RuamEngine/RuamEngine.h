@@ -30,7 +30,7 @@
 #include "Camera.h"
 #include "RuamTime.h"
 
-#include "RendererCore.h"
+#include "RenderingCore.h"
 #include <filesystem>
 
 #include "Vec3.h"
