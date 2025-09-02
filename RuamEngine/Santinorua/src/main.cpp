@@ -49,7 +49,7 @@ int main(void) {
     });
 
     EventManager::Subscribe<OnCharEvent>([](const OnCharEvent& event) {
-        std::cout << "Char Input: " << event.character << std::endl;
+        std::cout << "Char Input: " << event.unicodeChar << std::endl;
     });
 
     //Input::SetCursorMode(MouseDisabled);
