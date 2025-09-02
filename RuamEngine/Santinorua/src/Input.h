@@ -137,22 +137,16 @@ public:
     static void SetCursorPosPix(const Vec2& newPos) { glfwSetCursorPos(m_window, newPos.x, newPos.y); }
     static void SetCursorPosNorm(const Vec2& newPos);
 
-    // Not Implemented
-
-
-
-
-
-
 private:
     static GLFWwindow* m_window;
     static Vec2 m_lastMousePosPix;
     static Vec2 m_lastMousePosNorm;
 
-
     static void KeyEvent(GLFWwindow* window, int key, int scancode, int action, int mods);
     static void CursorPosEvent(GLFWwindow* window, double xpos, double ypos);
     static void MouseButtonEvent(GLFWwindow* window, int button, int action, int mods);
+    static void ScrollEvent(GLFWwindow* window, double xoffset, double yoffset);
+
 
     static bool NullWindow();
 };

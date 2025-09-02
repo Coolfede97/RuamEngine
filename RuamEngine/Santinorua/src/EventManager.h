@@ -50,6 +50,12 @@ struct OnMouseButtonUpEvent : public Event {
     OnMouseButtonUpEvent(Vec2 posPix, Vec2 posNorm, MouseCode button) : positionPix(posPix), positionNorm(posNorm), button(button) {}
 };
 
+struct OnMouseScrollEvent : public Event {
+    Vec2 offset;
+
+    OnMouseScrollEvent(Vec2 offset) : offset(offset) {}
+};
+
 class EventManager {
 public:
 

@@ -111,6 +111,10 @@ void Input::MouseButtonEvent(GLFWwindow* window, int button, int action, int mod
     }
 }
 
+void Input::ScrollEvent(GLFWwindow* window, double xoffset, double yoffset) {
+    EventManager::Publish<OnMouseScrollEvent>(Vec2(xoffset, yoffset));
+}
+
 void Input::SetUp(GLFWwindow* window) {
     // Set the window pointer
     m_window = window;
@@ -125,6 +129,7 @@ void Input::UpdateInput() {
     glfwSetKeyCallback(m_window, KeyEvent);
     glfwSetCursorPosCallback(m_window, CursorPosEvent);
     glfwSetMouseButtonCallback(m_window, MouseButtonEvent);
+    glfwSetScrollCallback(m_window, ScrollEvent);
 
     // Update mouse position
     m_lastMousePosPix = GetCursorPosPix();

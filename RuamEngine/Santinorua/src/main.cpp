@@ -40,6 +40,14 @@ int main(void) {
         std::cout << "Mouse Button Down: " << event.button << " at " << event.positionNorm.x << ", " << event.positionNorm.y << std::endl;
     });
 
+    EventManager::Subscribe<OnMouseButtonUpEvent>([](const OnMouseButtonUpEvent& event) {
+        std::cout << "Mouse Button Up: " << event.button << " at " << event.positionNorm.x << ", " << event.positionNorm.y << std::endl;
+    });
+
+    EventManager::Subscribe<OnMouseScrollEvent>([](const OnMouseScrollEvent& event) {
+        std::cout << "Mouse Scrolled: " << event.offset.x << ", " << event.offset.y << std::endl;
+    });
+
     //Input::SetCursorMode(MouseDisabled);
     while (!glfwWindowShouldClose(window))
     {
