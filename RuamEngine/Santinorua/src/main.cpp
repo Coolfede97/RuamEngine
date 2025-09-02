@@ -47,6 +47,7 @@ int main(void) {
     EventManager::Subscribe<OnMouseScrollEvent>([](const OnMouseScrollEvent& event) {
         std::cout << "Mouse Scrolled: " << event.offset.x << ", " << event.offset.y << std::endl;
     });
+    
 
     //Input::SetCursorMode(MouseDisabled);
     while (!glfwWindowShouldClose(window))
@@ -66,7 +67,6 @@ int main(void) {
 
         //std::cout << "Mouse Position: " << Input::GetCursorPosPix().x << ", " << Input::GetCursorPosPix().y << std::endl;
         //std::cout << "Mouse Normalized: " << Input::GetCursorPosNorm().x << ", " << Input::GetCursorPosNorm().y << std::endl;
-
 
 
         EventManager::HandleEvents();

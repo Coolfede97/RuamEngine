@@ -52,8 +52,24 @@ struct OnMouseButtonUpEvent : public Event {
 
 struct OnMouseScrollEvent : public Event {
     Vec2 offset;
+    Vec2 positionPix;
+    Vec2 positionNorm;
 
-    OnMouseScrollEvent(Vec2 offset) : offset(offset) {}
+    OnMouseScrollEvent(Vec2 offset, Vec2 posPix, Vec2 posNorm) : offset(offset), positionPix(posPix), positionNorm(posNorm) {}
+};
+
+struct OnMouseEnterWindowEvent : public Event {
+    Vec2 positionPix;
+    Vec2 positionNorm;
+
+    OnMouseEnterWindowEvent(Vec2 posPix, Vec2 posNorm) : positionPix(posPix), positionNorm(posNorm) {}
+};
+
+struct OnMouseLeaveWindowEvent : public Event {
+    Vec2 positionPix;
+    Vec2 positionNorm;
+
+    OnMouseLeaveWindowEvent(Vec2 posPix, Vec2 posNorm) : positionPix(posPix), positionNorm(posNorm) {}
 };
 
 class EventManager {

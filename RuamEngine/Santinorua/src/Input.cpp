@@ -112,7 +112,19 @@ void Input::MouseButtonEvent(GLFWwindow* window, int button, int action, int mod
 }
 
 void Input::ScrollEvent(GLFWwindow* window, double xoffset, double yoffset) {
-    EventManager::Publish<OnMouseScrollEvent>(Vec2(xoffset, yoffset));
+    Vec2 positionPix = GetCursorPosPix();
+    Vec2 positionNorm = GetPixToNorm(positionPix);
+    EventManager::Publish(OnMouseScrollEvent(Vec2(xoffset, yoffset), positionPix, positionNorm));
+}
+
+void Input::CursorEnterEvent(GLFWwindow* window, int entered) {
+    Vec2 positionPix = GetCursorPosPix();
+    Vec2 positionNorm = GetPixToNorm(positionPix);
+    if (entered) {
+        EventManager::Publish(OnMouseEnterWindowEvent(positionPix, positionNorm));
+    } else {
+        EventManager::Publish(OnMouseLeaveWindowEvent(positionPix, positionNorm));
+    }
 }
 
 void Input::SetUp(GLFWwindow* window) {
@@ -130,6 +142,7 @@ void Input::UpdateInput() {
     glfwSetCursorPosCallback(m_window, CursorPosEvent);
     glfwSetMouseButtonCallback(m_window, MouseButtonEvent);
     glfwSetScrollCallback(m_window, ScrollEvent);
+    glfwSetCursorEnterCallback(m_window, CursorEnterEvent);
 
     // Update mouse position
     m_lastMousePosPix = GetCursorPosPix();

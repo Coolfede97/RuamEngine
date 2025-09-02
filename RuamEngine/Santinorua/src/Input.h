@@ -126,6 +126,7 @@ public:
     //Mouse
     static void SetCursorMode(CursorMode mode);
     static CursorMode GetCursorMode();
+    static bool IsCursorInWindow() { return glfwGetWindowAttrib(m_window, GLFW_HOVERED); }
 
     static bool GetMouseButtonDown(MouseCode button);
     static bool GetMouseButtonUp(MouseCode button);
@@ -146,6 +147,7 @@ private:
     static void CursorPosEvent(GLFWwindow* window, double xpos, double ypos);
     static void MouseButtonEvent(GLFWwindow* window, int button, int action, int mods);
     static void ScrollEvent(GLFWwindow* window, double xoffset, double yoffset);
+    static void CursorEnterEvent(GLFWwindow* window, int entered);
 
 
     static bool NullWindow();
