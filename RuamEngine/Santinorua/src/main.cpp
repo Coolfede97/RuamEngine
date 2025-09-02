@@ -47,7 +47,10 @@ int main(void) {
     EventManager::Subscribe<OnMouseScrollEvent>([](const OnMouseScrollEvent& event) {
         std::cout << "Mouse Scrolled: " << event.offset.x << ", " << event.offset.y << std::endl;
     });
-    
+
+    EventManager::Subscribe<OnCharEvent>([](const OnCharEvent& event) {
+        std::cout << "Char Input: " << event.character << std::endl;
+    });
 
     //Input::SetCursorMode(MouseDisabled);
     while (!glfwWindowShouldClose(window))

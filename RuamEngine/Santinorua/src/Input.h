@@ -144,6 +144,7 @@ private:
     static Vec2 m_lastMousePosNorm;
 
     static void KeyEvent(GLFWwindow* window, int key, int scancode, int action, int mods);
+    static void CharEvent(GLFWwindow* window, unsigned int codepoint);
     static void CursorPosEvent(GLFWwindow* window, double xpos, double ypos);
     static void MouseButtonEvent(GLFWwindow* window, int button, int action, int mods);
     static void ScrollEvent(GLFWwindow* window, double xoffset, double yoffset);

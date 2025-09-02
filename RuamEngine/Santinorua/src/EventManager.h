@@ -72,6 +72,12 @@ struct OnMouseLeaveWindowEvent : public Event {
     OnMouseLeaveWindowEvent(Vec2 posPix, Vec2 posNorm) : positionPix(posPix), positionNorm(posNorm) {}
 };
 
+struct OnCharEvent : public Event {
+    char32_t unicodeChar;
+
+    OnCharEvent(unsigned int cp) : unicodeChar((char32_t)cp) {}
+};
+
 class EventManager {
 public:
 

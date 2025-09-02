@@ -47,6 +47,10 @@ void Input::KeyEvent(GLFWwindow* window, int key, int scancode, int action, int 
     }
 }
 
+void Input::CharEvent(GLFWwindow* window, unsigned int codepoint) {
+    EventManager::Publish(OnCharEvent(codepoint));
+}
+
 void Input::SetCursorMode(const CursorMode mode)
 {
     glfwSetInputMode(m_window, GLFW_CURSOR, mode);
@@ -130,7 +134,7 @@ void Input::CursorEnterEvent(GLFWwindow* window, int entered) {
 void Input::SetUp(GLFWwindow* window) {
     // Set the window pointer
     m_window = window;
-
+    glfwSetInputMode(window, GLFW_STICKY_KEYS, GLFW_TRUE);
 }
 
 void Input::UpdateInput() {
@@ -139,6 +143,7 @@ void Input::UpdateInput() {
     }
 
     glfwSetKeyCallback(m_window, KeyEvent);
+    glfwSetCharCallback(m_window, CharEvent);
     glfwSetCursorPosCallback(m_window, CursorPosEvent);
     glfwSetMouseButtonCallback(m_window, MouseButtonEvent);
     glfwSetScrollCallback(m_window, ScrollEvent);
