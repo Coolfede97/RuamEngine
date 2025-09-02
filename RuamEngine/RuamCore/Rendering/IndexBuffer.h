@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RendererCore.h"
+#include "RenderingCore.h"
 
 class IndexBuffer
 {
@@ -13,8 +13,10 @@ public:
 
 	void Bind() const;
 	void Unbind() const;
-	void SetData(unsigned int size, unsigned int* data, GLenum usage);
-	void SetSubData(unsigned int offset, unsigned int size, unsigned int* data);
+	void AddBatchData(unsigned int* data, unsigned int size);
+	void SetData(unsigned int* data, unsigned int size, GLenum usage);
+	void SetSubData(unsigned int* data, unsigned int offset, unsigned int size);
+	void Flush();
 	unsigned int GetIndexCount() const { return m_indexCount; }
 };
 

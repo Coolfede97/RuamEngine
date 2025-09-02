@@ -21,6 +21,8 @@ public:
 	// Shouldn't be used when using batch rendering
 	void SetData(const void* data, unsigned int size, GLenum usage);
 
+	void Flush();
+
 	void Bind() const; 
 	void Unbind() const;
 	unsigned int GetID() const { return m_RendererID; }

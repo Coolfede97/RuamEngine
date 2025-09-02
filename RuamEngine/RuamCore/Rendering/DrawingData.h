@@ -13,6 +13,7 @@ namespace RuamEngine
     // Data for current drawing
     class DrawingData
     {
+    public:
         ShaderPtr m_shader = nullptr;
         VertexArrayPtr m_vertexArray = nullptr;
         VertexBufferPtr m_vertexBuffer = nullptr;

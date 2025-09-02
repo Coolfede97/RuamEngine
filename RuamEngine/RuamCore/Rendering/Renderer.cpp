@@ -69,6 +69,7 @@ namespace RuamEngine
     void Renderer::EndDraw()
     {
         glfwSwapBuffers(m_window);
+        if (Renderer::m_trianglesData.m_vertexBuffer->GetSize()>0)Renderer::EndBatch();
     }
     void Renderer::BeginBatch()
     {
@@ -76,9 +77,8 @@ namespace RuamEngine
     }
     void Renderer::EndBatch()
     {
-		m_trianglesData.m_vertexArray->Bind();
-		GLCall(glDrawElements(GL_TRIANGLES, m_trianglesData.m_indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, nullptr));
-	    
+        Draw();
+		m_trianglesData.Flush();
     }
     void Renderer::Clear()
     {
@@ -130,12 +130,10 @@ namespace RuamEngine
 
     void Renderer::Draw()
     {
-        m_state.m_vertexArray->Bind();
-        m_state.m_shader->Bind();
-        m_state.m_indexBuffer->Bind();
-
-        // PREGUNTAR CHONA
-        GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
+		m_trianglesData.m_vertexArray->Bind();
+		m_trianglesData.m_shader->Bind();
+		m_trianglesData.m_indexBuffer->Bind();
+        GLCall(glDrawElements(GL_TRIANGLES, m_trianglesData.m_indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, nullptr));
     }
 
     void Renderer::DrawQuads()

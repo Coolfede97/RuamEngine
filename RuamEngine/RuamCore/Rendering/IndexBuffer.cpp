@@ -27,18 +27,36 @@ void IndexBuffer::Unbind() const
     GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
 }
 
-void IndexBuffer::SetData(unsigned int count, unsigned int* data, GLenum usage)
+// Problema que arreglar. Si se llama a EndBatch cuando se llega al límite del espacio del IndexBuffer
+// y todavía no se puso la información en el Buffer, se va a intentar dibujar con la posible información
+// faltante
+
+void IndexBuffer::AddBatchData(unsigned int* data, unsigned int indexCount)
 {
-    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID));
+    if (m_indexCount + indexCount <= maxIndexCount) Renderer::EndBatch();
+
+    Bind();
+    SetSubData(data, m_indexCount, indexCount);
+    m_indexCount += indexCount;
+}
+
+void IndexBuffer::SetData(unsigned int* data, unsigned int count, GLenum usage)
+{
+    Bind();
     GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(unsigned int), data, usage));
 }
 
-void IndexBuffer::SetSubData(unsigned int offset, unsigned int size, unsigned int* data)
+void IndexBuffer::SetSubData(unsigned int* data, unsigned int offset, unsigned int size)
 {
     ASSERT(offset + size <= maxIndexCount * sizeof(unsigned int));
 
-    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID));
+    Bind();
 
     GLCall(glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, offset, size, data));
 }
 
+void IndexBuffer::Flush()
+{
+    m_indexCount = 0;
+    SetSubData(nullptr, 0, 0);
+}
