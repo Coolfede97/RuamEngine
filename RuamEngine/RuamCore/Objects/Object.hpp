@@ -18,7 +18,7 @@ public:
 	using ComponentList = std::map<std::type_index, ComponentVector>;
 
 	template<class Comp>
-	Comp& addComponent() {
+	std::shared_ptr<Comp> addComponent() {
 		std::shared_ptr<Comp> comp = std::make_shared<Comp>(m_id);
 		const std::type_index tidx = typeid(Comp);
 		if (m_components.count(tidx) > 0) {
@@ -27,14 +27,14 @@ public:
 			m_components.insert({tidx, ComponentVector()});
 			m_components[tidx].push_back(comp);
 		}
-		return *comp;
+		return comp;
 	}
 
 	// Returns ptr because a ref can't be null
 	// Returned pointer is non-owning
 	// TODO: Find if there's a better way
 	template<class Comp>
-	Comp* getComponent() const {
+	std::shared_ptr<Comp> getComponent() const {
 		auto pair = m_components.find(typeid(Comp));
 		if (pair == m_components.end()) {
 			return nullptr;
@@ -42,7 +42,7 @@ public:
 		if (pair->second.size() == 0) {
 			return nullptr;
 		}
-		return dynamic_cast<Comp*>(pair->second[0].get());
+		return pair->second[0];
 	}
 
 	template<class Comp>
