@@ -55,7 +55,8 @@ public:
 
 	unsigned int id() const;
 	const std::string& name() const;
-	void setName(std::string& newstr); const ComponentList& getComponents();
+	void setName(std::string& newstr); 
+	const ComponentList& getComponents() const;
 
 	bool operator==(const Object& obj) {
 		return this->m_id == obj.m_id;

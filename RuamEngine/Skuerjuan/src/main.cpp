@@ -17,6 +17,8 @@ public:
 int main() {
 	createA();
 	sm::ScenePtr scene = sm::ActiveScene();
-	json j = *scene;
-	std::cout << j << std::endl;
+	json j = scene;
+	std::cout << j.dump(4) << std::endl << std::endl;
+	j = scene->newObject();
+	std::cout << j.dump(4) << std::endl << std::endl;
 }

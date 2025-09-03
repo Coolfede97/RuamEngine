@@ -15,7 +15,7 @@ void Object::setName(std::string& name) {
 	m_name = name;
 }
 
-const Object::ComponentList& Object::getComponents() {
+const Object::ComponentList& Object::getComponents() const {
 	return m_components;
 }
 

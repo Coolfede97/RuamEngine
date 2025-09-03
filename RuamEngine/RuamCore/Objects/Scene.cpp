@@ -16,20 +16,20 @@ const std::string& Scene::name() const {
 	return m_name;
 }
 
-Object& Scene::newObject() {
+Scene::ObjectPtr Scene::newObject() {
     std::shared_ptr<Object> obj = std::make_shared<Object>();
     m_objects.push_back(obj);
-    return *obj.get();
+    return obj;
 }
 
-Object& Scene::newObject(unsigned int idx) {
+Scene::ObjectPtr Scene::newObject(unsigned int idx) {
     // Going to have to check this
     //assert(idx < m_objects.size());
     std::shared_ptr<Object> obj = std::make_shared<Object>();
     auto index = m_objects.cbegin();
     std::advance(index, idx);
     m_objects.insert(index, obj);
-    return *obj.get();
+    return obj;
 }
 
 Object& Scene::getObjectByIdx(unsigned int idx) const {

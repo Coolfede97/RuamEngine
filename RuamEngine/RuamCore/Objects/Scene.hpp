@@ -22,10 +22,10 @@ public:
 	const unsigned int id() const;
 	const std::string& name() const;
 
-    Object& newObject();
-    Object& newObject(unsigned int idx);
+    ObjectPtr newObject(); //Maybe should need a name?
+    ObjectPtr newObject(unsigned int idx);
 
-    Object& getObjectByIdx(unsigned int idx) const;
+    Object& getObjectByIdx(unsigned int idx) const; //FIX: return ObjectPtr
     Object& getObjectById(unsigned int id) const;
 
 	ObjectPtrList& getObjects() const { return const_cast<ObjectPtrList&>(m_objects); }
@@ -37,6 +37,7 @@ public:
 
 	void start();
 	void update();
+
 private:
     ObjectPtrList m_objects;
 	const std::string m_name;
