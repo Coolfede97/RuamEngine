@@ -38,6 +38,8 @@ void IndexBuffer::AddBatchData(unsigned int* data, unsigned int size)
     Bind();
     SetSubData(data, m_size, size);
     m_size += size;
+    unsigned int test = m_size / sizeof(unsigned int);
+    std::cout << "Nuevos vértices: " << test << "\n";
     m_indexCount = m_size / sizeof(unsigned int);
 }
 
