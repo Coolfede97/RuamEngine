@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <cstdint>
+#include <memory>
 
 /*
 * Everithing from (this spec)[https://mmsp.ece.mcgill.ca/Documents/AudioFormats/WAVE/WAVE.html]
@@ -13,7 +14,7 @@ struct Chunk {
 	uint32_t cksize;
 };
 
-enum class Format {
+enum class Format : uint16_t {
 	PCM		= 0x0001,
 	Float	= 0x0003,
 	ALaw	= 0x0006,
@@ -27,14 +28,6 @@ struct FmtExtension {
 	// TODO: Finish implementing SubFormat
 };
 
-struct WaveInfo : Chunk {
-	uint32_t waveid;
-	
-	static const uint32_t riff_magic = 0x46464952; // Reversed because LE
-	static const uint32_t wave_magic = 0x45564157; // Reversed because LE
-	
-	~WaveInfo();
-};
 
 struct Fmt : Chunk {
 	Format wFormatTag;
@@ -46,11 +39,23 @@ struct Fmt : Chunk {
 	uint16_t cbSize;
 	// TODO: Finish implementing FmtExtension
 
-	static const uint32_t fmt_magic = 0x20746d66;
+	static const uint32_t fmt_magic = 0x20746d66; // Reversed because LE
+	static const uint32_t min_size = 16;
 };
 
 struct Fact : Chunk {
-	static const uint32_t fact_magic = ;
+	static const uint32_t fact_magic = 0x63746661; // Reversed because LE
+};
+
+struct WaveInfo : Chunk {
+	uint32_t waveid;
+
+	Fmt format;
+	
+	static const uint32_t riff_magic = 0x46464952; // Reversed because LE
+	static const uint32_t wave_magic = 0x45564157; // Reversed because LE
+	
+	~WaveInfo();
 };
 
 void readWave(WaveInfo& wi, const std::string& filename);
