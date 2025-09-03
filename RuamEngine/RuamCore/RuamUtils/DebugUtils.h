@@ -5,5 +5,6 @@
 #endif
 #ifdef linux
 #include <csignal>
-#define ASSERT(x) do {if(!(x)) raise(SIGTRAP);} while (false)
+#include <cstdio>
+#define ASSERT(x) do {if(!(x)) { fprintf(stderr, #x " (%s:%d)\n", __FILE__, __LINE__); raise(SIGTRAP);}} while (false)
 #endif
