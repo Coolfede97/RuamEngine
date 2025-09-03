@@ -3,6 +3,7 @@
 #include <fstream>
 #include <cstdint>
 #include <memory>
+#include <vector>
 
 /*
 * Everithing from (this spec)[https://mmsp.ece.mcgill.ca/Documents/AudioFormats/WAVE/WAVE.html]
@@ -44,18 +45,28 @@ struct Fmt : Chunk {
 };
 
 struct Fact : Chunk {
+	uint32_t dwSampleLength;
 	static const uint32_t fact_magic = 0x63746661; // Reversed because LE
+};
+
+struct Data : Chunk {
+	std::vector<char> samples;
+	static const uint32_t data_magic = 0x61746164; // Reversed because LE
 };
 
 struct WaveInfo : Chunk {
 	uint32_t waveid;
 
 	Fmt format;
+	Fact fact;
+	Data data;
 	
 	static const uint32_t riff_magic = 0x46464952; // Reversed because LE
 	static const uint32_t wave_magic = 0x45564157; // Reversed because LE
 	
 	~WaveInfo();
+
+	uint32_t to_al_format() const ;
 };
 
 void readWave(WaveInfo& wi, const std::string& filename);
