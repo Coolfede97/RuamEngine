@@ -9,4 +9,3 @@ target_compile_options(${TOMY_EXE_NAME} PRIVATE -fsanitize=address -gdwarf-3 -Og
 target_link_options(${TOMY_EXE_NAME} PRIVATE -fsanitize=address)
 
 target_link_libraries(${TOMY_EXE_NAME} PRIVATE RuamCore)
-target_include_directories(${TOMY_EXE_NAME} PRIVATE "${CMAKE_SOURCE_DIR}/Tomyatana/include")

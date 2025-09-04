@@ -4,9 +4,6 @@
 #include <string>
 #include <cstdint>
 #include <vector>
-#include "DebugUtils.h"
-
-#define ALCcall(dev, x) do {alcGetError(dev); x; ASSERT(alcGetError(dev) == ALC_NO_ERROR)} while(false)
 
 namespace ALC {
 

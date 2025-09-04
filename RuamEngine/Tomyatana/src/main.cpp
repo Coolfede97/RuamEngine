@@ -1,7 +1,7 @@
-#include "al-wrapper.h"
-#include "alc-wrapper.h"
+#include "al-wrapper.hpp"
+#include "alc-wrapper.hpp"
 
-#include "wave.hpp"
+#include "Wave.hpp"
 #include <iostream>
 #include <cstdio>
 #include "glm/glm.hpp"

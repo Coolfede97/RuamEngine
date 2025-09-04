@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <stdexcept>
 
-#include "al-wrapper.h"
+#include "al-wrapper.hpp"
 
 #include "dr_wav.h"
 
