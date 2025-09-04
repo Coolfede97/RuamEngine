@@ -34,12 +34,9 @@ void IndexBuffer::Unbind() const
 void IndexBuffer::AddBatchData(unsigned int* data, unsigned int size)
 {
     if (m_size + size <= maxIndexCount * sizeof(unsigned int)) Renderer::EndBatch();
-
     Bind();
     SetSubData(data, m_size, size);
     m_size += size;
-    unsigned int test = m_size / sizeof(unsigned int);
-    std::cout << "Nuevos vértices: " << test << "\n";
     m_indexCount = m_size / sizeof(unsigned int);
 }
 

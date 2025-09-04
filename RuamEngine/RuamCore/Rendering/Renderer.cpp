@@ -133,9 +133,7 @@ namespace RuamEngine
 		m_trianglesData.m_vertexArray->Bind();
 		m_trianglesData.m_shader->Bind();
 		m_trianglesData.m_indexBuffer->Bind();
-		if (m_trianglesData.m_indexBuffer == nullptr) std::cout << "Index buffer is null\n";
-        std::cout << m_trianglesData.m_indexBuffer->GetIndexCount() << "AAAAAAAAAAAa \n";
-        GLCall(glDrawElements(GL_TRIANGLES, m_trianglesData.m_indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, 0));
+        GLCall(glDrawElements(GL_TRIANGLES, m_trianglesData.m_indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, nullptr));
     }
 
     void Renderer::DrawQuads()
