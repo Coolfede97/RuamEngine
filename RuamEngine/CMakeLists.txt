@@ -267,6 +267,15 @@ target_include_directories(RuamUtils INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Ruam
 
 # /////////////////////////////////////////////////////////////////////////////////////////////// 
 
+# Utils
+
+file (GLOB INPUT_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Audio/*.cpp")
+add_library(Audio INTERFACE ${AUDIO_SRC})
+target_include_directories(Audio INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Audio)
+
+
+# /////////////////////////////////////////////////////////////////////////////////////////////// 
+
 # Linking
 
 target_link_libraries(RuamCore INTERFACE 
