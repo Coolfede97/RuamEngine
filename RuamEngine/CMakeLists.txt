@@ -112,6 +112,18 @@ add_library(glm::glm ALIAS glm)
 
 # ///////////////////////////////////////////////////////////////////////////////////////////////
 
+# dr_libs
+
+FetchContent_Populate(
+  dr_libs 
+  URL		https://github.com/mackron/dr_libs/archive/refs/heads/master.zip
+)
+add_library(dr_libs INTERFACE)
+target_include_directories(dr_libs INTERFACE ${dr_libs_SOURCE_DIR})
+add_library(dr_libs::dr_libs ALIAS dr_libs)
+
+# ///////////////////////////////////////////////////////////////////////////////////////////////
+
 # IMGUI
 
 # In order to use a library which has cpp and h files, you need to create a library (add_library) and
@@ -161,7 +173,7 @@ endif()
 ]==========]
 
 target_link_libraries(Vendor INTERFACE
-        glfw glew_s glm ImGui OpenGL::GL OpenAL::OpenAL
+        glfw glew_s glm ImGui OpenGL::GL OpenAL::OpenAL dr_libs
 )
 
 target_include_directories(Vendor INTERFACE 

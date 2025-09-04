@@ -4,6 +4,7 @@
 #include "al-wrapper.h"
 
 #include <iostream>
+#include <stdexcept>
 
 namespace WAVE {
 void readWave(WaveInfo& wi, const std::string& filename) {
@@ -30,32 +31,23 @@ void readWave(WaveInfo& wi, const std::string& filename) {
 	if (wi.format.cksize - Fmt::min_size > 0) {
 		file.read(reinterpret_cast<char*>(&wi.format.cbSize), 2);
 		if (wi.format.cbSize > 0) {
-			fprintf(stderr, "Extension currently unsupported\n");
-			return; // FIX: Read sub format ffs
+			wi = {0};
+			file.close();
+			return;
 		}
 	}
 
-	if (wi.format.wFormatTag != Format::PCM) {
-		fprintf(stderr, "Format %d currently unsupported\n", wi.format.wFormatTag);
-		return;
-	}
+	ASSERT(wi.format.wFormatTag == Format::PCM); // WARN: Sadly OpenAl only supports PCM
+	// TODO: Add a way to decode mu-law and a-law to PCM
 
 	file.read(reinterpret_cast<char*>(&ck), sizeof ck);
-	if (ck.ckid == Fact::fact_magic) {
-		wi.fact.cksize = ck.cksize;
-		wi.fact.ckid = ck.ckid;
-		file.read(reinterpret_cast<char*>(&wi.fact.dwSampleLength), sizeof wi.fact.dwSampleLength);
-	}
-	else if (ck.ckid == Data::data_magic) {
-		wi.data.cksize = ck.cksize;
-		wi.data.ckid = ck.ckid;
-		wi.data.samples = std::vector<char>(wi.data.cksize);
-		ASSERT(wi.data.samples.size() >= wi.data.cksize);
-		fprintf(stderr, "SIZE: 0x%x\n", wi.data.cksize);
-		file.read(wi.data.samples.data(), wi.data.cksize);
-	} else {
-		fprintf(stderr, "Unknown chunk: 0x%x\n", ck.ckid);
-	}
+	ASSERT(ck.ckid == Data::data_magic);
+	wi.data.cksize = ck.cksize;
+	wi.data.ckid = ck.ckid;
+	wi.data.samples = std::vector<char>(wi.data.cksize);
+	ASSERT(wi.data.samples.size() >= wi.data.cksize);
+	fprintf(stderr, "SIZE: 0x%x\n", wi.data.cksize);
+	file.read(wi.data.samples.data(), wi.data.cksize);
 
 	ASSERT(wi.data.ckid == Data::data_magic);
 	ASSERT(wi.data.samples.size() > 0);

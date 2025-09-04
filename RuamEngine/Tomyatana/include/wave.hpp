@@ -26,9 +26,7 @@ enum class Format : uint16_t {
 struct FmtExtension {
 	uint16_t wValidBitsPerSample;
 	uint32_t dwChannelMask;
-	// TODO: Finish implementing SubFormat
 };
-
 
 struct Fmt : Chunk {
 	Format wFormatTag;
