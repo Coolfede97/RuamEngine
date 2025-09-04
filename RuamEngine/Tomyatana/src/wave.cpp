@@ -6,78 +6,41 @@
 #include <iostream>
 #include <stdexcept>
 
-namespace WAVE {
-void readWave(WaveInfo& wi, const std::string& filename) {
-	Chunk ck;
+Wave::Wave(const char* filename) {
+	unsigned long long frames;
+	m_data = drwav_open_file_and_read_pcm_frames_s16(filename, &m_channels, &m_sample_rate, &m_total_samples, nullptr);
+}
 
-	std::ifstream file(filename);
-	file.read(reinterpret_cast<char*>(&wi.ckid), 4);
-	file.read(reinterpret_cast<char*>(&wi.cksize), 4);
-	file.read(reinterpret_cast<char*>(&wi.waveid), 4);
+Wave::Wave(const std::string& filename) : Wave(filename.c_str()) {};
+Wave::~Wave() {
+	drwav_uninit(&m_wav);
+	drwav_free(m_data, nullptr);
+}
 
-	ASSERT(wi.ckid == WaveInfo::riff_magic);
-	ASSERT(wi.waveid == WaveInfo::wave_magic);
+drwav_uint64 Wave::size() const {
+	return m_total_samples * m_channels * sizeof (int16_t);
+}
 
-	file.read(reinterpret_cast<char*>(&wi.format), Fmt::min_size + sizeof Fmt::cksize + sizeof Fmt::ckid);
+int16_t* Wave::data() {
+	return m_data;
+}
 
-	ASSERT(wi.format.ckid == Fmt::fmt_magic);
-	ASSERT(wi.format.cksize > 0);
-	ASSERT(wi.format.nChannels > 0);
-	ASSERT(wi.format.nSamplesPerSec > 0);
-	ASSERT(wi.format.nAvgBytesPerSec > 0);
-	ASSERT(wi.format.nBlockAlign > 0);
-	ASSERT(wi.format.wBitsPerSample > 0);
+uint32_t Wave::rate() const {
+	return m_sample_rate;
+}
 
-	if (wi.format.cksize - Fmt::min_size > 0) {
-		file.read(reinterpret_cast<char*>(&wi.format.cbSize), 2);
-		if (wi.format.cbSize > 0) {
-			wi = {0};
-			file.close();
-			return;
-		}
-	}
+uint32_t Wave::channels() const {
+	return m_channels;
+}
 
-	ASSERT(wi.format.wFormatTag == Format::PCM); // WARN: Sadly OpenAl only supports PCM
-	// TODO: Add a way to decode mu-law and a-law to PCM
+uint16_t Wave::openal_fmt() const {
+	return AL_FORMAT_STEREO16; // always interpeted as 16-bit
+}
 
-	file.read(reinterpret_cast<char*>(&ck), sizeof ck);
-	ASSERT(ck.ckid == Data::data_magic);
-	wi.data.cksize = ck.cksize;
-	wi.data.ckid = ck.ckid;
-	wi.data.samples = std::vector<char>(wi.data.cksize);
-	ASSERT(wi.data.samples.size() >= wi.data.cksize);
-	fprintf(stderr, "SIZE: 0x%x\n", wi.data.cksize);
-	file.read(wi.data.samples.data(), wi.data.cksize);
-
-	ASSERT(wi.data.ckid == Data::data_magic);
-	ASSERT(wi.data.samples.size() > 0);
-
-	file.close();
-	// FIX: Add proper assertion
+format_error::format_error(char const* const msg) throw() : std::runtime_error(msg) {
 
 }
 
-WaveInfo::~WaveInfo() {
+char const* format_error::what() const throw() {
+	return std::exception::what();
 }
-
-uint32_t WaveInfo::to_al_format() const {
-	bool stereo = format.nChannels > 1;
-
-	switch (format.wBitsPerSample) {
-	case 16:
-		if (stereo)
-			return AL_FORMAT_STEREO16;
-		else
-			return AL_FORMAT_MONO16;
-	case 8:
-		if (stereo)
-			return AL_FORMAT_STEREO8;
-		else
-			return AL_FORMAT_MONO8;
-	default:
-		return -1;
-	}
-}
-
-}
-

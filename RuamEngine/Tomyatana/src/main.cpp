@@ -9,8 +9,7 @@
 int main(int argc, char* argv[]) {
 	int res;
 
-	WAVE::WaveInfo wi;
-	WAVE::readWave(wi, argv[1]);
+	Wave wave(argv[1]);
 
 	ALC::Device dev(nullptr);
 
@@ -35,7 +34,7 @@ int main(int argc, char* argv[]) {
 
 	AL::Buffer buf;
 	buf.generate();
-	res = buf.setData(wi.to_al_format(), wi.data.samples, wi.format.nSamplesPerSec);
+	res = buf.setData(wave.openal_fmt(), reinterpret_cast<char*>(wave.data()), wave.size(), wave.rate());
 	if (res != 0) {
 		std::cerr << "ERROR: COULD NOT SET DATA ";
 		fprintf(stderr, "0x%x\n", res);
