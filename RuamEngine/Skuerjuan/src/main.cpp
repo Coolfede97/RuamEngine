@@ -15,13 +15,6 @@ public:
 };
 
 int main() {
-	createA();
-	sm::ScenePtr scene = sm::ActiveScene();
-	Scene::ObjectPtr o = scene->newObject();
-	std::string name = "My Object";
-	o->setName(name);
-	Scene::ObjectPtr o2 = scene->newObject();
-	name = "Hola";
-	o2->setName(name);
-	Serial::serialise(scene);
+	sm::ScenePtr scene = Serial::deserialise("sceneA.json");
+	return 0;
 }

@@ -36,11 +36,21 @@ void from_json(const json& j, sm::ScenePtr s) {
 
 }
 
-template<class Comp>
-void to_json(json& j, Comp comp) {
-
-}
-
 void Serial::serialise(sm::ScenePtr s) {
     json j = s;
+}
+
+sm::ScenePtr Serial::deserialise(const std::string& filename) {
+    std::ifstream file(filename);
+    json j;
+    file >> j;
+    sm::AddScene(0, []() -> sm::ScenePtr { 
+        Scene s; 
+        sm::ScenePtr scene = std::make_shared<Scene>(s); 
+        return scene; 
+    });
+	sm::SetActiveScene(0);
+	sm::ScenePtr scene = sm::ActiveScene();
+	from_json(j, scene);
+	return scene;
 }
