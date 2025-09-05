@@ -8,13 +8,14 @@
 #include "dr_wav.h"
 
 class format_error : public std::runtime_error {
+public:
 	format_error(char const* const msg) throw();
 	char const* what() const throw();
 };
 
 class Wave {
 public:
-	Wave(const char* filename);
+	Wave(const char* filename, bool stereo=false);
 	Wave(const std::string& filename);
 	~Wave();
 

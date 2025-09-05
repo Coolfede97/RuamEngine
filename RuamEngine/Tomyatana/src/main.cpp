@@ -8,7 +8,7 @@
 int main(int argc, char* argv[]) {
 	int res;
 
-	Wave wave(argv[1]);
+	Wave wave(argv[1], false);
 
 	ALC::Device dev(nullptr);
 
@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
 	source.generate();
 
 	glm::vec3 sourcePos = {0, 0, 0};
-	glm::vec3 sourceVel = {-2, 0, 0};
+	glm::vec3 sourceVel = {0, 0, 0};
 
 	source.setParam(AL_PITCH, 1);
 	source.setParam(AL_GAIN, 1);
@@ -47,8 +47,7 @@ int main(int argc, char* argv[]) {
 
 	double i = 0;
 	while (source.state() == AL_PLAYING) {
-		i += 0.0001;
-		std::cout << "Playing\n";
+		i += 0.000001;
 		sourceVel.x = std::sin(i/10);
 		sourceVel.y = std::tan(i/10);
 		sourceVel.z = std::cos(i/10);
