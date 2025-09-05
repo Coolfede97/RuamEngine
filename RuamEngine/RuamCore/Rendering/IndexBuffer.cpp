@@ -33,8 +33,9 @@ void IndexBuffer::Unbind() const
 
 void IndexBuffer::AddBatchData(unsigned int* data, unsigned int size)
 {
-    if (m_size + size <= maxIndexCount * sizeof(unsigned int)) Renderer::EndBatch();
-    Bind();
+    
+    if (m_size + size > maxIndexCount * sizeof(unsigned int)) Renderer::EndBatch();
+
     SetSubData(data, m_size, size);
     m_size += size;
     m_indexCount = m_size / sizeof(unsigned int);
@@ -56,6 +57,8 @@ void IndexBuffer::SetSubData(unsigned int* data, unsigned int offset, unsigned i
     ASSERT(offset + size <= maxIndexCount * sizeof(unsigned int));
 
     Bind();
+
+	std::cout << "Offset: " << offset << ", Size: " << size << "\n";
 
     GLCall(glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, offset, size, data));
 }

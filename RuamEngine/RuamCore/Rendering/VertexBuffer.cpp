@@ -20,10 +20,18 @@ VertexBuffer::~VertexBuffer()
 // Después hacer que si la data supera la capacidad del Buffer (por más que esté vacío), se actualice el buffer y que tire advertencia
 void VertexBuffer::AddBatchData(const void* data, unsigned int size)
 {
-    if (m_size + size <= maxVertexSize * maxVertexCount) Renderer::EndBatch();
+   /* if (size > maxVertexSize * maxVertexCount)
+    {
 
-    Bind();
-	SetSubData(data, m_size, size);
+        std::cerr << "WARNING: The data introduced has a bigger size than the maximum size of the buffer!\n" <<
+            "Max buffer size: " << maxVertexSize * maxVertexCount << " bytes.\n" <<
+            "Size introduced: " << size << " bytes." << "\n";
+		ASSERT(false);
+        return;
+	}*/
+    if (m_size + size > maxVertexSize * maxVertexCount) Renderer::EndBatch();
+
+    SetSubData(data, m_size, size);
 	m_size += size;
 }
 
@@ -38,7 +46,7 @@ void VertexBuffer::SetSubData(const void* data, unsigned int offset, unsigned in
 
 void VertexBuffer::SetData(const void* data, unsigned int size, GLenum usage)
 {
-    Renderer::m_trianglesData.m_layout->Reset(); // Probablemente debería cambiarlo en el futuro
+    Renderer::m_basicDrawingData.m_layout->Reset(); // Probablemente debería cambiarlo en el futuro
     Bind();
     GLCall(glBufferData(GL_ARRAY_BUFFER, size, data, usage));
 }
