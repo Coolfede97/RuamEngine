@@ -95,4 +95,21 @@ void Buffer::destroy() {
 	alDeleteBuffers(1, &m_id);
 }
 
+namespace Listener {
+ALerror setParam(ALenum param, ALfloat v) {
+	alListenerf(param, v);
+	return GetError();
+}
+
+ALerror setParam(ALenum param, glm::vec3& v) {
+	alListener3f(param, v.x, v.y, v.z);
+	return GetError();
+}
+
+ALerror setParam(ALenum param, ALint v) {
+	alListeneri(param, v);
+	return GetError();
+}
+}
+
 }

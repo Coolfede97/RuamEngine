@@ -4,7 +4,6 @@
 #include "Wave.hpp"
 #include <iostream>
 #include <cstdio>
-#include "glm/glm.hpp"
 
 int main(int argc, char* argv[]) {
 	int res;
@@ -17,8 +16,10 @@ int main(int argc, char* argv[]) {
 
 	ALC::MakeContextCurrent(ctx);
 
-	alListener3f(AL_POSITION, 0, 0, 0);
-	alListener3f(AL_VELOCITY, 0, 0, 0);
+	glm::vec3 listPos = {0, 0, 0};
+
+	AL::Listener::setParam(AL_POSITION, listPos);
+	AL::Listener::setParam(AL_VELOCITY, listPos);
 
 	AL::Source source;
 	source.generate();

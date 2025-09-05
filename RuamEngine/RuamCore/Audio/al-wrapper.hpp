@@ -57,6 +57,12 @@ private:
 	ALuint m_id;
 };
 
+namespace Listener {
+ALerror setParam(ALenum param, ALfloat v);
+ALerror setParam(ALenum param, glm::vec3& v);
+ALerror setParam(ALenum param, ALint v);
+}
+
 ALerror GetError();
 
 }
