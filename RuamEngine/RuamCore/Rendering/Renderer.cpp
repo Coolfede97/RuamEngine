@@ -49,9 +49,9 @@ namespace RuamEngine
 
 
         {
+            m_basicDrawingData.m_layout = std::make_shared<VertexBufferLayout>();
 			m_basicDrawingData.m_vertexArray = std::make_shared<VertexArray>();
 			m_basicDrawingData.m_vertexBuffer = std::make_shared<VertexBuffer>(nullptr, maxVertexSize * maxVertexCount);
-			m_basicDrawingData.m_layout = std::make_shared<VertexBufferLayout>();
 			m_basicDrawingData.m_indexBuffer = std::make_shared<IndexBuffer>(nullptr, maxIndexCount);
             m_basicDrawingData.m_shader = std::make_shared<Shader>("assets/shaders/GeneralVertexShader.glsl", "assets/shaders/GeneralFragmentShader.glsl");
         }
@@ -69,7 +69,7 @@ namespace RuamEngine
     void Renderer::EndDraw()
     {
         glfwSwapBuffers(m_window);
-        if (Renderer::m_basicDrawingData.m_vertexBuffer->GetSize()>0)Renderer::EndBatch();
+        if (Renderer::m_basicDrawingData.m_vertexBuffer->GetCurrentSize() > 0) Renderer::EndBatch();
     }
     void Renderer::BeginBatch()
     {
@@ -78,7 +78,6 @@ namespace RuamEngine
     void Renderer::EndBatch()
     {
         Draw();
-		Renderer::m_basicDrawingData.Flush();
     }
     void Renderer::Clear()
     {
@@ -130,14 +129,13 @@ namespace RuamEngine
 
     void Renderer::Draw()
     {
-        /*std::cout << m_basicDrawingData.m_indexBuffer->GetIndexCount() << "\n";
-        std::cout << m_basicDrawingData.m_indexBuffer->GetSize() << "\n";
-        std::cout << m_basicDrawingData.m_vertexBuffer->GetSize() << "\n";*/
-
 		m_basicDrawingData.m_vertexArray->Bind();
 		m_basicDrawingData.m_shader->Bind();
 		m_basicDrawingData.m_indexBuffer->Bind();
         GLCall(glDrawElements(GL_TRIANGLES, m_basicDrawingData.m_indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, nullptr));
+
+        Renderer::m_basicDrawingData.Flush();
+
     }
 
     void Renderer::DrawQuads()

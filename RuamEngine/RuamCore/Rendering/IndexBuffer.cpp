@@ -6,10 +6,9 @@ using namespace RuamEngine;
 IndexBuffer::IndexBuffer(const unsigned int* data, unsigned int count)
 {
     ASSERT(sizeof(unsigned int) == sizeof(GLuint));
-
     GLCall(glGenBuffers(1, &m_RendererID));
-    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID));
-    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(unsigned int), data, GL_STATIC_DRAW));
+    if (data) m_currentSize = count * sizeof(unsigned int);
+	SetData(data, count * sizeof(unsigned int), GL_STATIC_DRAW);
 }
 
 IndexBuffer::~IndexBuffer()
@@ -31,41 +30,41 @@ void IndexBuffer::Unbind() const
 // y todavía no se puso la información en el Buffer, se va a intentar dibujar con la posible información
 // faltante
 
-void IndexBuffer::AddBatchData(unsigned int* data, unsigned int size)
+void IndexBuffer::AddBatchData(const unsigned int* data, unsigned int size)
 {
     
-    if (m_size + size > maxIndexCount * sizeof(unsigned int)) Renderer::EndBatch();
+    if (m_currentSize + size > m_maxSize) Renderer::EndBatch();
 
-    SetSubData(data, m_size, size);
-    m_size += size;
-    m_indexCount = m_size / sizeof(unsigned int);
-}
-
-void IndexBuffer::SetData(unsigned int* data, unsigned int size, GLenum usage)
-{
-    Bind();
-    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, usage));
-    m_size = size;
-	m_indexCount = size / sizeof(unsigned int);
+	std::cout << "Size of indices parameter: " << size << "\n";
+    SetSubData(data, m_currentSize, size);
+    m_currentSize += size;
 }
 
 
 // This function does not change the m_indexCount or m_size variables!
 // You probably want to avoid using this function directly
-void IndexBuffer::SetSubData(unsigned int* data, unsigned int offset, unsigned int size)
+void IndexBuffer::SetSubData(const unsigned int* data, unsigned int offset, unsigned int size)
 {
     ASSERT(offset + size <= maxIndexCount * sizeof(unsigned int));
 
     Bind();
 
-	std::cout << "Offset: " << offset << ", Size: " << size << "\n";
-
-    GLCall(glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, offset, size, data));
+	GLCall(glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, offset, size, data));
 }
+
+// This function does not change the m_indexCount or m_size variables!
+// You probably want to avoid using this function directly
+void IndexBuffer::SetData(const unsigned int* data, unsigned int size, GLenum usage)
+{
+    Bind();
+    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, usage));
+    m_maxSize = size;
+}
+
 
 void IndexBuffer::Flush()
 {
-    m_indexCount = 0;
-    m_size = 0;
-    SetSubData(nullptr, 0, 0);
+    SetData(0, m_maxSize, GL_DYNAMIC_DRAW);
+    m_currentSize = 0;
+    //SetSubData(nullptr, 0, m_maxSize);
 }

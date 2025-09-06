@@ -6,7 +6,8 @@ class VertexBuffer
 {
 private:
 	unsigned int m_RendererID;
-	unsigned int m_size = 0;
+	unsigned int m_maxSize = 0;
+	unsigned int m_currentSize = 0;
 public:
 
 	VertexBuffer(const void* data, unsigned int size);
@@ -26,7 +27,9 @@ public:
 	void Bind() const; 
 	void Unbind() const;
 	unsigned int GetID() const { return m_RendererID; }
-	unsigned int GetSize() const { return m_size; }
+	unsigned int GetCurrentSize() const { return m_currentSize; }
+	unsigned int GetMaxSize() const { return m_maxSize; }
+
 };
 
 using VertexBufferPtr = std::shared_ptr<VertexBuffer>;
