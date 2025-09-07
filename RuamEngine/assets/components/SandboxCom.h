@@ -15,7 +15,6 @@ class SandboxCom : public BaseRenderer
 	// It's called in update
 	void render()
 	{
-		std::cout << "Holaaa\n";
 		auto quad = Vertex::CreateQuad(-0.5, -0.5);
 		auto quadB = Vertex::CreateQuad(0.5f, 0.5f, Vec4(1.0f, 0.0f, 0.0f, 1.0f));
 
@@ -25,21 +24,23 @@ class SandboxCom : public BaseRenderer
 			quadB[0], quadB[1], quadB[2], quadB[3]
 		};
 
-		unsigned int indices[] = {
+		std::vector<unsigned int> indices = {
 			0, 1, 2,
 			2, 3, 0,
 			4, 5, 6,
 			6, 7, 4
 		};
-		Renderer::m_basicDrawingData.m_vertexBuffer->AddBatchData(&quad, sizeof(quad));
-		Renderer::m_basicDrawingData.m_vertexBuffer->AddBatchData(&quadB, sizeof(quadB));
+
+		//Renderer::m_basicDrawingData.m_vertexBuffer->AddBatchData(&quad, sizeof(quad));
+		//Renderer::m_basicDrawingData.m_vertexBuffer->AddBatchData(&quadB, sizeof(quadB));
+		Renderer::m_basicDrawingData.m_vertexBuffer->AddBatchData(vertices.data(), vertices.size() * sizeof(Vertex));
 		Renderer::m_basicDrawingData.m_layout->Reset();
 		Renderer::m_basicDrawingData.m_layout->Push<float>(3);
 		Renderer::m_basicDrawingData.m_layout->Push<float>(4);
 
-		std::cout << "Size of indices : " << sizeof(indices) << "\n";
+		Renderer::m_basicDrawingData.m_indexBuffer->AddBatchData(indices.data(), indices.size()*sizeof(unsigned int));
 
-		Renderer::m_basicDrawingData.m_indexBuffer->AddBatchData(indices, sizeof(indices));
+
 		Renderer::m_basicDrawingData.m_vertexArray->AddBuffer(*Renderer::m_basicDrawingData.m_vertexBuffer, *Renderer::m_basicDrawingData.m_layout);
 
 		Renderer::m_basicDrawingData.m_shader = std::make_shared<Shader>("assets/shaders/GeneralVertexShader.glsl", "assets/shaders/GeneralFragmentShader.glsl");

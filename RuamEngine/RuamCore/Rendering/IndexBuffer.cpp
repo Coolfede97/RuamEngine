@@ -35,7 +35,6 @@ void IndexBuffer::AddBatchData(const unsigned int* data, unsigned int size)
     
     if (m_currentSize + size > m_maxSize) Renderer::EndBatch();
 
-	std::cout << "Size of indices parameter: " << size << "\n";
     SetSubData(data, m_currentSize, size);
     m_currentSize += size;
 }
