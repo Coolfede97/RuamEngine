@@ -15,9 +15,14 @@ public:
     using SceneList = std::vector<Scene>;
     using ObjectPtr = std::shared_ptr<Object>;
     using ObjectPtrList = std::list<ObjectPtr>;
+    
+    Scene() : m_id(s_id_count++), m_name(s_default_name) {}
 
-    Scene();
-    Scene(const char* name);
+    Scene(int id) : m_id(id), m_name(s_default_name) {}
+
+    Scene(const std::string& name) : m_id(s_id_count++), m_name(name) {}
+
+    Scene(int id, const std::string& name) : m_id(id), m_name(name) {}
 
 	const unsigned int id() const;
 	const std::string& name() const;

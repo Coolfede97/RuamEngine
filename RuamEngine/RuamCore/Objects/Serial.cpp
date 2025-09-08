@@ -33,7 +33,7 @@ void to_json(json& j, const Scene::ObjectPtr o) {
 }
 
 void from_json(const json& j, sm::ScenePtr s) {
-
+    std::cout << "hola";
 }
 
 void Serial::serialise(sm::ScenePtr s) {
@@ -44,13 +44,15 @@ sm::ScenePtr Serial::deserialise(const std::string& filename) {
     std::ifstream file(filename);
     json j;
     file >> j;
-    sm::AddScene(0, []() -> sm::ScenePtr { 
-        Scene s; 
+	int id = j["id"];
+	const std::string name = j["name"];
+    sm::AddScene(0, [id, name]() -> sm::ScenePtr { //send help
+        Scene s(id, name);
         sm::ScenePtr scene = std::make_shared<Scene>(s); 
         return scene; 
     });
 	sm::SetActiveScene(0);
 	sm::ScenePtr scene = sm::ActiveScene();
-	from_json(j, scene);
+    scene = j;
 	return scene;
 }
