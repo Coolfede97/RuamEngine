@@ -22,6 +22,7 @@ include(FindOpenGL)
 add_subdirectory(CoolFede97)
 add_subdirectory(Santinorua)
 add_subdirectory(Skuerjuan)
+add_subdirectory(Tomyatana)
 
 # -----------------------------------------------------------------------------------------------------
 #######################################################################################################
@@ -111,6 +112,18 @@ add_library(glm::glm ALIAS glm)
 
 # ///////////////////////////////////////////////////////////////////////////////////////////////
 
+# dr_libs
+
+FetchContent_Populate(
+  dr_libs 
+  URL		https://github.com/mackron/dr_libs/archive/refs/heads/master.zip
+)
+add_library(dr_libs INTERFACE)
+target_include_directories(dr_libs INTERFACE ${dr_libs_SOURCE_DIR})
+add_library(dr_libs::dr_libs ALIAS dr_libs)
+
+# ///////////////////////////////////////////////////////////////////////////////////////////////
+
 # IMGUI
 
 # In order to use a library which has cpp and h files, you need to create a library (add_library) and
@@ -160,7 +173,7 @@ endif()
 ]==========]
 
 target_link_libraries(Vendor INTERFACE
-        glfw glew_s glm ImGui OpenGL::GL OpenAL::OpenAL
+        glfw glew_s glm ImGui OpenGL::GL OpenAL::OpenAL dr_libs
 )
 
 target_include_directories(Vendor INTERFACE 
@@ -254,10 +267,20 @@ target_include_directories(RuamUtils INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Ruam
 
 # /////////////////////////////////////////////////////////////////////////////////////////////// 
 
+# Utils
+
+file (GLOB AUDIO_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Audio/*.cpp")
+add_library(Audio STATIC ${AUDIO_SRC})
+target_include_directories(Audio INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Audio)
+target_link_libraries(Audio PUBLIC glm dr_libs)
+
+
+# /////////////////////////////////////////////////////////////////////////////////////////////// 
+
 # Linking
 
 target_link_libraries(RuamCore INTERFACE 
-	Rendering Maths Time Files Input Objects RuamUtils
+	Rendering Maths Time Files Input Objects RuamUtils Audio
 )
 
 
