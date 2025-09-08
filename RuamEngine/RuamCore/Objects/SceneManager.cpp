@@ -12,8 +12,8 @@ void SceneManager::SetActiveScene(unsigned int id) {
 	//s_active_scene->start();
 }
 
-SceneManager::ScenePtr SceneManager::ActiveScene() {
-	return s_active_scene;
+Scene* SceneManager::ActiveScene() {
+	return s_active_scene.get();
 }
 
 unsigned int SceneManager::AddScene(unsigned int id, SceneCreator scene) {
@@ -22,5 +22,5 @@ unsigned int SceneManager::AddScene(unsigned int id, SceneCreator scene) {
 }
 
 SceneManager::ScenePtr SceneManager::EmptyScene() {
-	return std::make_shared<Scene>();
+	return std::move(std::make_unique<Scene>());
 }

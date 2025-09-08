@@ -12,8 +12,7 @@
 
 class Scene {
 public:
-    using SceneList = std::vector<Scene>;
-    using ObjectPtr = std::shared_ptr<Object>;
+    using ObjectPtr = std::unique_ptr<Object>;
     using ObjectPtrList = std::list<ObjectPtr>;
     
     Scene() : m_id(s_id_count++), m_name(s_default_name) {}
@@ -30,7 +29,7 @@ public:
     ObjectPtr newObject(); //Maybe should need a name?
     ObjectPtr newObject(unsigned int idx);
 
-    Object& getObjectByIdx(unsigned int idx) const; //FIX: return ObjectPtr
+    Object& getObjectByIdx(unsigned int idx) const; // FIX: return ObjectPtr
     Object& getObjectById(unsigned int id) const;
 
 	ObjectPtrList& getObjects() const { return const_cast<ObjectPtrList&>(m_objects); }

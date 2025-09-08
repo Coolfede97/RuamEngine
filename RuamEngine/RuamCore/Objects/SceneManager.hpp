@@ -5,7 +5,7 @@
 
 class SceneManager {
 public:
-	using ScenePtr = std::shared_ptr<Scene>;
+	using ScenePtr = std::unique_ptr<Scene>;
 	using SceneCreator = ScenePtr (*)();
     using SceneList = std::unordered_map<unsigned int, SceneCreator>;
 
@@ -14,7 +14,7 @@ public:
 	static const SceneList& sceneList();
 
 	static void SetActiveScene(unsigned int id);
-	static ScenePtr ActiveScene();
+	static Scene* ActiveScene();
 
 	/* Returns idx */
 	static unsigned int AddScene(unsigned int id, SceneCreator scene);

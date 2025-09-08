@@ -13,18 +13,18 @@ const std::string& Scene::name() const {
 }
 
 Scene::ObjectPtr Scene::newObject() {
-    std::shared_ptr<Object> obj = std::make_shared<Object>();
-    m_objects.push_back(obj);
+    ObjectPtr obj = std::make_unique<Object>();
+    m_objects.push_back(std::move(obj));
     return obj;
 }
 
 Scene::ObjectPtr Scene::newObject(unsigned int idx) {
     // Going to have to check this
     //assert(idx < m_objects.size());
-    std::shared_ptr<Object> obj = std::make_shared<Object>();
+    ObjectPtr obj = std::make_unique<Object>();
     auto index = m_objects.cbegin();
     std::advance(index, idx);
-    m_objects.insert(index, obj);
+    m_objects.insert(index, std::move(obj));
     return obj;
 }
 
