@@ -280,7 +280,7 @@ target_link_libraries(Audio PUBLIC glm dr_libs)
 # Audio
 
 file (GLOB COMPONENTS_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Components/*.cpp")
-add_library(Components STATIC ${AUDIO_SRC})
+add_library(Components STATIC ${COMPONENTS_SRC})
 target_include_directories(Components INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Components)
 target_link_libraries(Components PUBLIC Objects Audio)
 
