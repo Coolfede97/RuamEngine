@@ -1,7 +1,16 @@
 #include "AudioSource.h"
 
 void AudioSource::start() {
+	Wave wave(m_audio_path.c_str(), false);
+	m_source.generate();
 
+	glm::vec3 zero(0, 0, 0);
+
+	m_source.setParam(AL_PITCH, 1);
+	m_source.setParam(AL_GAIN, 1);
+	m_source.setParam(AL_POSITION, zero);
+	m_source.setParam(AL_VELOCITY, zero);
+	m_source.setParam(AL_LOOPING, AL_FALSE);
 }
 
 /*

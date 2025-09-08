@@ -1,7 +1,7 @@
 #pragma once
 
+#include "AudioSystem.hpp"
 #include "Object.hpp"
-#include "Wave.hpp"
 
 class AudioSource : public Component {
 public:
@@ -11,6 +11,7 @@ public:
     void update();
 
 protected:
-	AL::Source source;
-	AL::Buffer buffer;
+	AL::Source m_source;
+	AL::Buffer m_buffer;
+	std::string m_audio_path;
 };
