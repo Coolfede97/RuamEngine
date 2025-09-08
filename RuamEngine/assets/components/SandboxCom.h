@@ -15,6 +15,8 @@ class SandboxCom : public BaseRenderer
 	// It's called in update
 	void render()
 	{
+		Renderer::m_basicDrawingData.m_vertexArray->Bind();
+
 		auto quad = Vertex::CreateQuad(-0.5, -0.5);
 		auto quadB = Vertex::CreateQuad(0.5f, 0.5f, Vec4(1.0f, 0.0f, 0.0f, 1.0f));
 

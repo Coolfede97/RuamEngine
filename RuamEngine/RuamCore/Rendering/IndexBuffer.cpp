@@ -61,7 +61,7 @@ void IndexBuffer::SetData(const unsigned int* data)
 void IndexBuffer::SubmitData()
 {
     Bind();
-	std::cout << "INDEX Vector size: " << m_indexData.size() * sizeof(unsigned int) << "\n";
+	std::cout << "INDEX Vector size: " << m_indexData.size() * sizeof(m_indexData[0]) << "\n";
 	std::cout << "INDEX Buffer size: " << m_currentSize << "\n";
     std::cout << "Indices number: " << m_indexData.size() << "\n";
     GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indexData.size() * sizeof(unsigned int), m_indexData.data(), m_usage));
