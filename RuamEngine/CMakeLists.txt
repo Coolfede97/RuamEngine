@@ -267,7 +267,7 @@ target_include_directories(RuamUtils INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Ruam
 
 # /////////////////////////////////////////////////////////////////////////////////////////////// 
 
-# Utils
+# Audio
 
 file (GLOB AUDIO_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Audio/*.cpp")
 add_library(Audio STATIC ${AUDIO_SRC})
@@ -277,10 +277,20 @@ target_link_libraries(Audio PUBLIC glm dr_libs)
 
 # /////////////////////////////////////////////////////////////////////////////////////////////// 
 
+# Audio
+
+file (GLOB COMPONENTS_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Components/*.cpp")
+add_library(Components STATIC ${AUDIO_SRC})
+target_include_directories(Components INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Components)
+target_link_libraries(Components PUBLIC Objects Audio)
+
+
+# /////////////////////////////////////////////////////////////////////////////////////////////// 
+
 # Linking
 
 target_link_libraries(RuamCore INTERFACE 
-	Rendering Maths Time Files Input Objects RuamUtils Audio
+    Rendering Maths Time Files Input Objects RuamUtils Audio Components
 )
 
 
