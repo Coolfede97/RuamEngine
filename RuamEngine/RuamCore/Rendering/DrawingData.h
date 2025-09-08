@@ -6,7 +6,7 @@
 #include "VertexBufferLayout.h"
 #include "DrawingData.h"
 #include "Shader.h"
-
+#include "Renderer.h"
 
 namespace RuamEngine
 {
@@ -22,12 +22,13 @@ namespace RuamEngine
         VertexBufferPtr m_vertexBuffer = nullptr;
         VertexBufferLayoutPtr m_layout = nullptr;
         IndexBufferPtr m_indexBuffer = nullptr;
-
         //std::array<uint32_t, maxTextureSlots> textureSlots = {};
 
         // Which texture slot we can insert our new texture into
         //uint32_t textureSlotIndex = 1;
 
+        void SubmitBatchData();
+        void AddBatchData(const std::vector<Vertex> vertices, unsigned int vertexDataSize, const std::vector<unsigned int> indices, unsigned int indexDataSize);
 		void Flush();
     };
 }

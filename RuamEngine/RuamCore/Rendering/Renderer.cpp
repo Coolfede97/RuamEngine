@@ -51,8 +51,8 @@ namespace RuamEngine
         {
             m_basicDrawingData.m_layout = std::make_shared<VertexBufferLayout>();
 			m_basicDrawingData.m_vertexArray = std::make_shared<VertexArray>();
-			m_basicDrawingData.m_vertexBuffer = std::make_shared<VertexBuffer>(nullptr, maxVertexSize * maxVertexCount);
-			m_basicDrawingData.m_indexBuffer = std::make_shared<IndexBuffer>(nullptr, maxIndexCount);
+			m_basicDrawingData.m_vertexBuffer = std::make_shared<VertexBuffer>(maxVertexSize * maxVertexCount, GL_STATIC_DRAW);
+			m_basicDrawingData.m_indexBuffer = std::make_shared<IndexBuffer>(maxIndexCount, GL_STATIC_DRAW);
             m_basicDrawingData.m_shader = std::make_shared<Shader>("assets/shaders/GeneralVertexShader.glsl", "assets/shaders/GeneralFragmentShader.glsl");
         }
 
@@ -69,15 +69,17 @@ namespace RuamEngine
     void Renderer::EndDraw()
     {
         glfwSwapBuffers(m_window);
-        if (Renderer::m_basicDrawingData.m_vertexBuffer->GetCurrentSize() > 0) Renderer::EndBatch();
+        EndBatch(m_basicDrawingData);
     }
     void Renderer::BeginBatch()
     {
 
     }
-    void Renderer::EndBatch()
+    void Renderer::EndBatch(RuamEngine::DrawingData drawingData)
     {
-        Draw();
+		drawingData.SubmitBatchData();
+        Draw(drawingData);
+        drawingData.Flush();
     }
     void Renderer::Clear()
     {
@@ -127,15 +129,12 @@ namespace RuamEngine
         }
     }
 
-    void Renderer::Draw()
+    void Renderer::Draw(DrawingData drawingData)
     {
-		m_basicDrawingData.m_vertexArray->Bind();
-		m_basicDrawingData.m_shader->Bind();
-		m_basicDrawingData.m_indexBuffer->Bind();
-        GLCall(glDrawElements(GL_TRIANGLES, m_basicDrawingData.m_indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, nullptr));
-
-        Renderer::m_basicDrawingData.Flush();
-
+		drawingData.m_vertexArray->Bind();
+		drawingData.m_shader->Bind();
+		drawingData.m_indexBuffer->Bind();
+        GLCall(glDrawElements(GL_TRIANGLES, drawingData.m_indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, nullptr));
     }
 
     void Renderer::DrawQuads()

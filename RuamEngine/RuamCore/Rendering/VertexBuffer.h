@@ -1,6 +1,7 @@
 #pragma once
 
 #include "RenderingCore.h"
+#include "Vertex.h"
 
 class VertexBuffer
 {
@@ -8,19 +9,24 @@ private:
 	unsigned int m_RendererID;
 	unsigned int m_maxSize = 0;
 	unsigned int m_currentSize = 0;
+	unsigned int m_usage = GL_STATIC_DRAW;
+	std::vector<Vertex> m_vertexData = {};
 public:
 
-	VertexBuffer(const void* data, unsigned int size);
+	VertexBuffer(unsigned int maxSize, unsigned int usage);
 	~VertexBuffer();
 
 	// Should be used for buffers from the renderer batch
-	void AddBatchData(const void* data, unsigned int size);
+	void AddBatchData(const std::vector<Vertex> data, unsigned int size);
 
 	// Shouldn't be used when using batch rendering
 	void SetSubData(const void* data, unsigned int offset, unsigned int size);
 	
 	// Shouldn't be used when using batch rendering
-	void SetData(const void* data, unsigned int size, GLenum usage);
+	void SetData(const void* data);
+	
+	// Puts the data from m_vertexData into the actual buffer
+	void SubmitData();
 
 	void Flush();
 

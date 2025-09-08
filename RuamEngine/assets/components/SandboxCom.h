@@ -33,16 +33,11 @@ class SandboxCom : public BaseRenderer
 
 		//Renderer::m_basicDrawingData.m_vertexBuffer->AddBatchData(&quad, sizeof(quad));
 		//Renderer::m_basicDrawingData.m_vertexBuffer->AddBatchData(&quadB, sizeof(quadB));
-		Renderer::m_basicDrawingData.m_vertexBuffer->AddBatchData(vertices.data(), vertices.size() * sizeof(Vertex));
 		Renderer::m_basicDrawingData.m_layout->Reset();
 		Renderer::m_basicDrawingData.m_layout->Push<float>(3);
 		Renderer::m_basicDrawingData.m_layout->Push<float>(4);
 
-		Renderer::m_basicDrawingData.m_indexBuffer->AddBatchData(indices.data(), indices.size()*sizeof(unsigned int));
-
-
-		Renderer::m_basicDrawingData.m_vertexArray->AddBuffer(*Renderer::m_basicDrawingData.m_vertexBuffer, *Renderer::m_basicDrawingData.m_layout);
-
+		Renderer::m_basicDrawingData.AddBatchData(vertices, vertices.size() * sizeof(Vertex), indices, indices.size() * sizeof(unsigned int));
 		Renderer::m_basicDrawingData.m_shader = std::make_shared<Shader>("assets/shaders/GeneralVertexShader.glsl", "assets/shaders/GeneralFragmentShader.glsl");
 		Renderer::m_basicDrawingData.m_shader->Bind();
 		glm::mat4 model = glm::mat4(1.0f);
@@ -50,11 +45,12 @@ class SandboxCom : public BaseRenderer
 		Renderer::m_basicDrawingData.m_shader->SetUniformMat4f("u_view", model);
 		Renderer::m_basicDrawingData.m_shader->SetUniformMat4f("u_projection", model);
 
-		Renderer::m_basicDrawingData.m_vertexArray->Bind();
-		Renderer::m_basicDrawingData.m_shader->Bind();
-		Renderer::m_basicDrawingData.m_indexBuffer->Bind();
+		//Renderer::m_basicDrawingData.m_vertexArray->Bind();
+		//Renderer::m_basicDrawingData.m_shader->Bind();
+		//Renderer::m_basicDrawingData.m_indexBuffer->Bind();
 
-		Renderer::Draw();
+		//Renderer::Draw();
+
 		/*std::cout << "Size of vertex buffer: " << Renderer::m_basicDrawingData.m_vertexBuffer->GetSize() << "\n";
 		std::cout << "Size of index buffer: " << Renderer::m_basicDrawingData.m_indexBuffer->GetSize() << "\n";
 		std::cout << "Update function called\n";*/
