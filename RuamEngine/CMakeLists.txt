@@ -287,10 +287,20 @@ target_link_libraries(Components PUBLIC Objects Audio)
 
 # /////////////////////////////////////////////////////////////////////////////////////////////// 
 
+# Event System
+
+file (GLOB EVENTSYSTEM_SRC "${CMAKE_SOURCE_DIR}/RuamCore/EventSystem/*.cpp")
+add_library(EventSystem STATIC ${EVENTSYSTEM_SRC})
+target_link_libraries(EventSystem PUBLIC Rendering Maths)
+target_include_directories(EventSystem INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/EventSystem)
+
+
+# ///////////////////////////////////////////////////////////////////////////////////////////////
+
 # Linking
 
 target_link_libraries(RuamCore INTERFACE 
-    Rendering Maths Time Files Input Objects RuamUtils Audio Components
+    Rendering Maths Time Files Input Objects RuamUtils Audio Components EventSystem
 )
 
 
