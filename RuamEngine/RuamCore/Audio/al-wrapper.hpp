@@ -9,8 +9,17 @@
 #include "glm/glm.hpp"
 #include "AL/al.h"
 
+namespace AudioSystem {
+
 namespace AL {
-using ALerror = ALenum;
+
+void clearErrorStack();
+
+class al_error : public std::runtime_error {
+public:
+	al_error(char const* const msg) throw();
+	char const* what() const throw();
+};
 
 class Buffer;
 
@@ -18,18 +27,18 @@ class Source {
 public:
 	~Source();
 
-	ALerror generate();
+	void generate();
 	
-	ALerror setParam(ALenum param, ALfloat v);
-	ALerror setParam(ALenum param, glm::vec3& v);
-	ALerror setParam(ALenum param, ALint v);
+	void setParam(ALenum param, ALfloat v);
+	void setParam(ALenum param, glm::vec3& v);
+	void setParam(ALenum param, ALint v);
 
-	ALerror bind(const Buffer& buf);
-	ALerror bind(ALuint buf);
+	void bind(const Buffer& buf);
+	void bind(ALuint buf);
 
-	ALerror get(ALenum param, ALint* out);
+	void get(ALenum param, ALint* out);
 
-	ALerror play();
+	void play();
 
 	ALint state();
 
@@ -44,9 +53,9 @@ private:
 class Buffer {
 public:
 	~Buffer();
-	ALerror generate();
-	ALerror setData(ALenum format, char* data, ALsizei size, ALuint freq);
-	ALerror setData(ALenum format, std::vector<char> data, ALuint freq);
+	void generate();
+	void setData(ALenum format, char* data, ALsizei size, ALuint freq);
+	void setData(ALenum format, std::vector<char> data, ALuint freq);
 
 	void destroy();
 
@@ -58,11 +67,12 @@ private:
 };
 
 namespace Listener {
-ALerror setParam(ALenum param, ALfloat v);
-ALerror setParam(ALenum param, glm::vec3& v);
-ALerror setParam(ALenum param, ALint v);
+void setParam(ALenum param, ALfloat v);
+void setParam(ALenum param, glm::vec3& v);
+void setParam(ALenum param, ALint v);
 }
 
-ALerror GetError();
+void GetError();
 
+}
 }

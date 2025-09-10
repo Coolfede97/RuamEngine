@@ -1,12 +1,16 @@
 #include "Wave.hpp"
 #include <stdexcept>
 
-Wave::Wave(const char* filename, bool stereo) {
+Wave::Wave(const char* filename, bool to_mono) {
 	unsigned long long frames;
 	m_data = drwav_open_file_and_read_pcm_frames_s16(filename, &m_channels, &m_sample_rate, &m_total_samples, nullptr);
-	if (stereo) return;
-	if (m_channels != 2) 
+	if (!m_data) {
+		std::cerr << "Failure to read file " << filename << '\n';
+	}
+	if (!to_mono) return;
+	if (m_channels > 2) 
 		throw format_error("More than 2 channels is currently unsupported");
+	else if (m_channels == 1) return;
 	for (size_t i = 0; i < m_total_samples; i++) {
 		m_data[i] = 0.5 * (m_data[i*2] + m_data[i*2+1]);
 	}
@@ -15,6 +19,7 @@ Wave::Wave(const char* filename, bool stereo) {
 }
 
 Wave::Wave(const std::string& filename) : Wave(filename.c_str()) {};
+
 Wave::~Wave() {
 	drwav_uninit(&m_wav);
 	drwav_free(m_data, nullptr);

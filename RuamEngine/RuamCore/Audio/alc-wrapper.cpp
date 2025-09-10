@@ -1,7 +1,10 @@
 #include "alc-wrapper.hpp"
 #include <stdexcept>
 
+namespace AudioSystem {
+
 namespace ALC {
+
 Device::Device() {
 	m_device = nullptr;
 }
@@ -81,4 +84,5 @@ bool MakeContextCurrent(std::nullptr_t) {
 	return alcMakeContextCurrent(nullptr);
 }
 
+}
 }

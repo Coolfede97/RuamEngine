@@ -1,28 +1,47 @@
-#include "al-wrapper.hpp"
-#include "alc-wrapper.hpp"
+#include "AudioSystem.hpp"
 
 #include "Wave.hpp"
 #include <iostream>
 #include <cstdio>
 
-int main(int argc, char* argv[]) {
-	int res;
+using namespace AudioSystem;
+/*
+	Wave wave(m_audio_path.c_str(), true);
+	m_source.generate();
 
+	glm::vec3 zero(0, 0, 0);
+
+	m_source.setParam(AL_PITCH, 1);
+	m_source.setParam(AL_GAIN, 1);
+	m_source.setParam(AL_POSITION, zero);
+	m_source.setParam(AL_VELOCITY, zero);
+	m_source.setParam(AL_LOOPING, AL_FALSE);
+
+
+	m_buffer.generate();
+	m_buffer.setData(wave.openal_fmt(), reinterpret_cast<char*>(wave.data()), wave.size(), wave.rate());
+
+	m_source.bind(m_buffer);
+
+	m_source.play();
+*/
+
+int main(int argc, char* argv[]) {
 	Wave wave(argv[1], false);
 
-	ALC::Device dev(nullptr);
-
-	ALC::Context ctx(dev, nullptr);
-
-	ALC::MakeContextCurrent(ctx);
+	std::cerr << "hola\n";
+	AudioSystem::init();
+	std::cerr << "vamo\n";
 
 	glm::vec3 listPos = {0, 0, 0};
 
 	AL::Listener::setParam(AL_POSITION, listPos);
 	AL::Listener::setParam(AL_VELOCITY, listPos);
+	std::cerr << "vamo\n";
 
 	AL::Source source;
 	source.generate();
+	std::cerr << "src gen\n";
 
 	glm::vec3 sourcePos = {0, 0, 0};
 	glm::vec3 sourceVel = {0, 0, 0};
@@ -32,18 +51,19 @@ int main(int argc, char* argv[]) {
 	source.setParam(AL_POSITION, sourcePos);
 	source.setParam(AL_VELOCITY, sourceVel);
 	source.setParam(AL_LOOPING, AL_FALSE);
+	std::cerr << "src params\n";
 
 	AL::Buffer buf;
 	buf.generate();
-	res = buf.setData(wave.openal_fmt(), reinterpret_cast<char*>(wave.data()), wave.size(), wave.rate());
-	if (res != 0) {
-		std::cerr << "ERROR: COULD NOT SET DATA ";
-		fprintf(stderr, "0x%x\n", res);
-	}
+	std::cerr << "buf gen\n";
+	buf.setData(wave.openal_fmt(), reinterpret_cast<char*>(wave.data()), wave.size(), wave.rate());
+	std::cerr << "buf data\n";
 
 	source.bind(buf);
+	std::cerr << "src bind\n";
 
 	source.play();
+	std::cerr << "src play\n";
 
 	double i = 0;
 	while (source.state() == AL_PLAYING) {
@@ -57,6 +77,5 @@ int main(int argc, char* argv[]) {
 
 	source.destroy();
 	buf.destroy();
-	ctx.destroy();
-	dev.close();
+	AudioSystem::shutdown();
 }

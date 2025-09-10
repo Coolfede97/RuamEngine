@@ -1,16 +1,58 @@
 #include "AudioSource.h"
 
 void AudioSource::start() {
-	Wave wave(m_audio_path.c_str(), false);
-	m_source.generate();
+	Wave wave(m_audio_path.c_str(), true);
+	try {
+		m_source.generate();
+	} catch (AudioSystem::AL::al_error e) {
+		std::cerr << "Error generating source, " << e.what() << '\n';
+	}
 
 	glm::vec3 zero(0, 0, 0);
 
-	m_source.setParam(AL_PITCH, 1);
-	m_source.setParam(AL_GAIN, 1);
-	m_source.setParam(AL_POSITION, zero);
-	m_source.setParam(AL_VELOCITY, zero);
-	m_source.setParam(AL_LOOPING, AL_FALSE);
+	try {
+		m_source.setParam(AL_PITCH, 1);
+		m_source.setParam(AL_GAIN, 1);
+		m_source.setParam(AL_POSITION, zero);
+		m_source.setParam(AL_VELOCITY, zero);
+		m_source.setParam(AL_LOOPING, AL_FALSE);
+	} catch (AudioSystem::AL::al_error e) {
+		std::cerr << "Error setting source parameters, " << e.what() << '\n';
+	}
+
+
+	try {
+		m_buffer.generate();
+	} catch (AudioSystem::AL::al_error e) {
+		std::cerr << "Error generating buffer, " << e.what() << '\n';
+	}
+
+	try {
+		m_buffer.setData(wave.openal_fmt(), reinterpret_cast<char*>(wave.data()), wave.size(), wave.rate());
+	} catch (AudioSystem::AL::al_error e) {
+		std::cerr << "Error setting data, " << e.what() << '\n';
+		std::cerr << "Wave:\n";
+		std::cerr << "FMT: " << wave.openal_fmt() << '\n';
+		std::cerr << "Size: " << wave.size() << '\n';
+		std::cerr << "rate: " << wave.rate() << '\n';
+	}
+
+	m_source.bind(m_buffer);
+
+	m_source.play();
+}
+
+void AudioSource::update() {
+	/*std::cout << "PLAYING: " << AL_PLAYING << '\n';
+	std::cout << "State: " << m_source.state() << '\n';*/
+}
+
+void AudioSource::setAudioPath(const std::string& path) {
+	m_audio_path = path;
+}
+
+int AudioSource::status() {
+	return m_source.state();
 }
 
 /*

@@ -10,8 +10,11 @@ public:
     void start();
     void update();
 
+	void setAudioPath(const std::string& path);
+	int status();
+
 protected:
-	AL::Source m_source;
-	AL::Buffer m_buffer;
+	AudioSystem::AL::Source m_source;
+	AudioSystem::AL::Buffer m_buffer;
 	std::string m_audio_path;
 };

@@ -11,6 +11,7 @@ using namespace RuamEngine;
 int main()
 {
 	Renderer::Init();
+	AudioSystem::init();
 	
 	{
 		Input::SetWindow(Renderer::GetWindow());
@@ -51,6 +52,7 @@ int main()
 	ImGui_ImplGlfwGL3_Shutdown();
 	ImGui::DestroyContext();
 	Renderer::Shutdown();
+	AudioSystem::shutdown();
 
 	return 0;
 }

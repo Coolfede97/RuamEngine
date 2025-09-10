@@ -5,6 +5,8 @@
 #include <cstdint>
 #include <vector>
 
+namespace AudioSystem {
+
 namespace ALC {
 
 using ALCerror = uint16_t;
@@ -46,4 +48,5 @@ void GetDevices(std::vector<std::string>& devices);
 bool MakeContextCurrent(Context& ctx);
 bool MakeContextCurrent(std::nullptr_t);
 
+}
 }

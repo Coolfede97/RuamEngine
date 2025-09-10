@@ -5,6 +5,7 @@
 #include "../components/Manager.h"
 #include "../components/Counter.h"
 #include "../components/SandboxCom.h"
+#include "AudioSource.h"
 
 SceneManager::ScenePtr CreateSandboxScene()
 {
@@ -12,5 +13,6 @@ SceneManager::ScenePtr CreateSandboxScene()
 	Object& manager = testScene->newObject();
 	manager.addComponent<SandboxCom>();
 	manager.addComponent<Manager>();
+	manager.addComponent<AudioSource>().setAudioPath("/home/tomy/programming/ce/masmas/RuamEngine/RuamEngine/1 Crumbling Castle.wav");
 	return testScene;
 }
