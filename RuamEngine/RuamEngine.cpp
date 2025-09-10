@@ -55,10 +55,14 @@ int main(void)
 		testMenu->RegisterTest<test::TestMovement>("Movement Test");
 		testMenu->RegisterTest<test::Sandbox>("Sandbox");*/
 
-		while (!glfwWindowShouldClose(window))
-		{
+		while (!glfwWindowShouldClose(window)) {
 			// ImGUI
 			ImGui_ImplGlfwGL3_NewFrame();
+
+			// OpenGL
+			GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+
+			glfwPollEvents();
 
 			// Input
 			Input::UpdateInput();
@@ -66,8 +70,8 @@ int main(void)
 			// Time
 			ruamTime::Time::Update();
 
-			// OpenGL
-			GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+			// Events
+			EventManager::HandleEvents();
 
 			/*if (currentTest)
 			{
@@ -87,9 +91,6 @@ int main(void)
 			ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
 
 			glfwSwapBuffers(window);
-
-			glfwPollEvents();
-
 		}
 		/*delete currentTest;
 		if (currentTest != testMenu)
