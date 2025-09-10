@@ -18,7 +18,7 @@ void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& la
 	Bind();
 	vb.Bind();
 	const auto& elements = layout.GetElements();
-	
+
 	// The offset is the amount of bytes from the first component of the vertex to a particular one
 
 	//  E.G: 

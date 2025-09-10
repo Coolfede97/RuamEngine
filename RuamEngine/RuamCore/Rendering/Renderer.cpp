@@ -51,8 +51,8 @@ namespace RuamEngine
         {
             m_basicDrawingData.m_layout = std::make_shared<VertexBufferLayout>();
 			m_basicDrawingData.m_vertexArray = std::make_shared<VertexArray>();
-			m_basicDrawingData.m_vertexBuffer = std::make_shared<VertexBuffer>(maxVertexSize * maxVertexCount, GL_STATIC_DRAW);
-			m_basicDrawingData.m_indexBuffer = std::make_shared<IndexBuffer>(maxIndexCount, GL_STATIC_DRAW);
+			m_basicDrawingData.m_vertexBuffer = std::make_shared<VertexBuffer>(maxVertexSize * maxVertexCount, GL_DYNAMIC_DRAW);
+			m_basicDrawingData.m_indexBuffer = std::make_shared<IndexBuffer>(maxIndexCount, GL_DYNAMIC_DRAW);
             m_basicDrawingData.m_shader = std::make_shared<Shader>("assets/shaders/GeneralVertexShader.glsl", "assets/shaders/GeneralFragmentShader.glsl");
         }
 
@@ -131,8 +131,15 @@ namespace RuamEngine
 
     void Renderer::Draw(DrawingData drawingData)
     {
+        /*
+        if (drawingData.m_layout->GetElements().size() > 0)
+        {
+		    std::cout << "Layout config: " << drawingData.m_layout->GetElements()[2].type << " type\n";
+            std::cout << "Layout config: " << drawingData.m_layout->GetElements()[2].count << " count\n";
+        }
+        */
+        drawingData.m_shader->Bind();
 		drawingData.m_vertexArray->Bind();
-		drawingData.m_shader->Bind();
 		drawingData.m_indexBuffer->Bind();
         GLCall(glDrawElements(GL_TRIANGLES, drawingData.m_indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, nullptr));
     }

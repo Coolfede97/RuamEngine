@@ -20,6 +20,10 @@ class SandboxCom : public BaseRenderer
 		auto quad = Vertex::CreateQuad(-0.5, -0.5);
 		auto quadB = Vertex::CreateQuad(0.5f, 0.5f, Vec4(1.0f, 0.0f, 0.0f, 1.0f));
 
+		std::cout << "READ FROM HERE: " << quad[1].m_position << "\n";
+		std::cout << "READ FROM HERE: " << quad[1].m_color << "\n";
+
+
 		std::vector<Vertex> vertices =
 		{
 			quad[0], quad[1], quad[2], quad[3],
@@ -46,6 +50,8 @@ class SandboxCom : public BaseRenderer
 		Renderer::m_basicDrawingData.m_shader->SetUniformMat4f("u_model", model);
 		Renderer::m_basicDrawingData.m_shader->SetUniformMat4f("u_view", model);
 		Renderer::m_basicDrawingData.m_shader->SetUniformMat4f("u_projection", model);
+
+		//GLCall(glDrawElements(GL_TRIANGLES, Renderer::m_basicDrawingData.m_indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, nullptr));
 
 		//Renderer::m_basicDrawingData.m_vertexArray->Bind();
 		//Renderer::m_basicDrawingData.m_shader->Bind();

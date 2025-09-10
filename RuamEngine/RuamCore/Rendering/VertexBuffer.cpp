@@ -54,10 +54,21 @@ void VertexBuffer::SubmitData()
 void VertexBuffer::Flush()
 {
 	// CHECK IF THIS IS CORRECT
+    
+    
+
     m_vertexData.clear();
     m_currentSize = 0;
     Bind();
+
+
     GLCall(glBufferData(GL_ARRAY_BUFFER, 0, nullptr, m_usage));
+
+    float* clientData = new float[m_currentSize];
+    glGetBufferSubData(GL_ARRAY_BUFFER, 0, m_currentSize, clientData);
+    std::cout << "Client data: " << *(clientData+3) << "\n";
+
+    
 }
 
 void VertexBuffer::Bind() const
