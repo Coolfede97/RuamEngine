@@ -59,7 +59,7 @@ namespace RuamEngine
         static void BeginDraw();
         static void EndDraw();
         static void BeginBatch();
-        static void EndBatch(RuamEngine::DrawingData drawingData);
+        static void EndBatch(RuamEngine::DrawingData& drawingData);
         static void Clear();
 
         
@@ -87,7 +87,7 @@ namespace RuamEngine
 
 		static GLFWwindow* GetWindow() { return m_window; }
 
-        static void Draw(DrawingData drawingData);
+        static void Draw(DrawingData& drawingData);
 		static void DrawQuads();
 
         static DrawingData m_basicDrawingData;

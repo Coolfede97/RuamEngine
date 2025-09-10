@@ -75,8 +75,11 @@ namespace RuamEngine
     {
 
     }
-    void Renderer::EndBatch(RuamEngine::DrawingData drawingData)
+    void Renderer::EndBatch(RuamEngine::DrawingData& drawingData)
     {
+        drawingData.m_shader->Bind();
+        drawingData.m_vertexArray->Bind();
+        drawingData.m_indexBuffer->Bind();
 		drawingData.SubmitBatchData();
         Draw(drawingData);
         drawingData.Flush();
@@ -129,7 +132,7 @@ namespace RuamEngine
         }
     }
 
-    void Renderer::Draw(DrawingData drawingData)
+    void Renderer::Draw(DrawingData& drawingData)
     {
         /*
         if (drawingData.m_layout->GetElements().size() > 0)
@@ -141,6 +144,14 @@ namespace RuamEngine
         drawingData.m_shader->Bind();
 		drawingData.m_vertexArray->Bind();
 		drawingData.m_indexBuffer->Bind();
+
+        std::cout << "CURRENT SIZE: " << Renderer::m_basicDrawingData.m_vertexBuffer->GetCurrentSize() << "\n";
+        float* clientData = new float[Renderer::m_basicDrawingData.m_vertexBuffer->GetCurrentSize()];
+        glGetBufferSubData(GL_ARRAY_BUFFER, 0, Renderer::m_basicDrawingData.m_vertexBuffer->GetCurrentSize(), clientData);
+        std::cout << "Client data: " << *(clientData) << "\n";
+
+        drawingData.SubmitBatchData();
+
         GLCall(glDrawElements(GL_TRIANGLES, drawingData.m_indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, nullptr));
     }
 

@@ -51,7 +51,9 @@ class SandboxCom : public BaseRenderer
 		Renderer::m_basicDrawingData.m_shader->SetUniformMat4f("u_view", model);
 		Renderer::m_basicDrawingData.m_shader->SetUniformMat4f("u_projection", model);
 
+		//Renderer::Draw(Renderer::m_basicDrawingData);
 		//GLCall(glDrawElements(GL_TRIANGLES, Renderer::m_basicDrawingData.m_indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, nullptr));
+
 
 		//Renderer::m_basicDrawingData.m_vertexArray->Bind();
 		//Renderer::m_basicDrawingData.m_shader->Bind();

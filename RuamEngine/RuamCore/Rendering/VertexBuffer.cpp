@@ -44,30 +44,28 @@ void VertexBuffer::SetData(const void* data)
 // Puts the data from m_vertexData into the actual buffer
 void VertexBuffer::SubmitData()
 {
+
     Bind();
     std::cout << "VERTEX vector size: " << m_vertexData.size() * sizeof(m_vertexData[0]) << "\n";
     std::cout << "VERTEX Buffer size: " << m_currentSize << "\n";
 	//std::cout << "Sizes: " << sizeof(Vertex) << "---" << sizeof(float) * 7 << "\n";
+
+
     GLCall(glBufferData(GL_ARRAY_BUFFER, m_vertexData.size() * sizeof(Vertex), m_vertexData.data(), m_usage));
+	
 }
 
 void VertexBuffer::Flush()
 {
 	// CHECK IF THIS IS CORRECT
     
-    
-
+   
     m_vertexData.clear();
     m_currentSize = 0;
     Bind();
 
 
     GLCall(glBufferData(GL_ARRAY_BUFFER, 0, nullptr, m_usage));
-
-    float* clientData = new float[m_currentSize];
-    glGetBufferSubData(GL_ARRAY_BUFFER, 0, m_currentSize, clientData);
-    std::cout << "Client data: " << *(clientData+3) << "\n";
-
     
 }
 
