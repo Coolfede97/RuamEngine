@@ -14,20 +14,20 @@ public:
 	Object() : m_id(s_id_count++), m_name(s_default_name) {}
 	Object(std::string& name) : m_id(s_id_count++), m_name(name) {}
 
-	using ComponentVector = std::vector<std::shared_ptr<Component>>;
+	using ComponentVector = std::vector<std::unique_ptr<Component>>;
 	using ComponentList = std::map<std::type_index, ComponentVector>;
 
 	template<class Comp>
 	Comp& addComponent() {
-		std::shared_ptr<Comp> comp = std::make_shared<Comp>(m_id);
+		std::unique_ptr<Comp> comp = std::make_unique<Comp>(m_id);
 		const std::type_index tidx = typeid(Comp);
 		if (m_components.count(tidx) > 0) {
-			m_components[tidx].push_back(comp);
+			m_components[tidx].push_back(std::move(comp));
 		} else {
 			m_components.insert({tidx, ComponentVector()});
-			m_components[tidx].push_back(comp);
+			m_components[tidx].push_back(std::move(comp));
 		}
-		return *comp;
+		return *dynamic_cast<Comp*>(m_components[tidx].back().get());
 	}
 
 	// Returns ptr because a ref can't be null
