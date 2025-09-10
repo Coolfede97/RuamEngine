@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Component.hpp>
+#include "Component.hpp"
 #include "Renderer.h"
 #include "Vertex.h"
 #include "VertexBuffer.h"

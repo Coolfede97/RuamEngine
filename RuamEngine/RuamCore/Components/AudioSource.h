@@ -7,6 +7,8 @@ class AudioSource : public Component {
 public:
 	using Component::Component;
 
+	AudioSource(const unsigned int obj_id, const std::string& audio_path);
+
     void start();
     void update();
 

@@ -1,5 +1,7 @@
 #include "AudioSource.h"
 
+AudioSource::AudioSource(const unsigned int object_id, const std::string& audio) : m_audio_path(audio), Component(object_id) {};
+
 void AudioSource::start() {
 	Wave wave(m_audio_path.c_str(), true);
 	try {

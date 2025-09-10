@@ -4,10 +4,11 @@
 #include <memory>
 #include <map>
 #include <typeindex>
+#include <string>
+#include <algorithm>
 
 #include "Component.hpp"
 
-#include <string>
 
 class Object {
 public:
@@ -20,6 +21,19 @@ public:
 	template<class Comp>
 	Comp& addComponent() {
 		std::unique_ptr<Comp> comp = std::make_unique<Comp>(m_id);
+		const std::type_index tidx = typeid(Comp);
+		if (m_components.count(tidx) > 0) {
+			m_components[tidx].push_back(std::move(comp));
+		} else {
+			m_components.insert({tidx, ComponentVector()});
+			m_components[tidx].push_back(std::move(comp));
+		}
+		return *dynamic_cast<Comp*>(m_components[tidx].back().get());
+	}
+
+	template<class Comp, typename... Args>
+	Comp& addComponent(Args&&... args) {
+		std::unique_ptr<Comp> comp = std::make_unique<Comp>(m_id, std::forward<Args>(args...)...);
 		const std::type_index tidx = typeid(Comp);
 		if (m_components.count(tidx) > 0) {
 			m_components[tidx].push_back(std::move(comp));
