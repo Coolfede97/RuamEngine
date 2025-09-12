@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "glm/glm.hpp"
-#include "AL/al.h"
+#include "al.h"
 
 namespace AudioSystem {
 

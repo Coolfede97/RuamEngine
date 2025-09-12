@@ -1,6 +1,6 @@
 #pragma once
 
-#include "AL/alc.h"
+#include "alc.h"
 #include <string>
 #include <cstdint>
 #include <vector>

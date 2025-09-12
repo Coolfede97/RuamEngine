@@ -13,6 +13,7 @@ endif()
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 project ("RuamEngine")
+
 # Add source to this project's executable.
 add_executable (RuamEngine "RuamEngine.cpp" "RuamEngine.h")
 
@@ -179,7 +180,6 @@ target_link_libraries(Vendor INTERFACE
 target_include_directories(Vendor INTERFACE 
     ${VENDOR_PATH}/stb_image
     ${VENDOR_PATH}/IMGUI
-    ${openal-soft_SOURCE_DIR}/include
 )
 
 target_compile_definitions(Vendor INTERFACE STB_IMAGE_IMPLEMENTATION)
@@ -272,7 +272,7 @@ target_include_directories(RuamUtils INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Ruam
 file (GLOB AUDIO_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Audio/*.cpp")
 add_library(Audio STATIC ${AUDIO_SRC})
 target_include_directories(Audio INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Audio)
-target_link_libraries(Audio PUBLIC glm dr_libs)
+target_link_libraries(Audio PUBLIC glm dr_libs Vendor)
 
 
 # /////////////////////////////////////////////////////////////////////////////////////////////// 
