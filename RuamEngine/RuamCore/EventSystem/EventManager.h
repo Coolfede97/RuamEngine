@@ -6,10 +6,10 @@
 #include <memory>
 #include <unordered_map>
 
-#include "Vec2.h"
+#include "../Input/KeyCode.h"
+#include "../Input/Cursor.h"
 
-enum KeyCode;
-enum MouseCode;
+#include "Vec2.h"
 
 struct Event {
     virtual ~Event() = default;
