@@ -1,7 +1,10 @@
-#include "serialise.hpp"
 #include "Serial.hpp"
 
 using sm = SceneManager;
+
+void createA() {
+
+}
 
 class TestComponent : public Component {
 public:
@@ -15,17 +18,21 @@ public:
 };
 
 void main_serial() {
-	createA();
-	sm::ScenePtr scene = sm::ActiveScene();
-	Scene::ObjectPtr o = scene->newObject();
+	Scene s("SceneA");
+	int id = SceneManager::AddScene(&s);
+	SceneManager::SetActiveScene(id);
+
+	Scene* scene = sm::ActiveScene();
+	Object* o = scene->newObject();
 	std::string name = "My Object";
 	o->setName(name);
-	Scene::ObjectPtr o2 = scene->newObject();
+	Object* o2 = scene->newObject();
 	name = "Hola";
 	o2->setName(name);
 	Serial::serialise(scene);
 }
 
 int main() {
-	sm::ScenePtr scene = Serial::deserialise("SceneA.json");
+	main_serial();
+	return 0;
 }

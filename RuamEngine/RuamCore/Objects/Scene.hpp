@@ -17,33 +17,33 @@ public:
     
     Scene() : m_id(s_id_count++), m_name(s_default_name) {}
 
-    Scene(int id) : m_id(id), m_name(s_default_name) {}
+    Scene(const int id) : m_id(id), m_name(s_default_name) {}
 
     Scene(const std::string& name) : m_id(s_id_count++), m_name(name) {}
 
-    Scene(int id, const std::string& name) : m_id(id), m_name(name) {}
+    Scene(const int id, const std::string& name) : m_id(id), m_name(name) {}
 
-	const unsigned int id() const;
+	unsigned int id() const;
 	const std::string& name() const;
 
-    ObjectPtr newObject(); //Maybe should need a name?
-    ObjectPtr newObject(unsigned int idx);
+    Object* newObject(); //Maybe should need a name?
+    Object* newObject(unsigned int idx);
 
-    Object& getObjectByIdx(unsigned int idx) const; // FIX: return ObjectPtr
-    Object& getObjectById(unsigned int id) const;
+    Object* getObjectByIdx(unsigned int idx) const;
+    Object* getObjectById(unsigned int id) const;
 
-	ObjectPtrList& getObjects() const { return const_cast<ObjectPtrList&>(m_objects); }
+	std::list<Object*> getObjects() const { return m_objects; }
 
     void deleteObjectByIdx(unsigned int idx);
     void deleteObjectById(unsigned int idx);
 
     std::string name() { return m_name; }
 
-	void start();
-	void update();
+	void start() const;
+	void update() const;
 
 private:
-    ObjectPtrList m_objects;
+    std::list<Object*> m_objects;
 	const std::string m_name;
     const unsigned int m_id;
     static unsigned int s_id_count;

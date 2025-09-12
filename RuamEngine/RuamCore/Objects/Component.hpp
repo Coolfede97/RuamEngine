@@ -5,15 +5,15 @@ class Object;
 class Component {
 public:
 	virtual ~Component() = default;
-    Component(unsigned int obj_id) : m_object_id(obj_id), m_id(s_id_count++) {};
+    explicit Component(const unsigned int obj_id) : m_object_id(obj_id), m_id(s_id_count++) {};
 
     virtual void start() = 0;
     virtual void update() = 0;
 
-	bool operator==(const Component& other);
+	bool operator==(const Component& other) const;
 
-	unsigned int id();
-	Object* object();
+	unsigned int id() const;
+	Object* object() const;
 
 protected:
     const unsigned int m_object_id;

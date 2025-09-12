@@ -6,12 +6,12 @@
 
 using sm = SceneManager;
 
-using json = nlohmann::json; 
+using json = nlohmann::json;
 
-void to_json(json& j, const sm::ScenePtr s);
-void from_json(const json& j, sm::ScenePtr s);
+void to_json(json& j, Scene* s);
+void from_json(const json& j, Scene* s);
 
-void to_json(json& j, const Scene::ObjectPtr o);
+void to_json(json& j, Object* o);
 
 template<class Comp>
 void to_json(json& j, Comp comp) {
@@ -20,6 +20,6 @@ void to_json(json& j, Comp comp) {
 
 class Serial {
 	public:
-		static void serialise(sm::ScenePtr s);
-		static sm::ScenePtr deserialise(const std::string& filename);
+		static void serialise(Scene* s);
+		static Scene* deserialise(const std::string& filename);
 };
