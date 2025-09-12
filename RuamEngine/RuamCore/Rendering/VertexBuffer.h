@@ -10,8 +10,8 @@ private:
 	unsigned int m_maxSize = 0;
 	unsigned int m_currentSize = 0;
 	unsigned int m_usage = GL_STATIC_DRAW;
-	std::vector<Vertex> m_vertexData = {};
 public:
+	std::vector<Vertex> m_vertexData = {};
 
 	VertexBuffer(unsigned int maxSize, unsigned int usage);
 	~VertexBuffer();

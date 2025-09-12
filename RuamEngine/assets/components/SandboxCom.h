@@ -15,13 +15,14 @@ class SandboxCom : public BaseRenderer
 	// It's called in update
 	void render()
 	{
+		std::cout << "Render from component called\n";
 		Renderer::m_basicDrawingData.m_vertexArray->Bind();
 
 		auto quad = Vertex::CreateQuad(-0.5, -0.5);
 		auto quadB = Vertex::CreateQuad(0.5f, 0.5f, Vec4(1.0f, 0.0f, 0.0f, 1.0f));
 
-		std::cout << "READ FROM HERE: " << quad[1].m_position << "\n";
-		std::cout << "READ FROM HERE: " << quad[1].m_color << "\n";
+		/*std::cout << "READ FROM HERE: " << quad[1].m_position << "\n";
+		std::cout << "READ FROM HERE: " << quad[1].m_color << "\n";*/
 
 
 		std::vector<Vertex> vertices =
@@ -44,14 +45,15 @@ class SandboxCom : public BaseRenderer
 		Renderer::m_basicDrawingData.m_layout->Push<float>(4);
 
 		Renderer::m_basicDrawingData.AddBatchData(vertices, vertices.size() * sizeof(Vertex), indices, indices.size() * sizeof(unsigned int));
-		Renderer::m_basicDrawingData.m_shader = std::make_shared<Shader>("assets/shaders/GeneralVertexShader.glsl", "assets/shaders/GeneralFragmentShader.glsl");
 		Renderer::m_basicDrawingData.m_shader->Bind();
 		glm::mat4 model = glm::mat4(1.0f);
 		Renderer::m_basicDrawingData.m_shader->SetUniformMat4f("u_model", model);
 		Renderer::m_basicDrawingData.m_shader->SetUniformMat4f("u_view", model);
 		Renderer::m_basicDrawingData.m_shader->SetUniformMat4f("u_projection", model);
 
-		//Renderer::Draw(Renderer::m_basicDrawingData);
+		//Renderer::m_basicDrawingData.m_vertexArray->AddBuffer(*Renderer::m_basicDrawingData.m_vertexBuffer, *Renderer::m_basicDrawingData.m_layout);
+
+		Renderer::Draw(Renderer::m_basicDrawingData);
 		//GLCall(glDrawElements(GL_TRIANGLES, Renderer::m_basicDrawingData.m_indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, nullptr));
 
 
