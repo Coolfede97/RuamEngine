@@ -68,8 +68,8 @@ namespace RuamEngine
     }
     void Renderer::EndDraw()
     {
-        glfwSwapBuffers(m_window);
         EndBatch(m_basicDrawingData);
+        glfwSwapBuffers(m_window);
     }
     void Renderer::BeginBatch()
     {
@@ -154,6 +154,7 @@ namespace RuamEngine
         }
     */
         //drawingData.SubmitBatchData();
+
         GLCall(glDrawElements(GL_TRIANGLES, drawingData.m_indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, nullptr));
     }
 
