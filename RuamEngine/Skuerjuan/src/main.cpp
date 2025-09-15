@@ -33,6 +33,8 @@ void main_serial() {
 }
 
 int main() {
-	main_serial();
-	return 0;
+	auto s = Serial::deserialise("SceneA.json");
+	s->getObjectById(0)->addComponent<TestComponent>();
+	s->start();
+	sm::RemoveScene(s->id());
 }

@@ -20,6 +20,16 @@ unsigned int SceneManager::AddScene(Scene* scene) {
 	return s_scenes.size()-1;
 }
 
+Scene* SceneManager::CreateScene(const unsigned int id, const std::string& name) {
+	Scene *s = new Scene(id, name);
+	AddScene(s);
+	return s;
+}
+
+void SceneManager::RemoveScene(const int id) {
+	s_scenes.erase(s_scenes.begin() + id);
+}
+
 SceneManager::ScenePtr SceneManager::EmptyScene() {
 	return std::move(std::make_unique<Scene>());
 }

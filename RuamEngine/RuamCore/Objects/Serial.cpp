@@ -2,7 +2,7 @@
 #include <fstream>
 
 void to_json(json& j, Scene* s) {
-
+    std::cout << "Serialising scene " << s->name() << std::endl;
     json serialisedObjects = json::array();
     json o;
     for (Object* obj : s->getObjects()) {
@@ -15,10 +15,6 @@ void to_json(json& j, Scene* s) {
         {"name", s->name()},
         {"objects", serialisedObjects}
     };
-
-	std::string filename = s->name() + ".json";
-	std::ofstream file(filename);
-	file << j.dump(4);
 }
 
 void to_json(json& j, Object* o) {
@@ -38,25 +34,26 @@ void from_json(const json& j, Scene* s) {
 
 void Serial::serialise(Scene* s) {
     json j = s;
+    std::string filename = s->name() + ".json";
+    std::cout << "Writing to " << filename << std::endl;
+    std::ofstream file(filename);
+    std::cout << j.dump(4) << std::endl;
+    file << j.dump(4);
 }
 
 Scene* Serial::deserialise(const std::string &filename) {
-	return nullptr;
-}
+    std::ifstream file(filename);
+    json j;
+    file >> j;
+    int id = j["id"];
+    const std::string name = j["name"];
+    Scene *s = sm::CreateScene(id, name);
+    sm::SetActiveScene(id);
 
-// sm::ScenePtr Serial::deserialise(const std::string& filename) {
-//     std::ifstream file(filename);
-//     json j;
-//     file >> j;
-// 	int id = j["id"];
-// 	const std::string name = j["name"];
-//     sm::AddScene(0, [id, name]() -> sm::ScenePtr { //send help
-//         Scene s(id, name);
-//         sm::ScenePtr scene = std::make_unique<Scene>(s);
-//         return std::move(scene);
-//     });
-// 	sm::SetActiveScene(0);
-// 	sm::ScenePtr scene = sm::ActiveScene();
-//     scene = j;
-// 	return scene;
-// }
+    for (const auto& obj : j["objects"]) {
+        Object *o = s->newObject(obj["id"]);
+        std::string objName = obj["name"];
+        o->setName(objName);
+    }
+	return sm::ActiveScene();
+}

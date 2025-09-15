@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Scene.hpp"
-#include <unordered_map>
 
 class SceneManager {
 public:
@@ -17,6 +16,10 @@ public:
 
 	/* Returns idx */
 	static unsigned int AddScene(Scene* scene);
+
+	static Scene* CreateScene(unsigned int id, const std::string& name);
+
+	static void RemoveScene(int id);
 
 	static ScenePtr EmptyScene();
 
