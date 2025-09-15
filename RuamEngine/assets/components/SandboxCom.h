@@ -53,7 +53,7 @@ class SandboxCom : public BaseRenderer
 
 		//Renderer::m_basicDrawingData.m_vertexArray->AddBuffer(*Renderer::m_basicDrawingData.m_vertexBuffer, *Renderer::m_basicDrawingData.m_layout);
 
-		Renderer::Draw(Renderer::m_basicDrawingData);
+		//Renderer::Draw(Renderer::m_basicDrawingData);
 		//GLCall(glDrawElements(GL_TRIANGLES, Renderer::m_basicDrawingData.m_indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, nullptr));
 
 

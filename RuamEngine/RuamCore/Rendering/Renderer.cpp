@@ -77,8 +77,8 @@ namespace RuamEngine
     }
     void Renderer::EndBatch(RuamEngine::DrawingData& drawingData)
     {
-		//drawingData.SubmitBatchData();
-        //Draw(drawingData);
+		drawingData.SubmitBatchData();
+        Draw(drawingData);
         drawingData.Flush();
     }
     void Renderer::Clear()
@@ -153,7 +153,7 @@ namespace RuamEngine
             std::cout << "MIRA ESTO 같같같같같같같같같같같같같같같같같 " << m_basicDrawingData.m_vertexBuffer->m_vertexData[0].m_position << "\n";
         }
     */
-        drawingData.SubmitBatchData();
+        //drawingData.SubmitBatchData();
         GLCall(glDrawElements(GL_TRIANGLES, drawingData.m_indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, nullptr));
     }
 
