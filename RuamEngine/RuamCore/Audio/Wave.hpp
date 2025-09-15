@@ -15,8 +15,9 @@ public:
 
 class Wave {
 public:
-	Wave(const char* filename, bool stereo=false);
-	Wave(const std::string& filename);
+	Wave(const char* filename, bool to_mono=false);
+	Wave(const std::string& filename, bool to_mono=false);
+	Wave();
 	~Wave();
 
 	ALenum openal_fmt() const;

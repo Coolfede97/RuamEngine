@@ -18,7 +18,9 @@ Wave::Wave(const char* filename, bool to_mono) {
 	m_channels = 1;
 }
 
-Wave::Wave(const std::string& filename) : Wave(filename.c_str()) {};
+Wave::Wave(const std::string& filename, bool to_mono) : Wave(filename.c_str(), to_mono) {};
+
+Wave::Wave() {}
 
 Wave::~Wave() {
 	drwav_uninit(&m_wav);
