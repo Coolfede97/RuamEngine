@@ -20,6 +20,9 @@ namespace RuamEngine
 	void DrawingData::AddBatchData(const std::vector<Vertex> vertices, unsigned int vertexDataSize, const std::vector<unsigned int> indices, unsigned int indexDataSize)
 	{
 		std::cout << "AddBatchData called\n";
+
+		ASSERT(vertexDataSize <= m_vertexBuffer->GetMaxSize() || indexDataSize <= m_indexBuffer->GetMaxSize());
+		
 		if (m_vertexBuffer->GetCurrentSize() + vertexDataSize > m_vertexBuffer->GetMaxSize() 
 			||
 			m_indexBuffer->GetCurrentSize() + indexDataSize > m_indexBuffer->GetMaxSize())

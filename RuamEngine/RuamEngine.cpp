@@ -3,7 +3,7 @@
 #include "RuamEngine.h"
 
 #include "assets/scenes/MenuScene.cpp"
-#include "assets/scenes/SandboxScene.cpp"
+#include "assets/scenes/SandboxScenes.cpp"
 #include "assets/components/Manager.h"
 
 using namespace RuamEngine;

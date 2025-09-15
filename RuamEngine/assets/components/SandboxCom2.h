@@ -8,10 +8,10 @@
 
 using namespace RuamEngine;
 
-class SandboxCom : public BaseRenderer
+class SandboxCom2 : public BaseRenderer
 {
 	using BaseRenderer::BaseRenderer;
-	
+
 	// It's called in update
 	void render()
 	{
@@ -21,11 +21,18 @@ class SandboxCom : public BaseRenderer
 		auto quad = Vertex::CreateQuad(-0.5, -0.5);
 		auto quadB = Vertex::CreateQuad(0.5f, 0.5f, Vec4(1.0f, 0.0f, 0.0f, 1.0f));
 
-		std::vector<Vertex> vertices;
-		std::vector<unsigned int> indices;
+		std::vector<Vertex> vertices =
+		{
+			quad[0], quad[1], quad[2], quad[3],
+			quadB[0], quadB[1], quadB[2], quadB[3]
+		};
 
-		vertices.reserve(50000 * 4);
-		indices.reserve(50000 * 6);
+		std::vector<unsigned int> indices = {
+			0, 1, 2,
+			2, 3, 0,
+			4, 5, 6,
+			6, 7, 4
+		};
 
 		Renderer::m_basicDrawingData.m_layout->Reset();
 		Renderer::m_basicDrawingData.m_layout->Push<float>(3);
@@ -36,9 +43,9 @@ class SandboxCom : public BaseRenderer
 		glm::mat4 model = glm::mat4(1.0f);
 		Renderer::m_basicDrawingData.m_shader->SetUniformMat4f("u_model", model);
 		Renderer::m_basicDrawingData.m_shader->SetUniformMat4f("u_view", model);
-		Renderer::m_basicDrawingData.m_shader->SetUniformMat4f("u_projection", model);	
+		Renderer::m_basicDrawingData.m_shader->SetUniformMat4f("u_projection", model);
 	};
-	void update() 
+	void update()
 	{
 		render();
 	};

@@ -132,28 +132,9 @@ namespace RuamEngine
     void Renderer::Draw(DrawingData& drawingData)
     {
         std::cout << "Draw called\n";
-        /*
-        if (drawingData.m_layout->GetElements().size() > 0)
-        {
-            std::cout << "Layout config: " << drawingData.m_layout->GetElements()[2].type << " type\n";
-            std::cout << "Layout config: " << drawingData.m_layout->GetElements()[2].count << " count\n";
-        }
-        */
         drawingData.m_shader->Bind();
         drawingData.m_vertexArray->Bind();
         drawingData.m_indexBuffer->Bind();
-
-        /*std::cout << "CURRENT SIZE: " << Renderer::m_basicDrawingData.m_vertexBuffer->GetCurrentSize() << "\n";
-        float* clientData = new float[Renderer::m_basicDrawingData.m_vertexBuffer->GetCurrentSize()];
-        glGetBufferSubData(GL_ARRAY_BUFFER, 0, Renderer::m_basicDrawingData.m_vertexBuffer->GetCurrentSize(), clientData);
-        std::cout << "Client data: " << *(clientData + 2) << "\n";
-
-        if (m_basicDrawingData.m_vertexBuffer->m_vertexData.size() > 1)
-        {
-            std::cout << "MIRA ESTO 같같같같같같같같같같같같같같같같같 " << m_basicDrawingData.m_vertexBuffer->m_vertexData[0].m_position << "\n";
-        }
-    */
-        //drawingData.SubmitBatchData();
 
         GLCall(glDrawElements(GL_TRIANGLES, drawingData.m_indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, nullptr));
     }
