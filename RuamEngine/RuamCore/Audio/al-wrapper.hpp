@@ -39,6 +39,8 @@ public:
 	void get(ALenum param, ALint* out);
 
 	void play();
+	void stop();
+	void pause();
 
 	ALint state();
 

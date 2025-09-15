@@ -48,6 +48,16 @@ void Source::play() {
 	GetError();
 }
 
+void Source::stop() {
+	alSourceStop(m_id);
+	GetError();
+}
+
+void Source::pause() {
+	alSourcePause(m_id);
+	GetError();
+}
+
 void Source::destroy() {
 	alDeleteSources(1, &m_id);
 }
