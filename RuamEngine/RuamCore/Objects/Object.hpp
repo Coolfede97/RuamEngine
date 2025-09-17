@@ -8,12 +8,13 @@
 #include <algorithm>
 
 #include "Component.hpp"
+#include "Transform.h"
 
 
 class Object {
 public:
-	Object() : m_id(s_id_count++), m_name(s_default_name) {}
-	Object(std::string& name) : m_id(s_id_count++), m_name(name) {}
+	Object(const std::string& name) : m_id(s_id_count++), m_name(name), m_transform(m_id) {}
+	Object() : Object(s_default_name) {}
 
 	using ComponentVector = std::vector<std::unique_ptr<Component>>;
 	using ComponentList = std::map<std::type_index, ComponentVector>;
@@ -80,10 +81,13 @@ public:
 
 	void destroy();
 
+	Transform& transform();
+
 private:
 	unsigned int m_id;
 	static unsigned int s_id_count;
     std::string m_name;
+	Transform m_transform;
 
 	ComponentList m_components;
 

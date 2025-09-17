@@ -229,13 +229,6 @@ add_library(Time STATIC ${TIME_SRC})
 target_link_libraries(Time PUBLIC glfw)
 target_include_directories(Time INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Time)
 
-# ///////////////////////////////////////////////////////////////////////////////////////////////
-
-# Objects
-
-file (GLOB OBJECTS_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Objects/*.cpp")
-add_library(Objects STATIC ${OBJECTS_SRC})
-target_include_directories(Objects INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Objects)
 
 # ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -275,14 +268,15 @@ target_include_directories(Audio INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Audio)
 target_link_libraries(Audio PUBLIC glm dr_libs Vendor)
 
 
-# /////////////////////////////////////////////////////////////////////////////////////////////// 
+# ///////////////////////////////////////////////////////////////////////////////////////////////
 
-# Audio
+# Objects
 
+file (GLOB OBJECTS_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Objects/*.cpp")
 file (GLOB COMPONENTS_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Components/*.cpp")
-add_library(Components STATIC ${COMPONENTS_SRC})
-target_include_directories(Components INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Components)
-target_link_libraries(Components PUBLIC Objects Audio)
+add_library(Objects STATIC ${OBJECTS_SRC} ${COMPONENTS_SRC})
+target_include_directories(Objects PUBLIC ${CMAKE_SOURCE_DIR}/RuamCore/Objects ${CMAKE_SOURCE_DIR}/RuamCore/Components)
+target_link_libraries(Objects PUBLIC Audio)
 
 
 # /////////////////////////////////////////////////////////////////////////////////////////////// 
@@ -300,7 +294,7 @@ target_include_directories(EventSystem INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Ev
 # Linking
 
 target_link_libraries(RuamCore INTERFACE 
-    Rendering Maths Time Files Input Objects RuamUtils Audio Components EventSystem
+    Rendering Maths Time Files Input Objects RuamUtils Audio EventSystem
 )
 
 

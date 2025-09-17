@@ -5,6 +5,7 @@
 #include "SceneManager.hpp"
 #include "imgui.h"
 #include "Manager.h"
+#include "DebugUtils.h"
 
 #include <iostream>
 
@@ -19,6 +20,7 @@ public:
 	void update() {
 		count++;
 		std::cout << count << "\n";
-		std::cout << object()->name() << "\n";
+		std::cout << object()->transform().position() << "\n";
+		object()->transform().setPosition(0, count/3.14, 3);
 	}
 };

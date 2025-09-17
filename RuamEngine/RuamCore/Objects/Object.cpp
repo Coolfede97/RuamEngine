@@ -44,3 +44,7 @@ void Object::destroy() {
 		comp_v.second.clear();
 	}
 }
+
+Transform& Object::transform() {
+	return m_transform;
+}
