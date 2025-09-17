@@ -70,8 +70,7 @@ void AudioSource::stop() {
 }
 
 void AudioSource::update() {
-	/*std::cout << "PLAYING: " << AL_PLAYING << '\n';
-	std::cout << "State: " << m_source.state() << '\n';*/
+//	m_source.setParam(AL_POSITION, object()->transform().position()); FIX: NOT working
 }
 
 int AudioSource::status() {

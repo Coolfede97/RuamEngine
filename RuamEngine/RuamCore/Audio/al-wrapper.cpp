@@ -21,7 +21,7 @@ void Source::setParam(ALenum param, ALfloat v) {
 	GetError();
 }
 
-void Source::setParam(ALenum param, glm::vec3& v) {
+void Source::setParam(ALenum param, const glm::vec3& v) {
 	alSource3f(m_id, param, v.x, v.y, v.z);
 	GetError();
 }
