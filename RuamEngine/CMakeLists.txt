@@ -17,6 +17,8 @@ project ("RuamEngine")
 # Add source to this project's executable.
 add_executable (RuamEngine "RuamEngine.cpp" "RuamEngine.h")
 
+add_compile_options(-O2 -gdwarf-3)
+
 include(FetchContent)
 include(FindOpenGL)
 
@@ -293,18 +295,12 @@ target_include_directories(EventSystem INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Ev
 
 # Linking
 
+target_compile_options(Audio PUBLIC -O2)
+target_compile_options(Objects PUBLIC -O2)
+
 target_link_libraries(RuamCore INTERFACE 
     Rendering Maths Time Files Input Objects RuamUtils Audio EventSystem
 )
-
-
-# -----------------------------------------------------------------------------------------------------
-#######################################################################################################
-#######################################################################################################
-# -----------------------------------------------------------------------------------------------------
-
-
-target_link_libraries(RuamEngine PRIVATE RuamCore)
 
 # -----------------------------------------------------------------------------------------------------
 #######################################################################################################

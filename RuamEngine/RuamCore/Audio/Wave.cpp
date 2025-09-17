@@ -2,7 +2,6 @@
 #include <stdexcept>
 
 Wave::Wave(const char* filename, bool to_mono) {
-	unsigned long long frames;
 	m_data = drwav_open_file_and_read_pcm_frames_s16(filename, &m_channels, &m_sample_rate, &m_total_samples, nullptr);
 	if (!m_data) {
 		std::cerr << "Failure to read file " << filename << '\n';
@@ -23,7 +22,6 @@ Wave::Wave(const std::string& filename, bool to_mono) : Wave(filename.c_str(), t
 Wave::Wave() {}
 
 Wave::~Wave() {
-	drwav_uninit(&m_wav);
 	drwav_free(m_data, nullptr);
 }
 

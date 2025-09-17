@@ -44,16 +44,16 @@ const AudioSystem::AL::Source& AudioSource::source() const {
 
 void AudioSource::load(const std::string& path) {
 	m_audio_path = path;
-	Wave wave(m_audio_path.c_str(), true);
+	m_wave = std::make_unique<Wave>(m_audio_path.c_str(), true);
 
 	try {
-		m_buffer.setData(wave.openal_fmt(), reinterpret_cast<char*>(wave.data()), wave.size(), wave.rate());
+		m_buffer.setData(m_wave->openal_fmt(), reinterpret_cast<char*>(m_wave->data()), m_wave->size(), m_wave->rate());
 	} catch (AudioSystem::AL::al_error e) {
 		std::cerr << "Error setting data, " << e.what() << '\n';
 		std::cerr << "Wave:\n";
-		std::cerr << "FMT: " << wave.openal_fmt() << '\n';
-		std::cerr << "Size: " << wave.size() << '\n';
-		std::cerr << "rate: " << wave.rate() << '\n';
+		std::cerr << "FMT: " << m_wave->openal_fmt() << '\n';
+		std::cerr << "Size: " << m_wave->size() << '\n';
+		std::cerr << "rate: " << m_wave->rate() << '\n';
 	}
 }
 
@@ -70,7 +70,11 @@ void AudioSource::stop() {
 }
 
 void AudioSource::update() {
-//	m_source.setParam(AL_POSITION, object()->transform().position()); FIX: NOT working
+	try {
+		m_source.setParam(AL_POSITION, object()->transform().position()); // FIX: NOT working
+	} catch(AudioSystem::AL::al_error err) {
+
+	}
 }
 
 int AudioSource::status() {

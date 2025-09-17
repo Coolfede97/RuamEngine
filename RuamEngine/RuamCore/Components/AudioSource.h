@@ -26,4 +26,5 @@ protected:
 	AudioSystem::AL::Source m_source;
 	AudioSystem::AL::Buffer m_buffer;
 	std::string m_audio_path;
+	std::unique_ptr<Wave> m_wave;
 };

@@ -27,7 +27,6 @@ public:
 	uint32_t channels() const;
 
 private:
-	drwav m_wav;
 	int16_t* m_data;
 	uint32_t m_channels;
 	uint32_t m_sample_rate;
