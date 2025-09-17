@@ -1,9 +1,8 @@
 #include "Vertex.h"
 
 
-std::array<Vertex, 4> Vertex::CreateQuad(float x, float y, Vec4 color)
+std::array<Vertex, 4> Vertex::CreateQuad(float size, float x, float y, Vec4 color)
 {
-	float size = 1.0f;
 	float half = size / 2;
 	Vertex v0;
 	v0.m_position = { x - half, y - half, 0.0f };

@@ -6,7 +6,7 @@ struct Vertex
 {
 	Vec3 m_position;  // x, y, z	
 	Vec4 m_color;    // r, g, b, a
-	static std::array<Vertex, 4> CreateQuad(float x = 0, float y = 0, Vec4 color = Vec4(0.49f, 0.55f, 0.52f, 1.0f));
+	static std::array<Vertex, 4> CreateQuad(float size, float x = 0, float y = 0, Vec4 color = Vec4(0.49f, 0.55f, 0.52f, 1.0f));
 };
 
 struct VertexWithTex

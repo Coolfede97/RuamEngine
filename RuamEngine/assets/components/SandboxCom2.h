@@ -15,7 +15,7 @@ class SandboxCom2 : public BaseRenderer
 	// It's called in update
 	void render()
 	{
-		std::cout << "Render from component called\n";
+		/*std::cout << "Render from component called\n";
 		Renderer::m_basicDrawingData.m_vertexArray->Bind();
 
 		auto quad = Vertex::CreateQuad(-0.5, -0.5);
@@ -43,7 +43,7 @@ class SandboxCom2 : public BaseRenderer
 		glm::mat4 model = glm::mat4(1.0f);
 		Renderer::m_basicDrawingData.m_shader->SetUniformMat4f("u_model", model);
 		Renderer::m_basicDrawingData.m_shader->SetUniformMat4f("u_view", model);
-		Renderer::m_basicDrawingData.m_shader->SetUniformMat4f("u_projection", model);
+		Renderer::m_basicDrawingData.m_shader->SetUniformMat4f("u_projection", model);*/
 	};
 	void update()
 	{
