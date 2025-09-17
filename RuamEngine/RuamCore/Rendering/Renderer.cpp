@@ -23,6 +23,7 @@ namespace RuamEngine
     RendererConfig Renderer::m_config;
     DrawingData Renderer::m_basicDrawingData;
 	GLFWwindow* Renderer::m_window = nullptr;
+    std::unordered_map<int, DrawingData> Renderer::m_drawingDataMap;
     void Renderer::Init()
     {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -49,11 +50,13 @@ namespace RuamEngine
 
 
         {
+			DrawingData basicDrawingData = *(new DrawingData());
             m_basicDrawingData.m_layout = std::make_shared<VertexBufferLayout>();
 			m_basicDrawingData.m_vertexArray = std::make_shared<VertexArray>();
 			m_basicDrawingData.m_vertexBuffer = std::make_shared<VertexBuffer>(maxVertexSize * maxVertexCount, GL_DYNAMIC_DRAW);
 			m_basicDrawingData.m_indexBuffer = std::make_shared<IndexBuffer>(maxIndexCount, GL_DYNAMIC_DRAW);
             m_basicDrawingData.m_shader = std::make_shared<Shader>("assets/shaders/GeneralVertexShader.glsl", "assets/shaders/GeneralFragmentShader.glsl");
+			m_drawingDataMap[0] = m_basicDrawingData;
         }
 
     }
@@ -61,27 +64,27 @@ namespace RuamEngine
     {
         glfwTerminate();
     }
-    void Renderer::BeginDraw()
-    {
-        Clear();
-
-    }
-    void Renderer::EndDraw()
-    {
-        EndBatch(m_basicDrawingData);
-        glfwSwapBuffers(m_window);
-    }
     void Renderer::BeginBatch()
     {
-
+        Flush();
+        glfwSwapBuffers(m_window);
     }
-    void Renderer::EndBatch(RuamEngine::DrawingData& drawingData)
+    void Renderer::EndBatch()
     {
-		drawingData.SubmitBatchData();
-        Draw(drawingData);
-        drawingData.Flush();
+        for (auto& pair : m_drawingDataMap)
+        {
+            pair.second.SubmitBatchData();
+        }
     }
-    void Renderer::Clear()
+    void Renderer::Flush()
+    {
+        for (auto& pair : m_drawingDataMap)
+        {
+            pair.second.Flush();
+        }
+    }
+
+    void Renderer::ClearScreen()
     {
         if (m_config.useClearColor) GLCall(glClear(GL_COLOR_BUFFER_BIT));
 		if (m_config.depthTest) GLCall(glClear(GL_DEPTH_BUFFER_BIT));
@@ -129,14 +132,16 @@ namespace RuamEngine
         }
     }
 
-    void Renderer::Draw(DrawingData& drawingData)
+    void Renderer::Draw()
     {
         std::cout << "Draw called\n";
-        drawingData.m_shader->Bind();
-        drawingData.m_vertexArray->Bind();
-        drawingData.m_indexBuffer->Bind();
-
-        GLCall(glDrawElements(GL_TRIANGLES, drawingData.m_indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, nullptr));
+        for (auto& pair : m_drawingDataMap)
+        {
+            pair.second.m_shader->Bind();
+            pair.second.m_vertexArray->Bind();
+            pair.second.m_indexBuffer->Bind();
+            GLCall(glDrawElements(GL_TRIANGLES, pair.second.m_indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, nullptr));
+        }
     }
 
     void Renderer::DrawQuads()

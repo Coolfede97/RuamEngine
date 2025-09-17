@@ -8,6 +8,8 @@
 #include "DrawingData.h"
 #include "Shader.h"
 
+#include <unordered_map>
+
 class VertexBuffer;
 class VertexArray;
 class IndexBuffer;
@@ -56,12 +58,10 @@ namespace RuamEngine
         
         static void Init();
         static void Shutdown();
-        static void BeginDraw();
-        static void EndDraw();
         static void BeginBatch();
-        static void EndBatch(RuamEngine::DrawingData& drawingData);
-        static void Clear();
-
+        static void EndBatch();
+        static void ClearScreen();
+        static void Flush();
         
 		// Setters for RendererConfig
         static void SetWindowSize(int width, int height);
@@ -87,10 +87,11 @@ namespace RuamEngine
 
 		static GLFWwindow* GetWindow() { return m_window; }
 
-        static void Draw(DrawingData& drawingData);
+        static void Draw();
 		static void DrawQuads();
 
         static DrawingData m_basicDrawingData;
+        static std::unordered_map<int, DrawingData> m_drawingDataMap;
     private:
         static RendererConfig m_config;
         static GLFWwindow* m_window;

@@ -15,35 +15,54 @@ class SandboxCom2 : public BaseRenderer
 	// It's called in update
 	void render()
 	{
-		/*std::cout << "Render from component called\n";
+		std::cout << "Render from component called\n";
 		Renderer::m_basicDrawingData.m_vertexArray->Bind();
 
-		auto quad = Vertex::CreateQuad(-0.5, -0.5);
-		auto quadB = Vertex::CreateQuad(0.5f, 0.5f, Vec4(1.0f, 0.0f, 0.0f, 1.0f));
+		int gridSide = 20; // k*k grid
+		float padding = 0.1f;
+		float screenX = 2.0f;
+		float screenY = 2.0f;
 
-		std::vector<Vertex> vertices =
-		{
-			quad[0], quad[1], quad[2], quad[3],
-			quadB[0], quadB[1], quadB[2], quadB[3]
-		};
+		float quadWidth = screenX / gridSide - padding / 2;
+		float quadHeight = screenY / gridSide - padding / 2;
 
-		std::vector<unsigned int> indices = {
-			0, 1, 2,
-			2, 3, 0,
-			4, 5, 6,
-			6, 7, 4
-		};
+		std::vector<Vertex> vertices;
+		std::vector<unsigned int> indices;
 
-		Renderer::m_basicDrawingData.m_layout->Reset();
-		Renderer::m_basicDrawingData.m_layout->Push<float>(3);
-		Renderer::m_basicDrawingData.m_layout->Push<float>(4);
+		/*vertices.reserve(50000 * 4);
+		indices.reserve(50000 * 6);*/
 
-		Renderer::m_basicDrawingData.AddBatchData(vertices, vertices.size() * sizeof(Vertex), indices, indices.size() * sizeof(unsigned int));
+		
+
 		Renderer::m_basicDrawingData.m_shader->Bind();
 		glm::mat4 model = glm::mat4(1.0f);
 		Renderer::m_basicDrawingData.m_shader->SetUniformMat4f("u_model", model);
 		Renderer::m_basicDrawingData.m_shader->SetUniformMat4f("u_view", model);
-		Renderer::m_basicDrawingData.m_shader->SetUniformMat4f("u_projection", model);*/
+		Renderer::m_basicDrawingData.m_shader->SetUniformMat4f("u_projection", model);
+
+		for (int row = 0; row < gridSide; ++row)
+		{
+			for (int col = 0; col < gridSide; ++col)
+			{
+				auto newQuad = Vertex::CreateQuad
+				(
+					quadWidth,
+					col * (screenX / gridSide - 0.5f * padding) + col * padding + quadWidth / 2 - screenX / 2,
+					row * (screenY / gridSide - 0.5f * padding) + row * padding + quadHeight / 2 - screenY / 2
+				);
+				vertices.insert(vertices.end(), newQuad.begin(), newQuad.end());
+
+				Renderer::m_basicDrawingData.m_vertexBuffer->SetData(vertices.data());
+
+				Renderer::m_basicDrawingData.m_layout->Reset();
+				Renderer::m_basicDrawingData.m_layout->Push<float>(3);
+				Renderer::m_basicDrawingData.m_layout->Push<float>(4);
+
+				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
+				vertices.clear();
+			}
+		}
 	};
 	void update()
 	{

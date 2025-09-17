@@ -21,6 +21,7 @@ int main()
 		const unsigned int menuScene = SceneManager::AddScene(0, CreateMenuScene);
 		SceneManager::SetActiveScene(menuScene);
 		const unsigned int sandboxScene = SceneManager::AddScene(1, CreateSandboxScene);
+		const unsigned int sandboxScene2 = SceneManager::AddScene(2, CreateSandboxScene2);
 
 		int frameCount = 0;
 
@@ -36,16 +37,19 @@ int main()
 			// Time
 			ruamTime::Time::Update();
 
-			Renderer::BeginDraw();
+			Renderer::ClearScreen();
+			Renderer::BeginBatch();
 
 			if (SceneManager::ActiveScene() != nullptr)
 			{
 				SceneManager::ActiveScene()->update();
 			}
+			
+			Renderer::EndBatch();
+			Renderer::Draw();
+
 			ImGui::Render();
 			ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
-
-			Renderer::EndDraw();
 
 			glfwPollEvents();
 		}
