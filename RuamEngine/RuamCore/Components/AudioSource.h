@@ -15,6 +15,13 @@ public:
 	void setAudioPath(const std::string& path);
 	int status();
 
+	void load(const std::string& path);
+
+	const AudioSystem::AL::Source& source() const;
+
+	void play();
+	void pause();
+	void stop();
 protected:
 	AudioSystem::AL::Source m_source;
 	AudioSystem::AL::Buffer m_buffer;

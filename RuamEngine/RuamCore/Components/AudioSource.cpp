@@ -1,9 +1,11 @@
 #include "AudioSource.h"
 
-AudioSource::AudioSource(const unsigned int object_id, const std::string& audio) : m_audio_path(audio), Component(object_id) {};
+AudioSource::AudioSource(const unsigned int object_id, const std::string& audio) 
+	: m_audio_path(audio), Component(object_id) {
+
+}
 
 void AudioSource::start() {
-	Wave wave(m_audio_path.c_str(), true);
 	try {
 		m_source.generate();
 	} catch (AudioSystem::AL::al_error e) {
@@ -29,6 +31,21 @@ void AudioSource::start() {
 		std::cerr << "Error generating buffer, " << e.what() << '\n';
 	}
 
+	load(m_audio_path);
+
+	m_source.bind(m_buffer);
+
+	play();
+}
+
+const AudioSystem::AL::Source& AudioSource::source() const {
+	return m_source;
+}
+
+void AudioSource::load(const std::string& path) {
+	m_audio_path = path;
+	Wave wave(m_audio_path.c_str(), true);
+
 	try {
 		m_buffer.setData(wave.openal_fmt(), reinterpret_cast<char*>(wave.data()), wave.size(), wave.rate());
 	} catch (AudioSystem::AL::al_error e) {
@@ -38,19 +55,23 @@ void AudioSource::start() {
 		std::cerr << "Size: " << wave.size() << '\n';
 		std::cerr << "rate: " << wave.rate() << '\n';
 	}
+}
 
-	m_source.bind(m_buffer);
-
+void AudioSource::play() {
 	m_source.play();
+}
+
+void AudioSource::pause() {
+	m_source.pause();
+}
+
+void AudioSource::stop() {
+	m_source.stop();
 }
 
 void AudioSource::update() {
 	/*std::cout << "PLAYING: " << AL_PLAYING << '\n';
 	std::cout << "State: " << m_source.state() << '\n';*/
-}
-
-void AudioSource::setAudioPath(const std::string& path) {
-	m_audio_path = path;
 }
 
 int AudioSource::status() {
