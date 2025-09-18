@@ -113,6 +113,18 @@ add_library(glm::glm ALIAS glm)
 
 # ///////////////////////////////////////////////////////////////////////////////////////////////
 
+# ICU
+
+FetchContent_Populate(
+        ICU
+        URL https://github.com/unicode-org/icu/releases/download/release-77-1/icu4c-77_1-src.zip
+)
+add_library(ICU INTERFACE)
+target_include_directories(ICU INTERFACE ${ICU_SOURCE_DIR})
+add_library(ICU::ICU ALIAS ICU)
+
+# ///////////////////////////////////////////////////////////////////////////////////////////////
+
 # dr_libs
 
 FetchContent_Populate(
