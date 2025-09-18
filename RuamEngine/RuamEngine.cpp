@@ -44,13 +44,14 @@ int main()
 			{
 				SceneManager::ActiveScene()->update();
 			}
-			
+
 			Renderer::EndBatch();
 			Renderer::Draw();
-
+			
 			ImGui::Render();
 			ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
 
+			Renderer::EndDraw();
 			glfwPollEvents();
 		}
 	}

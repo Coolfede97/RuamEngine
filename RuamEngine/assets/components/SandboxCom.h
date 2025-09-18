@@ -18,7 +18,7 @@ class SandboxCom : public BaseRenderer
 		std::cout << "Render from component called\n";
 		Renderer::m_basicDrawingData.m_vertexArray->Bind();
 
-		int gridSide = 2; // k*k grid
+		int gridSide = 50; // k*k grid
 		float padding = 0.01f;
 		float screenX = 2.0f;
 		float screenY = 2.0f;
@@ -42,9 +42,9 @@ class SandboxCom : public BaseRenderer
 		Renderer::m_basicDrawingData.m_shader->SetUniformMat4f("u_view", model);
 		Renderer::m_basicDrawingData.m_shader->SetUniformMat4f("u_projection", model);	
 
-		for (int row = 0; row < gridSide; ++row)
+		for (int row = 0; row < gridSide; row++)
 		{
-			for (int col = 0; col < gridSide; ++col)
+			for (int col = 0; col < gridSide; col++)
 			{
 				auto newQuad = Vertex::CreateQuad
 				(

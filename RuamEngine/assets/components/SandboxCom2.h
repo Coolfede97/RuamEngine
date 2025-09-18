@@ -18,7 +18,7 @@ class SandboxCom2 : public BaseRenderer
 		std::cout << "Render from component called\n";
 		Renderer::m_basicDrawingData.m_vertexArray->Bind();
 
-		int gridSide = 20; // k*k grid
+		int gridSide = 2; // k*k grid
 		float padding = 0.1f;
 		float screenX = 2.0f;
 		float screenY = 2.0f;
@@ -58,8 +58,16 @@ class SandboxCom2 : public BaseRenderer
 				Renderer::m_basicDrawingData.m_layout->Push<float>(3);
 				Renderer::m_basicDrawingData.m_layout->Push<float>(4);
 
-				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+				indices =
+				{
+					0, 1, 2,
+					2, 3, 0
+				};
 
+				Renderer::m_basicDrawingData.m_indexBuffer->SetData(indices.data());
+
+				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+				Renderer::Flush();
 				vertices.clear();
 			}
 		}

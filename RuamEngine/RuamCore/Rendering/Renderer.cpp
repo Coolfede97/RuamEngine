@@ -64,10 +64,13 @@ namespace RuamEngine
     {
         glfwTerminate();
     }
+    void Renderer::EndDraw()
+    {
+        glfwSwapBuffers(m_window);
+    }
     void Renderer::BeginBatch()
     {
         Flush();
-        glfwSwapBuffers(m_window);
     }
     void Renderer::EndBatch()
     {
@@ -75,6 +78,10 @@ namespace RuamEngine
         {
             pair.second.SubmitBatchData();
         }
+    }
+    void Renderer::EndBatch(DrawingData& drawingData)
+    {
+        drawingData.SubmitBatchData();
     }
     void Renderer::Flush()
     {
@@ -142,6 +149,15 @@ namespace RuamEngine
             pair.second.m_indexBuffer->Bind();
             GLCall(glDrawElements(GL_TRIANGLES, pair.second.m_indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, nullptr));
         }
+    }
+
+    void Renderer::Draw(DrawingData& drawingData)
+    {
+        std::cout << "Draw called\n";
+        drawingData.m_shader->Bind();
+        drawingData.m_vertexArray->Bind();
+        drawingData.m_indexBuffer->Bind();
+        GLCall(glDrawElements(GL_TRIANGLES, drawingData.m_indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, nullptr));   
     }
 
     void Renderer::DrawQuads()
