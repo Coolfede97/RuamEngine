@@ -15,7 +15,7 @@ public:
 	void setAudioPath(const std::string& path);
 	int status();
 
-	void load(const std::string& path, bool play = false);
+	void load(const std::string& path);
 
 	const AudioSystem::AL::Source& source() const;
 
@@ -23,13 +23,14 @@ public:
 	void pause();
 	void stop();
 protected:
-	void loadBuffer(std::unique_ptr<Wave>& wave, bool play = false);
+	void loadBuffer(std::unique_ptr<Wave>& wave);
 
 	AudioSystem::AL::Source m_source;
 	AudioSystem::AL::Buffer m_buffer;
 	std::string m_audio_path;
-
-	bool m_buffer_ready = false;
-
 	std::unique_ptr<Wave> m_wave;
+
+	std::atomic<bool> m_buffer_ready = false;
+	std::condition_variable m_buf_wait;
+	std::mutex m_mutex;
 };
