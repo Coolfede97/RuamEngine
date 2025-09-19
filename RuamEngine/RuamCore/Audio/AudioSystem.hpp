@@ -6,6 +6,9 @@
 
 namespace AudioSystem {
 
+static std::thread worker;
+static std::atomic<bool> free_worker = true;
+
 void init();
 void init(const char* device);
 

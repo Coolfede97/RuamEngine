@@ -33,24 +33,37 @@ void AudioSource::start() {
 		std::cerr << "Error generating buffer, " << e.what() << '\n';
 	}
 
-	load(m_audio_path);
 
-	m_source.bind(m_buffer);
-
-	play();
+	load(m_audio_path, true);
 }
 
 const AudioSystem::AL::Source& AudioSource::source() const {
 	return m_source;
 }
 
-void AudioSource::load(const std::string& path) {
+void AudioSource::load(const std::string& path, bool play) {
 	EASY_FUNCTION("AudioSourceLOAD");
 	m_audio_path = path;
-	m_wave = std::make_unique<Wave>(m_audio_path.c_str(), true);
+	while (!AudioSystem::free_worker) {}
+	AudioSystem::free_worker = false;
+	AudioSystem::worker = std::thread([path, this]() {
+		m_wave.reset();
+		m_wave = std::make_unique<Wave>(path.c_str(), true);
+		loadBuffer(m_wave, true);
+		
+		AudioSystem::free_worker = true;
+	});
+	AudioSystem::worker.detach();
+}
 
+void AudioSource::loadBuffer(std::unique_ptr<Wave>& wave, bool play) {
 	try {
 		m_buffer.setData(m_wave->openal_fmt(), reinterpret_cast<char*>(m_wave->data()), m_wave->size(), m_wave->rate());
+		m_buffer_ready = true;
+		if (play) {
+			m_source.bind(m_buffer);
+			this->play();
+		}
 	} catch (AudioSystem::AL::al_error e) {
 		std::cerr << "Error setting data, " << e.what() << '\n';
 		std::cerr << "Wave:\n";
@@ -73,7 +86,7 @@ void AudioSource::stop() {
 }
 
 void AudioSource::update() {
-	EASY_FUNCTION("AudioSourceUpdate");
+	EASY_FUNCTION("AudioSource");
 	try {
 		m_source.setParam(AL_POSITION, object()->transform().position()); // FIX: NOT working
 	} catch(AudioSystem::AL::al_error err) {

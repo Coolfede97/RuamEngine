@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <stdexcept>
+#include <future>
 
 #include "al-wrapper.hpp"
 
