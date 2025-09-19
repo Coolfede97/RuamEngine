@@ -10,6 +10,7 @@
 #include "Component.hpp"
 #include "Transform.h"
 
+#include "easy/profiler.h"
 
 class Object {
 public:
@@ -21,6 +22,7 @@ public:
 
 	template<class Comp>
 	Comp& addComponent() {
+		EASY_FUNCTION("Add Component");
 		std::unique_ptr<Comp> comp = std::make_unique<Comp>(m_id);
 		const std::type_index tidx = typeid(Comp);
 		if (m_components.count(tidx) > 0) {
@@ -34,6 +36,7 @@ public:
 
 	template<class Comp, typename... Args>
 	Comp& addComponent(Args&&... args) {
+		EASY_FUNCTION("Add Component args")
 		std::unique_ptr<Comp> comp = std::make_unique<Comp>(m_id, std::forward<Args>(args...)...);
 		const std::type_index tidx = typeid(Comp);
 		if (m_components.count(tidx) > 0) {
@@ -50,6 +53,7 @@ public:
 	// TODO: Find if there's a better way
 	template<class Comp>
 	Comp* getComponent() const {
+		EASY_FUNCTION("Get Component")
 		auto pair = m_components.find(typeid(Comp));
 		if (pair == m_components.end()) {
 			return nullptr;
@@ -62,6 +66,7 @@ public:
 
 	template<class Comp>
 	void removeComponent() {
+		EASY_FUNCTION("Remove Component")
 		auto pair = m_components.find(typeid(Comp));
 		if (pair == m_components.end()) return;
 		if (pair->second.size() == 0) return;

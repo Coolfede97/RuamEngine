@@ -1,4 +1,5 @@
 #include "Scene.hpp"
+#include "easy/profiler.h"
 
 unsigned int Scene::s_id_count = 0;
 const std::string Scene::s_default_name = "Sample Scene";

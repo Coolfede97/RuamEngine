@@ -98,3 +98,4 @@ imgui.ini
 
 # Audio
 *.wav
+*log*

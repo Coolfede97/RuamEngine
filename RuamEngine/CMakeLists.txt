@@ -157,6 +157,25 @@ set(ALSOFT_UTILS            OFF)
 set(ALSOFT_NO_CONFIG_UTIL   ON)
 FetchContent_MakeAvailable(openal-soft)
 
+
+# ///////////////////////////////////////////////////////////////////////////////////////////////
+
+# easy_profiler
+FetchContent_Declare(
+    easy_profiler
+    GIT_REPOSITORY https://github.com/yse/easy_profiler.git
+    GIT_TAG v2.1.0
+)
+
+set(PREV_MIN_VERSION ${CMAKE_POLICY_VERSION_MINIMUM})
+
+set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
+
+FetchContent_MakeAvailable(easy_profiler)
+
+set(CMAKE_POLICY_VERSION_MINIMUM ${PREV_MIN_VERSION})
+
+
 # ///////////////////////////////////////////////////////////////////////////////////////////////
 
 # Linking
@@ -175,8 +194,11 @@ if (WIN32)
 endif()
 ]==========]
 
+target_compile_definitions(Vendor INTERFACE STB_IMAGE_IMPLEMENTATION)
+target_compile_definitions(Vendor INTERFACE BUILD_WITH_EASY_PROFILER)
+
 target_link_libraries(Vendor INTERFACE
-        glfw glew_s glm ImGui OpenGL::GL OpenAL::OpenAL dr_libs
+        glfw glew_s glm ImGui OpenGL::GL OpenAL::OpenAL dr_libs easy_profiler
 )
 
 target_include_directories(Vendor INTERFACE 
@@ -184,7 +206,6 @@ target_include_directories(Vendor INTERFACE
     ${VENDOR_PATH}/IMGUI
 )
 
-target_compile_definitions(Vendor INTERFACE STB_IMAGE_IMPLEMENTATION)
 target_compile_definitions(Vendor INTERFACE GLEW_STATIC)
 
 # -----------------------------------------------------------------------------------------------------

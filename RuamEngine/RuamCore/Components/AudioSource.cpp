@@ -1,11 +1,13 @@
 #include "AudioSource.h"
+#include "easy/profiler.h"
 
 AudioSource::AudioSource(const unsigned int object_id, const std::string& audio) 
 	: m_audio_path(audio), Component(object_id) {
-
+	EASY_FUNCTION("AudioSource Constructor")
 }
 
 void AudioSource::start() {
+	EASY_FUNCTION("AudioSourceStart");
 	try {
 		m_source.generate();
 	} catch (AudioSystem::AL::al_error e) {
@@ -43,6 +45,7 @@ const AudioSystem::AL::Source& AudioSource::source() const {
 }
 
 void AudioSource::load(const std::string& path) {
+	EASY_FUNCTION("AudioSourceLOAD");
 	m_audio_path = path;
 	m_wave = std::make_unique<Wave>(m_audio_path.c_str(), true);
 
@@ -70,6 +73,7 @@ void AudioSource::stop() {
 }
 
 void AudioSource::update() {
+	EASY_FUNCTION("AudioSourceUpdate");
 	try {
 		m_source.setParam(AL_POSITION, object()->transform().position()); // FIX: NOT working
 	} catch(AudioSystem::AL::al_error err) {

@@ -5,24 +5,36 @@
 #include "assets/scenes/MenuScene.cpp"
 #include "assets/scenes/SandboxScene.cpp"
 #include "assets/components/Manager.h"
+#include "easy/profiler.h"
 
 using namespace RuamEngine;
 
 int main()
 {
+	EASY_PROFILER_ENABLE;
+
+	profiler::startListen();
+
+	EASY_BLOCK("System init");
 	Renderer::Init();
 	AudioSystem::init();
+	EASY_END_BLOCK;
 	
 	{
+		EASY_BLOCK("Imgui init");
 		Input::SetWindow(Renderer::GetWindow());
 		ImGui::CreateContext();
 		ImGui_ImplGlfwGL3_Init(Renderer::GetWindow(), true);
 		ImGui::StyleColorsDark();
+		EASY_END_BLOCK;
 
+		EASY_BLOCK("Scene adding");
 		const unsigned int menuScene = SceneManager::AddScene(0, CreateMenuScene);
 		SceneManager::SetActiveScene(menuScene);
 		const unsigned int sandboxScene = SceneManager::AddScene(1, CreateSandboxScene);
+		EASY_END_BLOCK;
 
+		EASY_BLOCK("Loop");
 		while (!glfwWindowShouldClose(Renderer::GetWindow()))
 		{
 			// ImGUI
@@ -41,12 +53,16 @@ int main()
 
 			Renderer::BeginDraw();
 
+			EASY_BLOCK("EventManager");
 			EventManager::HandleEvents();
+			EASY_END_BLOCK;
 
+			EASY_BLOCK("UpdateScene");
 			if (SceneManager::ActiveScene() != nullptr)
 			{
 				SceneManager::ActiveScene()->update();
 			}
+			EASY_END_BLOCK;
 			ImGui::Render();
 			ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -54,6 +70,7 @@ int main()
 
 			glfwPollEvents();
 		}
+		EASY_END_BLOCK;
 	}
 	// Cleanup
 	ImGui_ImplGlfwGL3_Shutdown();
@@ -61,5 +78,6 @@ int main()
 	Renderer::Shutdown();
 	AudioSystem::shutdown();
 
+	profiler::dumpBlocksToFile("log.perf");
 	return 0;
 }
