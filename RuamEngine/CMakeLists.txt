@@ -288,7 +288,7 @@ target_include_directories(RuamUtils INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Ruam
 file (GLOB AUDIO_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Audio/*.cpp")
 add_library(Audio STATIC ${AUDIO_SRC})
 target_include_directories(Audio INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Audio)
-target_link_libraries(Audio PUBLIC glm dr_libs Vendor)
+target_link_libraries(Audio PUBLIC glm dr_libs Vendor RuamUtils)
 
 
 # ///////////////////////////////////////////////////////////////////////////////////////////////

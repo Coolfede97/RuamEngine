@@ -1,5 +1,6 @@
 #include "AudioSource.h"
 #include "easy/profiler.h"
+#include <chrono>
 
 AudioSource::AudioSource(const unsigned int object_id, const std::string& audio) 
 	: m_audio_path(audio), Component(object_id) {
@@ -44,16 +45,11 @@ const AudioSystem::AL::Source& AudioSource::source() const {
 void AudioSource::load(const std::string& path, bool play) {
 	EASY_FUNCTION("AudioSourceLOAD");
 	m_audio_path = path;
-	while (!AudioSystem::free_worker) {}
-	AudioSystem::free_worker = false;
-	AudioSystem::worker = std::thread([path, this]() {
+	AudioSystem::pool.queue([this]() {
 		m_wave.reset();
-		m_wave = std::make_unique<Wave>(path.c_str(), true);
+		m_wave = std::make_unique<Wave>(m_audio_path.c_str(), true);
 		loadBuffer(m_wave, true);
-		
-		AudioSystem::free_worker = true;
 	});
-	AudioSystem::worker.detach();
 }
 
 void AudioSource::loadBuffer(std::unique_ptr<Wave>& wave, bool play) {
