@@ -36,7 +36,6 @@ void VertexBuffer::SetSubData(const void* data, unsigned int offset, unsigned in
 
 void VertexBuffer::SetData(const void* data)
 {
-    Renderer::m_basicDrawingData.m_layout->Reset(); // Probablemente debería cambiarlo en el futuro
     Bind();
     GLCall(glBufferData(GL_ARRAY_BUFFER, m_vertexData.size() * sizeof(float), data, m_usage));
 }

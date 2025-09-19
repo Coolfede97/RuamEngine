@@ -5,7 +5,6 @@ namespace RuamEngine
 
 	void DrawingData::SubmitBatchData()
 	{
-		std::cout << "SubmitBatchData called\n";
 		if (m_vertexBuffer->GetCurrentSize() > 0)
 		{
 			m_vertexBuffer->SubmitData();
@@ -14,11 +13,11 @@ namespace RuamEngine
 		{
 			m_indexBuffer->SubmitData();
 		}
-		m_vertexArray->AddBuffer(*m_vertexBuffer, *m_layout);
 	}
 
-	void DrawingData::AddBatchData(const std::vector<Vertex> vertices, unsigned int vertexDataSize, const std::vector<unsigned int> indices, unsigned int indexDataSize)
+	bool DrawingData::AddBatchData(const std::vector<Vertex> vertices, unsigned int vertexDataSize, const std::vector<unsigned int> indices, unsigned int indexDataSize)
 	{
+		bool fullBatch = false;
 		ASSERT(vertexDataSize <= m_vertexBuffer->GetMaxSize() || indexDataSize <= m_indexBuffer->GetMaxSize());
 		
 		if (m_vertexBuffer->GetCurrentSize() + vertexDataSize > m_vertexBuffer->GetMaxSize()
@@ -28,10 +27,12 @@ namespace RuamEngine
 			SubmitBatchData();
 			Renderer::Draw(*this);
 			Flush();
+			fullBatch = true;
 		}
-
+		//std::cout << vertices.size() << "\n";
 		m_vertexBuffer->AddBatchData(vertices, vertexDataSize);
 		m_indexBuffer->AddBatchData(indices, indexDataSize);
+		return fullBatch;
 	}
 
 	void DrawingData::Flush()

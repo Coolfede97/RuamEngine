@@ -27,7 +27,7 @@ int main()
 
 		while (!glfwWindowShouldClose(Renderer::GetWindow()))
 		{
-			std::cout << "Frame: " << frameCount++ << "---------------------------------------------------------\n";
+			//std::cout << "Frame: " << frameCount++ << "---------------------------------------------------------\n";
 			// ImGUI
 			ImGui_ImplGlfwGL3_NewFrame();
 

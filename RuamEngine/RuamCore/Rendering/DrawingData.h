@@ -28,7 +28,7 @@ namespace RuamEngine
         //uint32_t textureSlotIndex = 1;
 
         void SubmitBatchData();
-        void AddBatchData(const std::vector<Vertex> vertices, unsigned int vertexDataSize, const std::vector<unsigned int> indices, unsigned int indexDataSize);
+        bool AddBatchData(const std::vector<Vertex> vertices, unsigned int vertexDataSize, const std::vector<unsigned int> indices, unsigned int indexDataSize);
 		void Flush();
     };
 }
