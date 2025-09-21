@@ -12,7 +12,7 @@ class SandboxCom : public BaseRenderer
 {
 	using BaseRenderer::BaseRenderer;
 	
-	int gridSide = 50; // k*k grid
+	int gridSide = 100; // k*k grid
 	float padding = 0.01f;
 	float screenX = 2.0f;
 	float screenY = 2.0f;
@@ -61,9 +61,9 @@ class SandboxCom : public BaseRenderer
 
 				indexCount += 4;
 
-				if (sizeof(Vertex) * vertices.size() + sizeof(Vertex) * 4 >= Renderer::m_basicDrawingData.m_vertexBuffer->GetMaxSize()
+				if (sizeof(Vertex) * vertices.size() + sizeof(Vertex) * 4 >= Renderer::m_basicDrawingData.m_vertexBuffer->GetMaxSize() - Renderer::m_basicDrawingData.m_vertexBuffer->GetCurrentSize()
 					||
-					sizeof(unsigned int) * indices.size() + sizeof(unsigned int) * 6 >= Renderer::m_basicDrawingData.m_indexBuffer->GetMaxSize()
+					sizeof(unsigned int) * indices.size() + sizeof(unsigned int) * 6 >= Renderer::m_basicDrawingData.m_indexBuffer->GetMaxSize() - Renderer::m_basicDrawingData.m_indexBuffer->GetCurrentSize()
 					)
 				{
 					if (Renderer::m_basicDrawingData.AddBatchData(vertices, vertices.size() * sizeof(Vertex), indices, indices.size() * sizeof(unsigned int)))
