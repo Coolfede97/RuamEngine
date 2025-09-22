@@ -17,7 +17,7 @@ public:
 
 	void load(const std::string& path);
 
-	const AudioSystem::AL::Source& source() const;
+	const AudioSystem::AL::Source& source();
 
 	void play();
 	void pause();
@@ -33,7 +33,8 @@ protected:
 	AudioSystem::AL::Buffer m_buffer;
 	std::string m_audio_path;
 	std::unique_ptr<Wave> m_wave;
-	float m_volume;
+	float m_volume = 1;
+	float m_max_volume = 1;
 
 	std::atomic<bool> m_buffer_ready = false;
 	std::condition_variable m_buf_wait;

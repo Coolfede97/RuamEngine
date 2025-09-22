@@ -38,7 +38,7 @@ void AudioSource::start() {
 	play();
 }
 
-const AudioSystem::AL::Source& AudioSource::source() const {
+const AudioSystem::AL::Source& AudioSource::source() {
 	return m_source;
 }
 
@@ -108,6 +108,10 @@ int AudioSource::status() {
 }
 
 void AudioSource::setVolume(float vol) {
+	if (vol > m_max_volume) {
+		m_source.setParam(AL_MAX_GAIN, vol);
+		m_max_volume = vol;
+	}
 	m_source.setParam(AL_GAIN, vol);
 }
 
