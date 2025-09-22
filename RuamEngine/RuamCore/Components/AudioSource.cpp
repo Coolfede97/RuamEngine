@@ -106,3 +106,12 @@ void AudioSource::update() {
 int AudioSource::status() {
 	return m_source.state();
 }
+
+void AudioSource::setVolume(float vol) {
+	m_source.setParam(AL_GAIN, vol);
+}
+
+float AudioSource::volume() {
+	m_source.get(AL_GAIN, &m_volume);
+	return m_volume;
+}

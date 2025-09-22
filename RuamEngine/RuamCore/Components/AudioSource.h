@@ -22,6 +22,10 @@ public:
 	void play();
 	void pause();
 	void stop();
+
+	void setVolume(float vol);
+	float volume();
+
 protected:
 	void loadBuffer(std::unique_ptr<Wave>& wave);
 
@@ -29,6 +33,7 @@ protected:
 	AudioSystem::AL::Buffer m_buffer;
 	std::string m_audio_path;
 	std::unique_ptr<Wave> m_wave;
+	float m_volume;
 
 	std::atomic<bool> m_buffer_ready = false;
 	std::condition_variable m_buf_wait;

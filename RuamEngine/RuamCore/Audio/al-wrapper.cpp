@@ -71,6 +71,11 @@ void Source::get(ALenum param, ALint* out) {
 	GetError();
 }
 
+void Source::get(ALenum param, float* out) {
+	alGetSourcef(m_id, param, out);
+	GetError();
+}
+
 ALint Source::state() {
 	int res;
 	get(AL_SOURCE_STATE, &m_state);

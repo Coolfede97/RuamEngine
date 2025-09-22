@@ -37,6 +37,7 @@ public:
 	void bind(ALuint buf);
 
 	void get(ALenum param, ALint* out);
+	void get(ALenum param, float* out);
 
 	void play();
 	void stop();

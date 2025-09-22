@@ -13,6 +13,6 @@ SceneManager::ScenePtr CreateSandboxScene()
 	Object& manager = testScene->newObject();
 	manager.addComponent<SandboxCom>();
 	manager.addComponent<Manager>();
-//	manager.addComponent<AudioSource>("/home/tomy/programming/ce/masmas/RuamEngine/RuamEngine/1 Crumbling Castle.wav");
+	manager.addComponent<AudioSource>("/home/tomy/programming/ce/masmas/RuamEngine/RuamEngine/1 Crumbling Castle.wav");
 	return testScene;
 }
