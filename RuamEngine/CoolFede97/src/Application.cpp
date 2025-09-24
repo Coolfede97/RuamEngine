@@ -32,65 +32,63 @@ using namespace RuamEngine;
 
 int main(void)
 {
-	Renderer::Init();
+	//Renderer::Init();
 
-	{
-		Input::SetWindow(Renderer::GetWindow());
-		ImGui::CreateContext();
-		ImGui_ImplGlfwGL3_Init(Renderer::GetWindow(), true);
-		ImGui::StyleColorsDark();
+	//{
+	//	Input::SetWindow(Renderer::GetWindow());
+	//	ImGui::CreateContext();
+	//	ImGui_ImplGlfwGL3_Init(Renderer::GetWindow(), true);
+	//	ImGui::StyleColorsDark();
 
-		test::Test* currentTest = nullptr;
-		test::TestMenu* testMenu = new test::TestMenu(currentTest);
-		currentTest = testMenu;
+	//	test::Test* currentTest = nullptr;
+	//	test::TestMenu* testMenu = new test::TestMenu(currentTest);
+	//	currentTest = testMenu;
 
-		testMenu->RegisterTest<test::TestClearColor>("Clear Color");
-		testMenu->RegisterTest<test::TestMovement>("Movement Test");
-		testMenu->RegisterTest<test::Sandbox>("Sandbox");
+	//	testMenu->RegisterTest<test::TestClearColor>("Clear Color");
+	//	testMenu->RegisterTest<test::TestMovement>("Movement Test");
+	//	testMenu->RegisterTest<test::Sandbox>("Sandbox");
 
-		while (!glfwWindowShouldClose(Renderer::GetWindow()))
-		{
-			// ImGUI
-			ImGui_ImplGlfwGL3_NewFrame();
+	//	while (!glfwWindowShouldClose(Renderer::GetWindow()))
+	//	{
+	//		// ImGUI
+	//		ImGui_ImplGlfwGL3_NewFrame();
 
-			// Input
-			Input::UpdateInput();
-			
-			// Time
-			ruamTime::Time::Update();
+	//		// Input
+	//		Input::UpdateInput();
+	//		
+	//		// Time
+	//		ruamTime::Time::Update();
 
-			Renderer::BeginDraw();
-			
-			if (currentTest)
-			{
-				currentTest->Update();
-				currentTest->Render();
-				ImGui::Begin("Test");
-				if (currentTest != testMenu && ImGui::Button("<-"))
-				{
-					delete currentTest;
-					currentTest = testMenu;
-				}
-				currentTest->ImGuiRender();
-				ImGui::End();
-			}
+	//		if (currentTest)
+	//		{
+	//			currentTest->Update();
+	//			currentTest->Render();
+	//			ImGui::Begin("Test");
+	//			if (currentTest != testMenu && ImGui::Button("<-"))
+	//			{
+	//				delete currentTest;
+	//				currentTest = testMenu;
+	//			}
+	//			currentTest->ImGuiRender();
+	//			ImGui::End();
+	//		}
 
-			ImGui::Render();
-			ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
+	//		ImGui::Render();
+	//		ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
 
-			Renderer::EndDraw();
+	//		Renderer::EndDraw();
 
-			glfwPollEvents();
+	//		glfwPollEvents();
 
-		}
-		delete currentTest;
-		if (currentTest != testMenu)
-			delete testMenu;
+	//	}
+	//	delete currentTest;
+	//	if (currentTest != testMenu)
+	//		delete testMenu;
 
-	}
-	// Cleanup
-	ImGui_ImplGlfwGL3_Shutdown();
-	ImGui::DestroyContext();
-	Renderer::Shutdown();
-	return 0;
+	//}
+	//// Cleanup
+	//ImGui_ImplGlfwGL3_Shutdown();
+	//ImGui::DestroyContext();
+	//Renderer::Shutdown();
+	//return 0;
 }

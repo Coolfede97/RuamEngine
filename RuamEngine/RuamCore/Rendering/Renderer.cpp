@@ -1,29 +1,11 @@
 #include "Renderer.h"
 
-void GLClearError()
-{
-    while (glGetError() != GL_NO_ERROR);
-}
 
-bool GLLogCall(const char* function, const char* file, int line)
-{
-    while (GLenum error = glGetError())
-    {
-        std::cout << "[OpenGL Error] (" << error << "): " << "\n" <<
-            "in file: " << file << "\n" <<
-            "in line: " << line << "\n" <<
-            "in function: " << function << "\n";
-
-        return false;
-    }
-    return true;    
-}
 namespace RuamEngine
 {
     RendererConfig Renderer::m_config;
-    DrawingData Renderer::m_basicDrawingData;
 	GLFWwindow* Renderer::m_window = nullptr;
-    std::unordered_map<int, DrawingData> Renderer::m_drawingDataMap;
+    std::unordered_map<Shader::PipelineType, DrawingData> Renderer::m_drawingDataMap;
     void Renderer::Init()
     {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -50,17 +32,17 @@ namespace RuamEngine
 
 
         {
-			DrawingData basicDrawingData = *(new DrawingData());
-            m_basicDrawingData.m_layout = std::make_shared<VertexBufferLayout>();
-            Renderer::m_basicDrawingData.m_layout->Reset();
-            Renderer::m_basicDrawingData.m_layout->Push<float>(3);
-            Renderer::m_basicDrawingData.m_layout->Push<float>(4);
-			m_basicDrawingData.m_vertexArray = std::make_shared<VertexArray>();
-			m_basicDrawingData.m_vertexBuffer = std::make_shared<VertexBuffer>(maxVertexSize * maxVertexCount, GL_DYNAMIC_DRAW);
-            m_basicDrawingData.m_vertexArray->AddBuffer(*m_basicDrawingData.m_vertexBuffer, *m_basicDrawingData.m_layout);
-            m_basicDrawingData.m_indexBuffer = std::make_shared<IndexBuffer>(maxIndexCount, GL_DYNAMIC_DRAW);
-            m_basicDrawingData.m_shader = std::make_shared<Shader>("assets/shaders/GeneralVertexShader.glsl", "assets/shaders/GeneralFragmentShader.glsl");
-			m_drawingDataMap[0] = m_basicDrawingData;
+			m_drawingDataMap.emplace(Shader::PipelineType::Generic, DrawingData(Shader::PipelineType::Generic));
+			DrawingData& basicDrawingData = m_drawingDataMap.at(Shader::PipelineType::Generic);
+            basicDrawingData.m_shader = std::make_shared<Shader>("assets/shaders/GeneralVertexShader.glsl", "assets/shaders/GeneralFragmentShader.glsl");
+			basicDrawingData.m_renderUnits.emplace(Material::MaterialType::Generic, RenderUnit(basicDrawingData.m_shader));
+            RenderUnit& genericUnit = basicDrawingData.m_renderUnits.at(Material::MaterialType::Generic);
+            VertexBufferLayout& genericLayout = *genericUnit.m_layout;
+            genericLayout.Reset();
+            genericLayout.Push<float>(3);
+            genericLayout.Push<float>(4);
+            genericUnit.m_vertexArray->AddBuffer(*genericUnit.m_vertexBuffer, *genericUnit.m_layout);
+			genericUnit.m_material = std::make_shared<Material>(Material::MaterialType::Generic);
         }
 
     }
@@ -83,9 +65,9 @@ namespace RuamEngine
             pair.second.SubmitBatchData();
         }
     }
-    void Renderer::EndBatch(DrawingData& drawingData)
+    void Renderer::EndBatch(RenderUnit& renderUnit)
     {
-        drawingData.SubmitBatchData();
+        renderUnit.SubmitBatchData();
     }
     void Renderer::Flush()
     {
@@ -145,21 +127,24 @@ namespace RuamEngine
 
     void Renderer::Draw()
     {
-        for (auto& pair : m_drawingDataMap)
+        for (auto& drawingData : m_drawingDataMap)
         {
-            pair.second.m_shader->Bind();
-            pair.second.m_vertexArray->Bind();
-            pair.second.m_indexBuffer->Bind();
-            GLCall(glDrawElements(GL_TRIANGLES, pair.second.m_indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, nullptr));
+            for (auto& renderUnit : drawingData.second.m_renderUnits)
+            {
+                drawingData.second.m_shader->Bind();
+                renderUnit.second.m_vertexArray->Bind();
+                renderUnit.second.m_indexBuffer->Bind();
+                GLCall(glDrawElements(GL_TRIANGLES, renderUnit.second.m_indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, nullptr));
+            }
         }
     }
 
-    void Renderer::Draw(DrawingData& drawingData)
+    void Renderer::Draw(RenderUnit& renderUnit)
     {
-        drawingData.m_shader->Bind();
-        drawingData.m_vertexArray->Bind();
-        drawingData.m_indexBuffer->Bind();
-        GLCall(glDrawElements(GL_TRIANGLES, drawingData.m_indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, nullptr));   
+        renderUnit.m_shader->Bind();
+        renderUnit.m_vertexArray->Bind();
+        renderUnit.m_indexBuffer->Bind();
+        GLCall(glDrawElements(GL_TRIANGLES, renderUnit.m_indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, nullptr));   
     }
 
     void Renderer::DrawQuads()

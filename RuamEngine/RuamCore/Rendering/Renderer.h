@@ -1,21 +1,14 @@
 #pragma once
 
 #include "RenderingCore.h"
-#include "VertexBuffer.h"
-#include "VertexArray.h"
-#include "IndexBuffer.h"
-#include "VertexBufferLayout.h"
+#include "RenderingElements.h"
+#include "RenderingConstants.h"
+
 #include "DrawingData.h"
-#include "Shader.h"
+#include "RenderUnit.h"
+#include "Material.h"
 
 #include <unordered_map>
-
-class VertexBuffer;
-class VertexArray;
-class IndexBuffer;
-class Shader;
-class VertexBufferLayout;
-class DrawingData;
 
 namespace RuamEngine
 {
@@ -45,13 +38,6 @@ namespace RuamEngine
         
     };
 
-	static const unsigned int maxVertexAtribs = (3 + 4 + 2 + 1); // Position, Color, TexCoords, TexID
-	static const unsigned int maxVertexSize = sizeof(float) * maxVertexAtribs; // 3 position, 4 color, 2 tex coords, 1 tex id
-    static const unsigned int maxQuadCount = 2500;
-    static const unsigned int maxVertexCount = maxQuadCount * 4;
-    static const unsigned int maxIndexCount = maxQuadCount * 6;
-    static const unsigned int maxTextureSlots = 32; // Note for CoolFede97: Remember to change this according to the machine you are using!
-
     class Renderer
     {
     public:
@@ -61,7 +47,7 @@ namespace RuamEngine
         static void EndDraw();
         static void BeginBatch();
         static void EndBatch();
-		static void EndBatch(DrawingData& drawingData);
+		static void EndBatch(RenderUnit& renderUnit);
         static void ClearScreen();
         static void Flush();
         
@@ -90,11 +76,10 @@ namespace RuamEngine
 		static GLFWwindow* GetWindow() { return m_window; }
 
         static void Draw();
-        static void Draw(DrawingData& drawingData);
+        static void Draw(RenderUnit& renderUnit);
 		static void DrawQuads();
 
-        static DrawingData m_basicDrawingData;
-        static std::unordered_map<int, DrawingData> m_drawingDataMap;
+        static std::unordered_map<Shader::PipelineType, DrawingData> m_drawingDataMap;
     private:
         static RendererConfig m_config;
         static GLFWwindow* m_window;

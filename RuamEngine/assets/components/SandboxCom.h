@@ -5,14 +5,13 @@
 #include "Vertex.h"
 #include "VertexBuffer.h"
 
-
 using namespace RuamEngine;
 
 class SandboxCom : public BaseRenderer
 {
 	using BaseRenderer::BaseRenderer;
 	
-	int gridSide = 100; // k*k grid
+	int gridSide = 50; // k*k grid
 	float padding = 0.01f;
 	float screenX = 2.0f;
 	float screenY = 2.0f;
@@ -28,17 +27,18 @@ class SandboxCom : public BaseRenderer
 	// It's called in update
 	void render()
 	{
-		Renderer::m_basicDrawingData.m_vertexArray->Bind();
+		RenderUnit& genericUnit = Renderer::m_drawingDataMap[Shader::PipelineType::Generic].m_renderUnits[Material::MaterialType::Generic];
+		genericUnit.m_vertexArray->Bind();
 
 		vertices.reserve(gridSide * gridSide * 4);
 		indices.reserve(gridSide * gridSide * 6);
 
 
-		Renderer::m_basicDrawingData.m_shader->Bind();
+		genericUnit.m_shader->Bind();
 		glm::mat4 model = glm::mat4(1.0f);
-		Renderer::m_basicDrawingData.m_shader->SetUniformMat4f("u_model", model);
-		Renderer::m_basicDrawingData.m_shader->SetUniformMat4f("u_view", model);
-		Renderer::m_basicDrawingData.m_shader->SetUniformMat4f("u_projection", model);	
+		genericUnit.m_shader->SetUniformMat4f("u_model", model);
+		genericUnit.m_shader->SetUniformMat4f("u_view", model);
+		genericUnit.m_shader->SetUniformMat4f("u_projection", model);
 
 		for (int row = 0; row < gridSide; row++)
 		{
@@ -61,12 +61,12 @@ class SandboxCom : public BaseRenderer
 
 				indexCount += 4;
 
-				if (sizeof(Vertex) * vertices.size() + sizeof(Vertex) * 4 >= Renderer::m_basicDrawingData.m_vertexBuffer->GetMaxSize() - Renderer::m_basicDrawingData.m_vertexBuffer->GetCurrentSize()
+				if (sizeof(Vertex) * vertices.size() + sizeof(Vertex) * 4 >= genericUnit.m_vertexBuffer->GetMaxSize() - genericUnit.m_vertexBuffer->GetCurrentSize()
 					||
-					sizeof(unsigned int) * indices.size() + sizeof(unsigned int) * 6 >= Renderer::m_basicDrawingData.m_indexBuffer->GetMaxSize() - Renderer::m_basicDrawingData.m_indexBuffer->GetCurrentSize()
+					sizeof(unsigned int) * indices.size() + sizeof(unsigned int) * 6 >= genericUnit.m_indexBuffer->GetMaxSize() - genericUnit.m_indexBuffer->GetCurrentSize()
 					)
 				{
-					if (Renderer::m_basicDrawingData.AddBatchData(vertices, vertices.size() * sizeof(Vertex), indices, indices.size() * sizeof(unsigned int)))
+					if (genericUnit.AddBatchData(vertices, vertices.size() * sizeof(Vertex), indices, indices.size() * sizeof(unsigned int)))
 					{
 						vertices.clear();
 						indices.clear();
