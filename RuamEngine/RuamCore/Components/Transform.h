@@ -22,8 +22,11 @@ public:
 	void setScale(float x, float y, float z);
 
 	glm::vec3& position();
+	glm::vec3& scale();
+	glm::vec3& rotation();
 
 protected:
 	glm::vec3 m_position;
 	glm::vec3 m_scale;
+	glm::vec3 m_rotation;
 };

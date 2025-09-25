@@ -18,3 +18,11 @@ void Transform::setPosition(float x, float y, float z) {
 glm::vec3& Transform::position() {
 	return m_position;
 }
+
+glm::vec3& Transform::scale() {
+	return m_scale;
+}
+
+glm::vec3& Transform::rotation() {
+	return m_rotation;
+}
