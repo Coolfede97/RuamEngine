@@ -37,6 +37,7 @@ namespace RuamEngine
             basicDrawingData.m_shader = std::make_shared<Shader>("assets/shaders/GeneralVertexShader.glsl", "assets/shaders/GeneralFragmentShader.glsl");
 			basicDrawingData.m_renderUnits.emplace(Material::MaterialType::Generic, RenderUnit(basicDrawingData.m_shader));
             RenderUnit& genericUnit = basicDrawingData.m_renderUnits.at(Material::MaterialType::Generic);
+			genericUnit.m_material->albedoColor = Vec4(1.0f, 0.5f, 0.31f, 1.0f);
             VertexBufferLayout& genericLayout = *genericUnit.m_layout;
             genericLayout.Reset();
             genericLayout.Push<float>(3);
