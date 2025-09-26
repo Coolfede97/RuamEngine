@@ -4,6 +4,8 @@ Vec4::Vec4(float xP, float yP, float zP, float wP)
     : x(xP), y(yP), z(zP), w(wP) {
 }
 
+Vec4::Vec4(const glm::vec4& v) : Vec4(v.x, v.y, v.z, v.w) {}
+
 Vec4 Vec4::operator+(Vec4 other) const {
     return Vec4(x + other.x, y + other.y, z + other.z, w + other.w);
 }

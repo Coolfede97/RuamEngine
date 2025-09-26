@@ -237,6 +237,7 @@ target_include_directories(Rendering INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Rend
 file (GLOB VEC_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Maths/Vec/*.cpp")
 add_library(Vec STATIC ${VEC_SRC})
 target_include_directories(Vec PUBLIC ${CMAKE_SOURCE_DIR}/RuamCore/Maths/Vec)
+target_link_libraries(Vec PUBLIC Vendor)
 
 # -----------------------------------------------------------------------------------------------------
 

@@ -19,7 +19,7 @@ int main()
 	Renderer::Init();
 	AudioSystem::init();
 	EASY_END_BLOCK;
-	
+
 	{
 		EASY_BLOCK("Imgui init");
 		Input::SetWindow(Renderer::GetWindow());
