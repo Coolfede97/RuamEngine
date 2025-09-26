@@ -6,7 +6,6 @@
 #include <typeindex>
 
 #include "Component.hpp"
-
 #include <string>
 
 class Object {
@@ -34,7 +33,7 @@ public:
 	// Returned pointer is non-owning
 	// TODO: Find if there's a better way
 	template<class Comp>
-	std::shared_ptr<Comp> getComponent() const {
+	Comp* getComponent() const {
 		auto pair = m_components.find(typeid(Comp));
 		if (pair == m_components.end()) {
 			return nullptr;
@@ -42,7 +41,7 @@ public:
 		if (pair->second.size() == 0) {
 			return nullptr;
 		}
-		return pair->second[0];
+		return dynamic_cast<Comp*>(pair->second.front().get());
 	}
 
 	template<class Comp>

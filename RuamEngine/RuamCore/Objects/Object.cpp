@@ -1,5 +1,7 @@
 #include "Object.hpp"
 
+#include "nlohmann/json_fwd.hpp"
+
 unsigned int Object::s_id_count = 0;
 const std::string Object::s_default_name = "Object";
 

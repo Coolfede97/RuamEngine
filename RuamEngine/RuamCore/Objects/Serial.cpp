@@ -21,6 +21,12 @@ void to_json(json& j, Object* o) {
 
 	json serialisedComponents = json::array();
 
+    for(auto p : o->getComponents()) {
+        auto c = p.second.front().get();
+        nlohmann::json comp = *c;
+        serialisedComponents.push_back(comp);
+    }
+
     j = json{
         {"id", o->id()},
         {"name", o->name()},
@@ -28,16 +34,11 @@ void to_json(json& j, Object* o) {
 	};
 }
 
-void from_json(const json& j, Scene* s) {
-    std::cout << "hola";
-}
-
 void Serial::serialise(Scene* s) {
     json j = s;
     std::string filename = s->name() + ".json";
     std::cout << "Writing to " << filename << std::endl;
     std::ofstream file(filename);
-    std::cout << j.dump(4) << std::endl;
     file << j.dump(4);
 }
 
@@ -54,6 +55,15 @@ Scene* Serial::deserialise(const std::string &filename) {
         Object *o = s->newObject(obj["id"]);
         std::string objName = obj["name"];
         o->setName(objName);
+        for (const auto& comp : obj["components"]) {
+            std::string type = comp["type"];
+            if (Component::componentRegistry.count(type) == 0) {
+                std::cerr << "Component type " << type << " not registered!" << std::endl;
+                continue;
+            }
+            std::unique_ptr<Component> c = Component::componentRegistry[type](comp);
+            //o->addcomponent(c)
+        }
     }
 	return sm::ActiveScene();
 }

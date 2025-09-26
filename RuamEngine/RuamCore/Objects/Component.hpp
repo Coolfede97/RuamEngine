@@ -1,4 +1,5 @@
 #pragma once
+#include "nlohmann/json.hpp"
 
 class Object;
 
@@ -14,6 +15,15 @@ public:
 
 	unsigned int id() const;
 	Object* object() const;
+
+	static std::map<std::string, std::function<std::unique_ptr<Component>(const nlohmann::json&)>> componentRegistry;
+
+	virtual operator nlohmann::json() const {
+		return nlohmann::json{
+							{"type", "Conpoent"},
+							{"id", m_id}
+		};
+	}
 
 protected:
     const unsigned int m_object_id;

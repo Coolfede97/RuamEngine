@@ -1,21 +1,6 @@
-#include "Serial.hpp"
+#include "TestComponent.hpp"
 
 using sm = SceneManager;
-
-void createA() {
-
-}
-
-class TestComponent : public Component {
-public:
-	using Component::Component;
-	void start() {
-		std::cout << "TestComponent started on object " << std::endl;
-	}
-	void update() {
-		//
-	}
-};
 
 void main_serial() {
 	Scene s("SceneA");
@@ -29,12 +14,11 @@ void main_serial() {
 	Object* o2 = scene->newObject();
 	name = "Hola";
 	o2->setName(name);
+	auto c = o->addComponent<TestComponent>().get();
+	c->setSecret(42);
 	Serial::serialise(scene);
 }
 
 int main() {
-	auto s = Serial::deserialise("SceneA.json");
-	s->getObjectById(0)->addComponent<TestComponent>();
-	s->start();
-	sm::RemoveScene(s->id());
+	main_serial();
 }
