@@ -84,6 +84,11 @@ namespace RuamEngine
 		GLCall(glUniform4f(GetUniformLocation(name), v0, v1, v2, v3));
 	}
 
+	void Shader::SetUniform1f(const std::string& name, float value)
+	{
+		GLCall(glUniform1f(GetUniformLocation(name), value));
+	}
+
 	void Shader::SetUniformMat4f(const std::string& name, glm::mat4 matrix)
 	{
 		GLCall(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &matrix[0][0]));
@@ -92,7 +97,10 @@ namespace RuamEngine
 	void Shader::LoadMaterial(const Material& material)
 	{
 		SetUniform4f("u_albedoColor", material.albedoColor.x, material.albedoColor.y, material.albedoColor.z, material.albedoColor.w);
-	
+		SetUniform1f("u_metallic", material.metallic);
+		SetUniform1f("u_roughness", material.roughness);
+		SetUniform1f("u_ambientOcclusion", material.ambientOcclusion);
+		SetUniform1f("u_emissiveStrength", material.emissiveStrength);
 	}	
 
 	int Shader::GetUniformLocation(const std::string& name)

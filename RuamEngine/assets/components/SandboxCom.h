@@ -61,7 +61,7 @@ class SandboxCom : public BaseRenderer
 
 				indexCount += 4;
 
-				if (sizeof(Vertex) * vertices.size() + sizeof(Vertex) * 4 >= genericUnit.m_vertexBuffer->GetMaxSize() - genericUnit.m_vertexBuffer->GetCurrentSize()
+				if (sizeof(Vertex) * indexCount + sizeof(Vertex) * 4 >= genericUnit.m_vertexBuffer->GetMaxSize() - genericUnit.m_vertexBuffer->GetCurrentSize()
 					||
 					sizeof(unsigned int) * indices.size() + sizeof(unsigned int) * 6 >= genericUnit.m_indexBuffer->GetMaxSize() - genericUnit.m_indexBuffer->GetCurrentSize()
 					)
@@ -74,6 +74,10 @@ class SandboxCom : public BaseRenderer
 					}
 				}
 			}
+		}
+		if (indices.size() > 0)
+		{
+			genericUnit.AddBatchData(vertices, vertices.size() * sizeof(Vertex), indices, indices.size() * sizeof(unsigned int));
 		}
 	};
 	void update() 

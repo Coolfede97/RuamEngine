@@ -43,10 +43,7 @@ namespace RuamEngine
     {
 
         Bind();
-        /*std::cout << "VERTEX vector size: " << m_vertexData.size() * sizeof(m_vertexData[0]) << "\n";
-        std::cout << "VERTEX Buffer size: " << m_currentSize << "\n";
-	    std::cout << "Sizes: " << sizeof(Vertex) << "---" << sizeof(float) * 7 << "\n";*/
-
+        
         GLCall(glBufferData(GL_ARRAY_BUFFER, m_vertexData.size() * sizeof(Vertex), m_vertexData.data(), m_usage));
 	
     }

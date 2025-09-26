@@ -19,7 +19,7 @@ namespace RuamEngine
 
         glfwMakeContextCurrent(m_window);
 
-        glfwSwapInterval(1);
+        glfwSwapInterval(0);
 
         ASSERT(glewInit() == GLEW_OK);
 
@@ -37,13 +37,13 @@ namespace RuamEngine
             basicDrawingData.m_shader = std::make_shared<Shader>("assets/shaders/GeneralVertexShader.glsl", "assets/shaders/GeneralFragmentShader.glsl");
 			basicDrawingData.m_renderUnits.emplace(Material::MaterialType::Generic, RenderUnit(basicDrawingData.m_shader));
             RenderUnit& genericUnit = basicDrawingData.m_renderUnits.at(Material::MaterialType::Generic);
-			genericUnit.m_material->albedoColor = Vec4(1.0f, 0.5f, 0.31f, 1.0f);
+			genericUnit.m_material = std::make_shared<Material>(Material::MaterialType::Generic);
+			genericUnit.m_material->albedoColor = Vec4(1.0f, 0.0f, 0.0f, 1.0f);
             VertexBufferLayout& genericLayout = *genericUnit.m_layout;
             genericLayout.Reset();
             genericLayout.Push<float>(3);
             genericLayout.Push<float>(4);
             genericUnit.m_vertexArray->AddBuffer(*genericUnit.m_vertexBuffer, *genericUnit.m_layout);
-			genericUnit.m_material = std::make_shared<Material>(Material::MaterialType::Generic);
         }
 
     }
@@ -133,6 +133,7 @@ namespace RuamEngine
             for (auto& renderUnit : drawingData.second.m_renderUnits)
             {
                 drawingData.second.m_shader->Bind();
+                drawingData.second.m_shader->LoadMaterial(*renderUnit.second.m_material);
                 renderUnit.second.m_vertexArray->Bind();
                 renderUnit.second.m_indexBuffer->Bind();
                 GLCall(glDrawElements(GL_TRIANGLES, renderUnit.second.m_indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, nullptr));
@@ -143,6 +144,7 @@ namespace RuamEngine
     void Renderer::Draw(RenderUnit& renderUnit)
     {
         renderUnit.m_shader->Bind();
+		renderUnit.m_shader->LoadMaterial(*renderUnit.m_material);
         renderUnit.m_vertexArray->Bind();
         renderUnit.m_indexBuffer->Bind();
         GLCall(glDrawElements(GL_TRIANGLES, renderUnit.m_indexBuffer->GetIndexCount(), GL_UNSIGNED_INT, nullptr));   

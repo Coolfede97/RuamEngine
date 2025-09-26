@@ -18,18 +18,15 @@ namespace RuamEngine
 	bool RenderUnit::AddBatchData(const std::vector<Vertex> vertices, unsigned int vertexDataSize, const std::vector<unsigned int> indices, unsigned int indexDataSize)
 	{
 		bool fullBatch = false;
-		ASSERT(vertexDataSize <= m_vertexBuffer->GetMaxSize() || indexDataSize <= m_indexBuffer->GetMaxSize());
+		ASSERT(indexDataSize <= m_indexBuffer->GetMaxSize());
 
-		if (m_vertexBuffer->GetCurrentSize() + vertexDataSize > m_vertexBuffer->GetMaxSize()
-			||
-			m_indexBuffer->GetCurrentSize() + indexDataSize > m_indexBuffer->GetMaxSize())
+		if (m_indexBuffer->GetCurrentSize() + indexDataSize > m_indexBuffer->GetMaxSize())
 		{
 			SubmitBatchData();
 			Renderer::Draw(*this);
 			Flush();
 			fullBatch = true;
 		}
-		//std::cout << vertices.size() << "\n";
 		m_vertexBuffer->AddBatchData(vertices, vertexDataSize);
 		m_indexBuffer->AddBatchData(indices, indexDataSize);
 		return fullBatch;
