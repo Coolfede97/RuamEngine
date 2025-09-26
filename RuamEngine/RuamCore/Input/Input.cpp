@@ -1,40 +1,8 @@
 #include "Input.h"
 
-
-std::unordered_map<KeyCode, bool> Input::m_keysPressed = {
-    {SpaceBar, false}, {Quote, false}, {Comma, false}, {Minus, false}, {Period, false}, {Slash, false},
-    {Alpha0, false}, {Alpha1, false}, {Alpha2, false}, {Alpha3, false}, {Alpha4, false},
-    {Alpha5, false}, {Alpha6, false}, {Alpha7, false}, {Alpha8, false}, {Alpha9, false},
-    {Semicolon, false}, {Equals, false},
-    {A, false}, {B, false}, {C, false}, {D, false}, {E, false}, {F, false}, {G, false}, {H, false}, {I, false}, {J, false},
-    {K, false}, {L, false}, {M, false}, {N, false}, {O, false}, {P, false}, {Q, false}, {R, false}, {S, false}, {T, false},
-    {U, false}, {V, false}, {W, false}, {X, false}, {Y, false}, {Z, false},
-    {LeftBracket, false}, {Backslash, false}, {RightBracket, false}, {BackQuote, false},
-    {Escape, false}, {Enter, false}, {Tab, false}, {Backspace, false}, {Insert, false}, {Delete, false},
-    {RightArrow, false}, {LeftArrow, false}, {DownArrow, false}, {UpArrow, false},
-    {PageUp, false}, {PageDown, false}, {Home, false}, {End, false},
-    {CapsLock, false}, {ScrollLock, false}, {NumLock, false},
-    {PrintScreen, false}, {PauseBreak, false},
-    {F1, false}, {F2, false}, {F3, false}, {F4, false}, {F5, false}, {F6, false},
-    {F7, false}, {F8, false}, {F9, false}, {F10, false}, {F11, false}, {F12, false},
-    {Keypad0, false}, {Keypad1, false}, {Keypad2, false}, {Keypad3, false}, {Keypad4, false},
-    {Keypad5, false}, {Keypad6, false}, {Keypad7, false}, {Keypad8, false}, {Keypad9, false},
-    {KeypadPeriod, false}, {KeypadDivide, false}, {KeypadMultiply, false}, {KeypadMinus, false},
-    {KeypadPlus, false}, {KeypadEnter, false}, {KeypadEquals, false},
-    {LeftShift, false}, {LeftControl, false}, {LeftAlt, false}, {LeftCommand, false},
-    {RightShift, false}, {RightControl, false}, {RightAlt, false}, {RightCommand, false},
-    {Menu, false}
-};
-MouseMode Input::m_currentMouseMode = MouseMode::MouseNormal;
-
 GLFWwindow* Input::m_window = nullptr;
-int Input::m_windowWidth = 0;
-int Input::m_windowHeight = 0;
-
-Vec3 Input::m_mousePosPix = Vec3::Zero();
-Vec3 Input::m_lastMousePosPix = Vec3::Zero();
-Vec3 Input::m_mousePosNorm = Vec3::Zero();// Mouse normalized position  (-1.0 <-> 1.0)
-Vec3 Input::m_lastMousePosNorm = Vec3::Zero();
+Vec2 Input::m_lastMousePosPix = Vec2(0.0f, 0.0f);
+Vec2 Input::m_lastMousePosNorm = Vec2(0.0f, 0.0f);
 
 bool Input::NullWindow()
 {
@@ -42,29 +10,147 @@ bool Input::NullWindow()
     return false;
 }
 
-void Input::SetMouseMode(MouseMode mode)
-{
-	glfwSetInputMode(m_window, GLFW_CURSOR, mode);
+Vec2 Input::GetPixToNorm(Vec2 pix) {
+    int width, height;
+    glfwGetWindowSize(m_window, &width, &height);
+    return Vec2((pix.x / (float)width) * 2.0f - 1.0f, (1.0f - (pix.y / (float)height)) * 2.0f - 1.0f);
 }
 
-void Input::UpdateInput()
-{
-	ASSERT(!NullWindow()); // ASSERT if there is no window. Input::SetWindow() must be called as soon as the window is created.
-    for (const auto& pair : m_keysPressed)
-    {
-        m_keysPressed[pair.first] = glfwGetKey(m_window, pair.first) == GLFW_PRESS;
+Vec2 Input::GetNormToPix(Vec2 norm) {
+    int width, height;
+    glfwGetWindowSize(m_window, &width, &height);
+    return Vec2(((norm.x + 1.0f) / 2.0f) * (float)width, ((1.0f - norm.y) / 2.0f) * (float)height);
+}
+
+
+bool Input::GetKeyDown(KeyCode key) {
+    // Return True if the key is down
+
+    return glfwGetKey(m_window, key) == GLFW_PRESS;
+}
+
+bool Input::GetKeyUp(const KeyCode key) {
+    // Return True if the key is up
+
+    return glfwGetKey(m_window, key) == GLFW_RELEASE;
+}
+
+void Input::KeyEvent(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    // Handle key events
+    if (action == GLFW_PRESS) {
+        // Key pressed
+        EventManager::Publish(OnKeyPressEvent(key));
+    } else if (action == GLFW_RELEASE) {
+        // Key released
+        EventManager::Publish(OnKeyReleaseEvent(key));
     }
 }
 
-void Input::MouseCallback(GLFWwindow* p_window, double posX, double posY)
-{
-    glfwGetWindowSize(m_window, &m_windowWidth, &m_windowHeight);
-
-    m_lastMousePosPix = m_mousePosPix;
-    m_mousePosPix = Vec3(posX - m_windowWidth / 2.0f, (m_windowHeight / 2.0f) - posY);
-
-    m_lastMousePosNorm = m_mousePosNorm;
-    m_mousePosNorm = Vec3(posX / (m_windowWidth / 2.0f) - 1.0f, 1.0f - (posY / (m_windowHeight / 2.0f)));
-
+void Input::CharEvent(GLFWwindow* window, unsigned int codepoint) {
+    EventManager::Publish(OnCharEvent(codepoint));
 }
+
+void Input::SetCursorMode(const CursorMode mode)
+{
+    glfwSetInputMode(m_window, GLFW_CURSOR, mode);
+}
+
+CursorMode Input::GetCursorMode() {
+    return static_cast<CursorMode>(glfwGetInputMode(m_window, GLFW_CURSOR));
+}
+
+bool Input::GetMouseButtonDown(MouseCode button) {
+    // Return True if the mouse button is down
+
+    return glfwGetMouseButton(m_window, button) == GLFW_PRESS;
+}
+
+bool Input::GetMouseButtonUp(const MouseCode button) {
+    // Return True if the key is up
+
+    return glfwGetMouseButton(m_window, button) == GLFW_RELEASE;
+}
+
+Vec2 Input::GetMouseDeltaPix() {
+    return GetCursorPosPix() - m_lastMousePosPix;
+}
+
+Vec2 Input::GetMouseDeltaNorm() {
+    return GetCursorPosNorm() - m_lastMousePosNorm;
+}
+
+Vec2 Input::GetCursorPosPix() {
+    double xpos, ypos;
+    glfwGetCursorPos(m_window, &xpos, &ypos);
+    return Vec2((float)xpos, (float)ypos);
+}
+
+Vec2 Input::GetCursorPosNorm() {
+    double xpos, ypos;
+    glfwGetCursorPos(m_window, &xpos, &ypos);
+    return GetPixToNorm(Vec2((float)xpos, (float)ypos));
+}
+
+void Input::SetCursorPosNorm(const Vec2& newPos) {
+    Vec2 position = GetNormToPix(newPos);
+    glfwSetCursorPos(m_window, position.x, position.y);
+}
+
+void Input::CursorPosEvent(GLFWwindow* window, double xpos, double ypos) {
+    Vec2 position = Vec2(xpos, ypos);
+    Vec2 positionNormalized = GetPixToNorm(position);
+
+    EventManager::Publish(OnMouseMoveEvent(position, positionNormalized));
+}
+
+void Input::MouseButtonEvent(GLFWwindow* window, int button, int action, int mods) {
+    Vec2 positionPix = GetCursorPosPix();
+    Vec2 positionNorm = GetCursorPosNorm();
+
+    if (action == GLFW_PRESS) {
+        EventManager::Publish(OnMouseButtonDownEvent(positionPix, positionNorm, static_cast<MouseCode>(button)));
+    } else if (action == GLFW_RELEASE) {
+        EventManager::Publish(OnMouseButtonUpEvent(positionPix, positionNorm, static_cast<MouseCode>(button)));
+    }
+}
+
+void Input::ScrollEvent(GLFWwindow* window, double xoffset, double yoffset) {
+    Vec2 positionPix = GetCursorPosPix();
+    Vec2 positionNorm = GetPixToNorm(positionPix);
+    EventManager::Publish(OnMouseScrollEvent(Vec2(xoffset, yoffset), positionPix, positionNorm));
+}
+
+void Input::CursorEnterEvent(GLFWwindow* window, int entered) {
+    Vec2 positionPix = GetCursorPosPix();
+    Vec2 positionNorm = GetPixToNorm(positionPix);
+    if (entered) {
+        EventManager::Publish(OnMouseEnterWindowEvent(positionPix, positionNorm));
+    } else {
+        EventManager::Publish(OnMouseLeaveWindowEvent(positionPix, positionNorm));
+    }
+}
+
+void Input::SetUp(GLFWwindow* window) {
+    // Set the window pointer
+    m_window = window;
+    glfwSetInputMode(window, GLFW_STICKY_KEYS, GLFW_TRUE);
+}
+
+void Input::UpdateInput() {
+    if (NullWindow()) {
+        return;
+    }
+
+    glfwSetKeyCallback(m_window, KeyEvent);
+    glfwSetCharCallback(m_window, CharEvent);
+    glfwSetCursorPosCallback(m_window, CursorPosEvent);
+    glfwSetMouseButtonCallback(m_window, MouseButtonEvent);
+    glfwSetScrollCallback(m_window, ScrollEvent);
+    glfwSetCursorEnterCallback(m_window, CursorEnterEvent);
+
+    // Update mouse position
+    m_lastMousePosPix = GetCursorPosPix();
+    m_lastMousePosNorm = GetCursorPosNorm();
+}
+
 

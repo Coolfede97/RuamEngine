@@ -1,10 +1,15 @@
 #include "Scene.hpp"
 #include <fstream>
+#include "easy/profiler.h"
 
 unsigned int Scene::s_id_count = 0;
 const std::string Scene::s_default_name = "Sample Scene";
 
-unsigned int Scene::id() const {
+Scene::Scene() : m_id(s_id_count++), m_name(s_default_name) {}
+
+Scene::Scene(const char* name) : m_id(s_id_count++), m_name(name) {}
+
+const unsigned int Scene::id() const {
 	return m_id;
 }
 
@@ -38,20 +43,20 @@ Object* Scene::getObjectById(unsigned int id) const {
     while ((*obj)->id() != id) {
         std::advance(obj, 1);
     }
-    return (*obj);
+    return *obj;
 }
 
 void Scene::deleteObjectByIdx(unsigned int idx) {
     m_objects.erase(std::next(m_objects.cbegin(), idx));
 }
 
-void Scene::start() const {
+void Scene::start() {
 	for (auto& obj : m_objects) {
 		obj->start();
 	}
 }
 
-void Scene::update() const {
+void Scene::update() {
 	for (auto& obj : m_objects) {
 		obj->update();
 	}

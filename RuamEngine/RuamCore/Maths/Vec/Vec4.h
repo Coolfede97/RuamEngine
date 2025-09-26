@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <iostream>
+#include "glm/glm.hpp"
 
 struct Vec4
 {
@@ -12,6 +13,7 @@ struct Vec4
 
     // Constructor
     Vec4(float xP = 0.0f, float yP = 0.0f, float zP = 0.0f, float wP = 0.0f);
+	Vec4(const glm::vec4& other);
 
     // Basic operators
     Vec4 operator+(Vec4 other) const;
@@ -45,7 +47,9 @@ struct Vec4
     Vec4& operator*=(Vec4 other);
     Vec4& operator/=(Vec4 other);
     Vec4& operator*=(float number);
-
+	operator glm::vec4() {
+		return glm::vec4(x, y, z, w);
+	}
     // Output
     friend std::ostream& operator<<(std::ostream& os, const Vec4& v);
 };

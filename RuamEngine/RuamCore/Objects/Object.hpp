@@ -4,29 +4,48 @@
 #include <memory>
 #include <map>
 #include <typeindex>
+#include <string>
+#include <algorithm>
 
 #include "Component.hpp"
-#include <string>
+#include "Transform.h"
+
+#include "easy/profiler.h"
 
 class Object {
 public:
-	Object() : m_id(s_id_count++), m_name(s_default_name) {}
-	Object(std::string& name) : m_id(s_id_count++), m_name(name) {}
+	Object(const std::string& name) : m_id(s_id_count++), m_name(name), m_transform(m_id) {}
+	Object() : Object(s_default_name) {}
 
-	using ComponentVector = std::vector<std::shared_ptr<Component>>;
+	using ComponentVector = std::vector<std::unique_ptr<Component>>;
 	using ComponentList = std::map<std::type_index, ComponentVector>;
 
 	template<class Comp>
-	std::shared_ptr<Comp> addComponent() {
-		std::shared_ptr<Comp> comp = std::make_shared<Comp>(m_id);
+	Comp& addComponent() {
+		EASY_FUNCTION("Add Component");
+		std::unique_ptr<Comp> comp = std::make_unique<Comp>(m_id);
 		const std::type_index tidx = typeid(Comp);
 		if (m_components.count(tidx) > 0) {
-			m_components[tidx].push_back(comp);
+			m_components[tidx].push_back(std::move(comp));
 		} else {
 			m_components.insert({tidx, ComponentVector()});
-			m_components[tidx].push_back(comp);
+			m_components[tidx].push_back(std::move(comp));
 		}
-		return comp;
+		return *dynamic_cast<Comp*>(m_components[tidx].back().get());
+	}
+
+	template<class Comp, typename... Args>
+	Comp& addComponent(Args&&... args) {
+		EASY_FUNCTION("Add Component args")
+		std::unique_ptr<Comp> comp = std::make_unique<Comp>(m_id, std::forward<Args>(args...)...);
+		const std::type_index tidx = typeid(Comp);
+		if (m_components.count(tidx) > 0) {
+			m_components[tidx].push_back(std::move(comp));
+		} else {
+			m_components.insert({tidx, ComponentVector()});
+			m_components[tidx].push_back(std::move(comp));
+		}
+		return *dynamic_cast<Comp*>(m_components[tidx].back().get());
 	}
 
 	// Returns ptr because a ref can't be null
@@ -34,6 +53,7 @@ public:
 	// TODO: Find if there's a better way
 	template<class Comp>
 	Comp* getComponent() const {
+		EASY_FUNCTION("Get Component")
 		auto pair = m_components.find(typeid(Comp));
 		if (pair == m_components.end()) {
 			return nullptr;
@@ -46,6 +66,7 @@ public:
 
 	template<class Comp>
 	void removeComponent() {
+		EASY_FUNCTION("Remove Component")
 		auto pair = m_components.find(typeid(Comp));
 		if (pair == m_components.end()) return;
 		if (pair->second.size() == 0) return;
@@ -54,7 +75,7 @@ public:
 
 	unsigned int id() const;
 	const std::string& name() const;
-	void setName(std::string& newstr); 
+	void setName(std::string& newstr);
 	const ComponentList& getComponents() const;
 
 	bool operator==(const Object& obj) {
@@ -66,10 +87,13 @@ public:
 
 	void destroy();
 
+	Transform& transform();
+
 private:
 	unsigned int m_id;
 	static unsigned int s_id_count;
     std::string m_name;
+	Transform m_transform;
 
 	ComponentList m_components;
 

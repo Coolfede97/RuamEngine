@@ -5,20 +5,25 @@
 #include "SceneManager.hpp"
 #include "imgui.h"
 #include "Manager.h"
+#include "DebugUtils.h"
+#include "AudioSource.h"
 
 #include <iostream>
 
 class Counter : public Component {
 public:
-	int count = 0;
 	using Component::Component;
 	void start() {
-		std::cout << "Inicio\n";
+		m_audio = object()->getComponent<AudioSource>();
+		ASSERT(m_audio != nullptr);
+		std::cout << "Inicio: volumen=" << m_audio->volume() << "\n";
+		m_audio->setVolume(2);
+		std::cout << "Inicio: volumen=" << m_audio->volume() << "\n";
 	}
 
 	void update() {
-		count++;
-		std::cout << count << "\n";
-		std::cout << object()->name() << "\n";
 	}
+
+private:
+	AudioSource* m_audio;
 };

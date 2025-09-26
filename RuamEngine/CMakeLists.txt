@@ -13,8 +13,11 @@ endif()
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 project ("RuamEngine")
+
 # Add source to this project's executable.
 add_executable (RuamEngine "RuamEngine.cpp" "RuamEngine.h")
+
+add_compile_options(-O2 -gdwarf-3)
 
 include(FetchContent)
 include(FindOpenGL)
@@ -22,6 +25,7 @@ include(FindOpenGL)
 add_subdirectory(CoolFede97)
 add_subdirectory(Santinorua)
 add_subdirectory(Skuerjuan)
+add_subdirectory(Tomyatana)
 
 # -----------------------------------------------------------------------------------------------------
 #######################################################################################################
@@ -125,6 +129,18 @@ add_library(glm::glm ALIAS glm)
 
 # ///////////////////////////////////////////////////////////////////////////////////////////////
 
+# dr_libs
+
+FetchContent_Populate(
+  dr_libs
+  URL		https://github.com/mackron/dr_libs/archive/refs/heads/master.zip
+)
+add_library(dr_libs INTERFACE)
+target_include_directories(dr_libs INTERFACE ${dr_libs_SOURCE_DIR})
+add_library(dr_libs::dr_libs ALIAS dr_libs)
+
+# ///////////////////////////////////////////////////////////////////////////////////////////////
+
 # IMGUI
 
 # In order to use a library which has cpp and h files, you need to create a library (add_library) and
@@ -155,6 +171,25 @@ set(ALSOFT_UTILS            OFF)
 set(ALSOFT_NO_CONFIG_UTIL   ON)
 FetchContent_MakeAvailable(openal-soft)
 
+
+# ///////////////////////////////////////////////////////////////////////////////////////////////
+
+# easy_profiler
+FetchContent_Declare(
+    easy_profiler
+    GIT_REPOSITORY https://github.com/yse/easy_profiler.git
+    GIT_TAG v2.1.0
+)
+
+set(PREV_MIN_VERSION ${CMAKE_POLICY_VERSION_MINIMUM})
+
+set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
+
+FetchContent_MakeAvailable(easy_profiler)
+
+set(CMAKE_POLICY_VERSION_MINIMUM ${PREV_MIN_VERSION})
+
+
 # ///////////////////////////////////////////////////////////////////////////////////////////////
 
 # Linking
@@ -173,17 +208,18 @@ if (WIN32)
 endif()
 ]==========]
 
+target_compile_definitions(Vendor INTERFACE STB_IMAGE_IMPLEMENTATION)
+target_compile_definitions(Vendor INTERFACE BUILD_WITH_EASY_PROFILER)
+
 target_link_libraries(Vendor INTERFACE
-        glfw glew_s glm ImGui OpenGL::GL OpenAL::OpenAL nlohmann_json::nlohmann_json
+        glfw glew_s glm ImGui OpenGL::GL OpenAL::OpenAL nlohmann_json::nlohmann_json dr_libs easy_profiler
 )
 
 target_include_directories(Vendor INTERFACE 
     ${VENDOR_PATH}/stb_image
     ${VENDOR_PATH}/IMGUI
-    ${openal-soft_SOURCE_DIR}/include
 )
 
-target_compile_definitions(Vendor INTERFACE STB_IMAGE_IMPLEMENTATION)
 target_compile_definitions(Vendor INTERFACE GLEW_STATIC)
 
 # -----------------------------------------------------------------------------------------------------
@@ -215,6 +251,7 @@ target_include_directories(Rendering INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Rend
 file (GLOB VEC_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Maths/Vec/*.cpp")
 add_library(Vec STATIC ${VEC_SRC})
 target_include_directories(Vec PUBLIC ${CMAKE_SOURCE_DIR}/RuamCore/Maths/Vec)
+target_link_libraries(Vec PUBLIC Vendor)
 
 # -----------------------------------------------------------------------------------------------------
 
@@ -269,20 +306,45 @@ target_include_directories(RuamUtils INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Ruam
 
 # /////////////////////////////////////////////////////////////////////////////////////////////// 
 
+# Audio
+
+file (GLOB AUDIO_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Audio/*.cpp")
+add_library(Audio STATIC ${AUDIO_SRC})
+target_include_directories(Audio INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Audio)
+target_link_libraries(Audio PUBLIC glm dr_libs Vendor RuamUtils)
+
+
+# ///////////////////////////////////////////////////////////////////////////////////////////////
+
+# Objects
+
+file (GLOB OBJECTS_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Objects/*.cpp")
+file (GLOB COMPONENTS_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Components/*.cpp")
+add_library(Objects STATIC ${OBJECTS_SRC} ${COMPONENTS_SRC})
+target_include_directories(Objects PUBLIC ${CMAKE_SOURCE_DIR}/RuamCore/Objects ${CMAKE_SOURCE_DIR}/RuamCore/Components)
+target_link_libraries(Objects PUBLIC Audio)
+
+
+# ///////////////////////////////////////////////////////////////////////////////////////////////
+
+# Event System
+
+file (GLOB EVENTSYSTEM_SRC "${CMAKE_SOURCE_DIR}/RuamCore/EventSystem/*.cpp")
+add_library(EventSystem STATIC ${EVENTSYSTEM_SRC})
+target_link_libraries(EventSystem PUBLIC Rendering Maths)
+target_include_directories(EventSystem INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/EventSystem)
+
+
+# ///////////////////////////////////////////////////////////////////////////////////////////////
+
 # Linking
 
-target_link_libraries(RuamCore INTERFACE 
-	Rendering Maths Time Files Input Objects RuamUtils
+target_compile_options(Audio PUBLIC -O2)
+target_compile_options(Objects PUBLIC -O2)
+
+target_link_libraries(RuamCore INTERFACE
+    Rendering Maths Time Files Input Objects RuamUtils Audio EventSystem
 )
-
-
-# -----------------------------------------------------------------------------------------------------
-#######################################################################################################
-#######################################################################################################
-# -----------------------------------------------------------------------------------------------------
-
-
-target_link_libraries(RuamEngine PRIVATE RuamCore)
 
 # -----------------------------------------------------------------------------------------------------
 #######################################################################################################

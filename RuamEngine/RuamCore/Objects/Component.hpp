@@ -8,8 +8,8 @@ public:
 	virtual ~Component() = default;
     explicit Component(const unsigned int obj_id) : m_object_id(obj_id), m_id(s_id_count++) {};
 
-    virtual void start() = 0;
-    virtual void update() = 0;
+	virtual void start() = 0;
+	virtual void update() = 0;
 
 	bool operator==(const Component& other) const;
 
@@ -26,7 +26,7 @@ public:
 	}
 
 protected:
-    const unsigned int m_object_id;
+	const unsigned int m_object_id;
 	const unsigned int m_id;
 	static unsigned int s_id_count;
 };

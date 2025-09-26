@@ -95,3 +95,7 @@ Desktop.ini
 
 # Archivo creado por imgui
 imgui.ini
+
+# Audio
+*.wav
+*log*
