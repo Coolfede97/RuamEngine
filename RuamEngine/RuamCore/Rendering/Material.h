@@ -19,7 +19,7 @@ namespace RuamEngine
         float ambientOcclusion = 1.0f;
         float emissiveStrength = 0.0f;
 
-        std::unordered_map<std::string, Texture> textures;
+        std::vector<Texture> textures;
 
         bool useAlbedoMap = false;
         bool useNormalMap = false;

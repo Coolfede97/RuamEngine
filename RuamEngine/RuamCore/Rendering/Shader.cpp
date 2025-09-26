@@ -101,6 +101,11 @@ namespace RuamEngine
 		SetUniform1f("u_roughness", material.roughness);
 		SetUniform1f("u_ambientOcclusion", material.ambientOcclusion);
 		SetUniform1f("u_emissiveStrength", material.emissiveStrength);
+
+		for (int i = 1 ; i < material.textures.size(); i++)
+		{
+			material.textures[i].Bind(i);
+		}
 	}	
 
 	int Shader::GetUniformLocation(const std::string& name)
