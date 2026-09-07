@@ -140,7 +140,6 @@ namespace RuamEngine
                 }
             }
 
-            GLCall(glViewport(0,0,Renderer::GetWindowWidth(), Renderer::GetWindowHeight()));
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
             Renderer::ClearScreen();
             ImGui::Render();

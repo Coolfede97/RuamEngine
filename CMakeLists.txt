@@ -105,10 +105,11 @@ set(BUILD_SHARED_LIBS OFF)
 set(GLFW_BUILD_EXAMPLES OFF)
 set(GLFW_BUILD_TESTS OFF)
 set(GLFW_BUILD_DOCS OFF)
+unset(GLFW_USE_WAYLAND CACHE)
 FetchContent_Declare(
   glfw
   GIT_REPOSITORY https://github.com/glfw/glfw.git
-  GIT_TAG 3.3.8)
+  GIT_TAG 3.4)
 FetchContent_MakeAvailable(glfw)
 
 # set(BUILD_SHARED_LIBS ON)
@@ -180,6 +181,10 @@ add_library(ImGui STATIC ${IMGUI_SRC})
 # In this case, the library has #include <AnotherLibrary> in its cpp files, like GLFW or GLEW, so
 # we need to indicate where those glfw.h and glew.h files are.
 target_link_libraries(ImGui PUBLIC glfw glew_s)
+if(UNIX AND NOT APPLE)
+    find_package(X11 REQUIRED)
+    target_link_libraries(ImGui PUBLIC X11::X11)
+endif()
 target_include_directories(ImGui PUBLIC "${imgui_SOURCE_DIR}")
 # Lastly, add this new library to the function target_link_directories and also provice the path to
 # the h files to the target_include_directories function

@@ -23,11 +23,13 @@ namespace RuamEngine
 
     void Renderer::Init()
     {
+#if defined(__linux__)
+        glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_WAYLAND);
+#endif
         ASSERT(glfwInit());
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
 
         s_window = glfwCreateWindow(s_config.windowWidth, s_config.windowHeight, s_config.windowTitle, s_config.monitor, s_config.share);
         ASSERT(s_window);
@@ -38,7 +40,21 @@ namespace RuamEngine
 
         glfwSwapInterval(1);
 
-        ASSERT(glewInit() == GLEW_OK);
+        glewExperimental = GL_TRUE;
+        GLenum glewStatus = glewInit();
+        if (
+            glewStatus != GLEW_OK
+            #if defined(__linux__)
+                && glewStatus != GLEW_ERROR_NO_GLX_DISPLAY
+            #endif
+        )
+        {
+            std::cerr << "GLEW initialization failed: "
+                      << static_cast<unsigned int>(glewStatus) << " ("
+                      << reinterpret_cast<const char*>(glewGetErrorString(glewStatus)) << ")\n";
+            ASSERT(false);
+        }
+        glGetError();
 
         if (s_config.depthTest)
         {
@@ -51,10 +67,12 @@ namespace RuamEngine
             GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
         }
 
-
         {
-            s_editorFrameBuffer = std::make_shared<FrameBuffer>(s_config.windowWidth, s_config.windowHeight);
-            s_gameFrameBuffer = std::make_shared<FrameBuffer>(s_config.windowWidth, s_config.windowHeight);
+            int framebufferWidth = 0;
+            int framebufferHeight = 0;
+            glfwGetFramebufferSize(s_window, &framebufferWidth, &framebufferHeight);
+            s_editorFrameBuffer = std::make_shared<FrameBuffer>(framebufferWidth, framebufferHeight);
+            s_gameFrameBuffer = std::make_shared<FrameBuffer>(framebufferWidth, framebufferHeight);
 
             ResourceManager::Init();
             Skybox::Init();
