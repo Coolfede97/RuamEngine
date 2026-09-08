@@ -3,7 +3,7 @@
 #include "Component.h"
 #include "Vec3.h"
 #include "nlohmann/json.hpp"
-
+#include "JsonConverters.h"
 namespace RuamEngine
 {
     class Rigidbody : public Component
@@ -14,12 +14,16 @@ namespace RuamEngine
         float m_mass;
         bool m_useGravity;
         bool m_isKinematic;
-        float m_gravityForce;
+        glm::vec3 m_gravity;
         std::vector<FieldInfo> fields() override
 		{
 		    return
       		{
-                makeFieldInfo<float>("m_gravityForce", m_gravityForce)
+                makeFieldInfo<glm::vec3>("m_velocity", m_velocity),
+                makeFieldInfo<float>("m_mass", m_mass),
+                makeFieldInfo<bool>("m_useGravity", m_useGravity),
+                makeFieldInfo<bool>("m_isKinematic", m_isKinematic),
+                makeFieldInfo<glm::vec3>("m_gravity", m_gravity)
       		};
 		}
         Rigidbody(unsigned int entityId);

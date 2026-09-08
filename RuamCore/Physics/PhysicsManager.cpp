@@ -11,7 +11,11 @@ namespace RuamEngine
     {
         for (Rigidbody* rb : s_rigidbodies)
         {
-            rb->transform()->translate(0, -9.8 * RuamTime::DeltaTime() * rb->m_gravityForce, 0);
+            if (!rb->m_isKinematic && rb->m_useGravity) rb->m_velocity += rb->m_gravity*RuamTime::DeltaTime();
+
+            // Crazy stuff I need to do
+
+            rb->transform()->translate(rb->m_velocity*RuamTime::DeltaTime());
         }
     }
 
