@@ -321,23 +321,13 @@ target_include_directories(RuamUtils INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Ruam
 
 # ///////////////////////////////////////////////////////////////////////////////////////////////
 
-# Audio
-
-file (GLOB AUDIO_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Audio/*.cpp")
-add_library(Audio STATIC ${AUDIO_SRC})
-target_include_directories(Audio PUBLIC "${CMAKE_SOURCE_DIR}/RuamCore/Audio")
-target_link_libraries(Audio PUBLIC glm dr_libs Vendor RuamUtils)
-
-
-# ///////////////////////////////////////////////////////////////////////////////////////////////
-
 # ECS
 
 file (GLOB ECS_SRC "${CMAKE_SOURCE_DIR}/RuamCore/ECS/*.cpp")
 file (GLOB COMPONENTS_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Components/*.cpp")
 add_library(ECS STATIC ${ECS_SRC} ${COMPONENTS_SRC})
 target_include_directories(ECS PUBLIC "${CMAKE_SOURCE_DIR}/RuamCore/ECS" "${CMAKE_SOURCE_DIR}/RuamCore/Components" "${CMAKE_SOURCE_DIR}")
-target_link_libraries(ECS PUBLIC Serialization Audio RuamUtils Time Core Rendering)
+target_link_libraries(ECS PUBLIC Serialization RuamUtils Time Core Rendering)
 
 # ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -346,7 +336,16 @@ target_link_libraries(ECS PUBLIC Serialization Audio RuamUtils Time Core Renderi
 file (GLOB SERIALIZATION_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Serialization/*.cpp")
 add_library(Serialization STATIC ${SERIALIZATION_SRC})
 target_include_directories(Serialization PUBLIC "${CMAKE_SOURCE_DIR}/RuamCore/Serialization")
-target_link_libraries(Serialization PUBLIC ECS Audio RuamUtils Time SaveSystem)
+target_link_libraries(Serialization PUBLIC ECS RuamUtils Time SaveSystem)
+
+# ///////////////////////////////////////////////////////////////////////////////////////////////
+
+# Physics
+
+file (GLOB PHYSICS_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Physics/*.cpp")
+add_library(Physics STATIC ${PHYSICS_SRC})
+target_include_directories(Physics PUBLIC "${CMAKE_SOURCE_DIR}/RuamCore/Physics")
+target_link_libraries(Physics PUBLIC ECS)
 
 
 # ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -370,15 +369,6 @@ target_include_directories(EventSystem INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Ev
 
 # ///////////////////////////////////////////////////////////////////////////////////////////////
 
-# Core
-
-file (GLOB CORE_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Core/*.cpp")
-add_library(Core STATIC ${CORE_SRC})
-target_link_libraries(Core PUBLIC Rendering ECS AssetsComponents Input Time SaveSystem)
-target_include_directories(Core INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Core)
-
-# ///////////////////////////////////////////////////////////////////////////////////////////////
-
 # SaveSystem
 
 file (GLOB SAVE_SYSTEM_SRC "${CMAKE_SOURCE_DIR}/RuamCore/SaveSystem/*.cpp")
@@ -388,10 +378,20 @@ target_include_directories(SaveSystem INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Sav
 
 # ///////////////////////////////////////////////////////////////////////////////////////////////
 
+# Core
+
+file (GLOB CORE_SRC "${CMAKE_SOURCE_DIR}/RuamCore/Core/*.cpp")
+add_library(Core STATIC ${CORE_SRC})
+target_link_libraries(Core PUBLIC Rendering ECS AssetsComponents Input Time SaveSystem Maths Files RuamUtils EventSystem Serialization Physics)
+target_include_directories(Core INTERFACE ${CMAKE_SOURCE_DIR}/RuamCore/Core)
+
+
+# ///////////////////////////////////////////////////////////////////////////////////////////////
+
 # Linking
 
 target_link_libraries(RuamCore INTERFACE
-    Core Rendering  Maths Time Files Input ECS RuamUtils Audio EventSystem AssetsComponents Serialization
+  Core
 )
 
 # -----------------------------------------------------------------------------------------------------

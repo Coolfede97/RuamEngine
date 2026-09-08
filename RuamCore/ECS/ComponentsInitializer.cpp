@@ -1,6 +1,7 @@
 #include "ComponentsInitializer.h"
 #include "GlobalLight.h"
 #include "ModelRenderer.h"
+#include "Rigidbody.h"
 #include "Transform.h"
 #include "Sandbox.h"
 #include "GameCamera.h"
@@ -14,5 +15,6 @@ namespace RuamEngine
         ModelRenderer::ModelRendererRegister();
         Sandbox::SandboxRegister();
         GameCamera::GameCameraRegister();
+        Rigidbody::RigidbodyRegister();
     }
 }

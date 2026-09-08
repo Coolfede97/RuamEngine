@@ -1,6 +1,7 @@
 #include "Engine.h"
 #include "GameCamera.h"
 #include "KeyCode.h"
+#include "PhysicsManager.h"
 #include "Renderer.h"
 #include "Input.h"
 #include "RenderingCore.h"
@@ -36,7 +37,6 @@ namespace RuamEngine
         }
         Renderer::Init();
         ComponentsInitializer::InitComponents();
-       	// AudioSystem::init();
 
   		Input::SetWindow(Renderer::GetWindow());
   		Input::SetUp(Renderer::GetWindow());
@@ -55,7 +55,6 @@ namespace RuamEngine
 
   		ImGui::StyleColorsDark();
 
-   		// LoadRuamConfig();
     	SceneManager::UpdateScenes();
         s_initialized = true;
     }
@@ -92,7 +91,8 @@ namespace RuamEngine
             Editor::UpdateViewport(Renderer::s_editorFrameBuffer.get(), "Editor", true);
             Editor::UpdateViewport(Renderer::s_gameFrameBuffer.get(), "Game", false);
             Editor::UpdateCameraTransform();
-            // Time
+
+
  			RuamTime::Update();
 
  			EventManager::HandleEvents();
@@ -101,6 +101,7 @@ namespace RuamEngine
  			{
                 UpdateEngineState(scene);
 				scene->tick();
+				if (s_state == EngineState::GameMode) PhysicsManager::Update();
  			}
 
             if (!SceneManager::SceneChange() && scene)
