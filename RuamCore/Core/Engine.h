@@ -9,11 +9,18 @@ namespace RuamEngine
         GameMode,
         EditorMode
     };
+
+    class Scene;
+
     class Engine
     {
     public:
         static void Init();
         static void Start();
+
+        static void UpdateEngineState(Scene* scene);
+
+        static bool CheckIfInitiable();
 
         static void CheckIfWantToSaveChanges();
         static void ImGuiStartNewFrame();

@@ -62,13 +62,12 @@ namespace RuamEngine
 
     void Engine::Start()
     {
-        if (s_started)
-        {
-            std::cerr << "Can't call Engine::Init() because the engine is already initialized\n";
-            return;
-        }
+        if (!CheckIfInitiable()) return;
+
         s_started = true;
+
        	unsigned int frameCount = 0;
+
         if (SceneManager::Scenes().size()>0) SceneManager::EnqueueSceneChange(SceneManager::Scenes()[0], true);
 
   		while (!Renderer::WindowShouldClose())
@@ -98,31 +97,11 @@ namespace RuamEngine
 
  			EventManager::HandleEvents();
 
-
  			if (scene)
  			{
-                if (Input::GetKey(KeyCode::LeftControl_Key) && Input::GetKeyDown(KeyCode::P_Key))
-                {
-                    if (s_state == EngineState::EditorMode)
-                    {
-                        s_state = EngineState::GameMode;
-                        std::cout << "Entered into Game Mode\n";
-                    }
-                    else
-                    {
-                        SceneManager::EnqueueSceneChange(scene->name(), false);
-                        s_state = EngineState::EditorMode;
-                        std::cout << "Entered into Editor Mode\n";
-                    }
-                }
+                UpdateEngineState(scene);
 				scene->tick();
  			}
-
-            Renderer::s_editorFrameBuffer->bind();
- 			Renderer::ClearScreen();
-            Renderer::s_gameFrameBuffer->bind();
- 			Renderer::ClearScreen();
-            Renderer::s_gameFrameBuffer->unbind();
 
             if (!SceneManager::SceneChange() && scene)
  			{
@@ -158,6 +137,34 @@ namespace RuamEngine
     	ImGui::DestroyContext();
     	Renderer::Shutdown();
     	// AudioSystem::shutdown();
+    }
+
+    void Engine::UpdateEngineState(Scene* scene)
+    {
+        if (Input::GetKey(KeyCode::LeftControl_Key) && Input::GetKeyDown(KeyCode::P_Key))
+        {
+            if (s_state == EngineState::EditorMode)
+            {
+                s_state = EngineState::GameMode;
+                std::cout << "Entered into Game Mode\n";
+            }
+            else
+            {
+                SceneManager::EnqueueSceneChange(scene->name(), false);
+                s_state = EngineState::EditorMode;
+                std::cout << "Entered into Editor Mode\n";
+            }
+        }
+    }
+
+    bool Engine::CheckIfInitiable()
+    {
+        if (s_started)
+        {
+            std::cerr << "Can't call Engine::Init() because the engine is already initialized\n";
+            return false;
+        }
+        return true;
     }
 
     void Engine::CheckIfWantToSaveChanges()
