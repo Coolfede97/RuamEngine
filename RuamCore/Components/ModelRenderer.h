@@ -9,7 +9,7 @@
 
 namespace RuamEngine
 {
-    class Vertex;
+    class MeshVertex;
 
     class ModelRenderer : public Component
     {

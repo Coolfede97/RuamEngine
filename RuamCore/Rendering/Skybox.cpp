@@ -11,12 +11,12 @@ namespace RuamEngine
 {
     bool Skybox::s_initialized = false;
     ShaderProgramSPtr Skybox::s_shaderProgram;
-    VertexArrayUPtr Skybox::m_vertexArray;
-    SSBOUPtr<Vertex> Skybox::s_verticesSSBO;
+    VertexArrayUPtr Skybox::s_vertexArray;
+    SSBOUPtr<MeshVertex> Skybox::s_verticesSSBO;
     SSBOUPtr<unsigned int> Skybox::s_indicesSSBO;
     CubemapSPtr Skybox::s_cubemap = nullptr;
 
-    std::vector<Vertex> Skybox::s_vertices = Vertex::createCube();
+    std::vector<MeshVertex> Skybox::s_vertices = MeshVertex::createCube();
 
     std::vector<unsigned int> Skybox::s_indices = {
         // Back (+Z)
@@ -56,8 +56,8 @@ namespace RuamEngine
     void Skybox::Init()
     {
         s_shaderProgram = std::make_shared<ShaderProgram>(skyboxVertexShaderDefaultPath, skyboxFragmentShaderDefaultPath);
-        m_vertexArray = std::make_unique<VertexArray>();
-        s_verticesSSBO = std::make_unique<SSBO<Vertex>>(baseVertexCount, GL_DYNAMIC_STORAGE_BIT);
+        s_vertexArray = std::make_unique<VertexArray>();
+        s_verticesSSBO = std::make_unique<SSBO<MeshVertex>>(baseVertexCount, GL_DYNAMIC_STORAGE_BIT);
         s_indicesSSBO = std::make_unique<SSBO<unsigned int>>(baseIndexCount, GL_DYNAMIC_STORAGE_BIT);
         s_initialized = true;
         s_verticesSSBO->pushData(s_vertices);
@@ -67,16 +67,5 @@ namespace RuamEngine
         s_cubemap = ResourceManager::LoadCubemap({
 			skyboxDefaultPath,skyboxDefaultPath,skyboxDefaultPath,skyboxDefaultPath,skyboxDefaultPath,skyboxDefaultPath
 			});
-    }
-
-    void Skybox::Draw(glm::mat4 viewMatrix, glm::mat4 projectionMatrix)
-    {
-        s_shaderProgram->updateCameraMatrices(viewMatrix, projectionMatrix);
-        m_vertexArray->bind();
-        s_verticesSSBO->bindBufferBase(SSBOType::vertices);
-        s_indicesSSBO->bindBufferBase(SSBOType::indices);
-        GLCall(glActiveTexture(GL_TEXTURE3));
-		GLCall(glBindTexture(GL_TEXTURE_CUBE_MAP, s_cubemap->glName()));
-		GLCall(glDrawArraysInstanced(GL_TRIANGLES, 0, s_indicesSSBO->currentSize()/sizeof(unsigned int), 1));
     }
 }

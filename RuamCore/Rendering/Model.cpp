@@ -50,13 +50,13 @@ namespace RuamEngine
 
 	MeshSPtr Model::processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4 globalPos)
 	{
-		std::vector<Vertex> vertices;
+		std::vector<MeshVertex> vertices;
 		std::vector<unsigned int> indices;
 
 		for (unsigned int  i = 0; i < mesh->mNumVertices; i++)
 		{
 
-			Vertex vertex;
+			MeshVertex vertex;
 			glm::vec3 vector;
 
 			aiVector3D pos = globalPos * mesh->mVertices[i];

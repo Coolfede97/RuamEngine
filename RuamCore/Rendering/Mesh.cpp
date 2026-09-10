@@ -10,7 +10,7 @@ namespace RuamEngine
 {
 	unsigned int Mesh::s_idCount = 0;
 
-	Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, MaterialSPtr material)
+	Mesh::Mesh(std::vector<MeshVertex> vertices, std::vector<unsigned int> indices, MaterialSPtr material)
 		: m_material(material), m_id(s_idCount++)
 	{
 	    pushData(vertices, indices);
@@ -51,7 +51,7 @@ namespace RuamEngine
 		m_indices->bindBufferBase(SSBOType::indices);
 	}
 
-	void Mesh::pushData(const std::vector<Vertex>& vertices, std::vector<unsigned int> indices)
+	void Mesh::pushData(const std::vector<MeshVertex>& vertices, std::vector<unsigned int> indices)
 	{
 		for (unsigned int i = 0; i < indices.size() ; i++)
 		{

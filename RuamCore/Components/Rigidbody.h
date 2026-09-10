@@ -1,5 +1,6 @@
 #pragma once
 
+#include "BoxCollider.h"
 #include "Component.h"
 #include "Vec3.h"
 #include "nlohmann/json.hpp"
@@ -29,6 +30,8 @@ namespace RuamEngine
         Rigidbody(unsigned int entityId);
         Rigidbody(nlohmann::json rigidbodyData, const unsigned int entityId);
         ~Rigidbody();
+
+        BoxCollider* GetBoxCollider();
 
         DECL_REGISTER_COMPONENT(Rigidbody)
     };

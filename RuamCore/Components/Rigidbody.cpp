@@ -1,4 +1,5 @@
 #include "Rigidbody.h"
+#include "BoxCollider.h"
 #include "Component.h"
 #include "PhysicsManager.h"
 #include "Entity.h"
@@ -23,6 +24,13 @@ namespace RuamEngine
     Rigidbody::~Rigidbody()
     {
         PhysicsManager::RemoveRigidbody(this);
+    }
+
+    BoxCollider* Rigidbody::GetBoxCollider()
+    {
+        BoxCollider* box = entity()->getComponent<BoxCollider>();
+        if (box) return box;
+        else return nullptr;
     }
     DEF_REGISTER_COMPONENT(Rigidbody);
 }

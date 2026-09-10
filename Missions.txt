@@ -1,3 +1,7 @@
+Make Renderer have different draw calls for each thing (mesh, skybox, gizmo, etc). Then, Draw() will have DrawMesh(mesh, camera), DrawSkybox(skybox, camera), etc
+
+Sort rendering folder
+
 Check if when disabling an entity, its children are also disabled
 
 Make sure I save which scene the game started with when entering play mode (because the scene might change during game mode, but when coming back to editor it should start at the original scene)

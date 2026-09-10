@@ -139,9 +139,21 @@ namespace RuamEngine
             GLCall(glDisable(GL_BLEND));
         }
     }
+
+    void Renderer::DrawSkybox(Camera& camera)
+    {
+        Skybox::s_shaderProgram->updateCameraMatrices(camera.viewMatrix(), camera.projectionMatrix());
+        Skybox::s_vertexArray->bind();
+        Skybox::s_verticesSSBO->bindBufferBase(SSBOType::vertices);
+        Skybox::s_indicesSSBO->bindBufferBase(SSBOType::indices);
+        GLCall(glActiveTexture(GL_TEXTURE3));
+		GLCall(glBindTexture(GL_TEXTURE_CUBE_MAP, Skybox::s_cubemap->glName()));
+		GLCall(glDrawArraysInstanced(GL_TRIANGLES, 0, Skybox::s_indicesSSBO->currentSize()/sizeof(unsigned int), 1));
+    }
+
     void Renderer::Draw(Camera& camera)
     {
-        Skybox::Draw(camera.viewMatrix(), camera.projectionMatrix());
+        DrawSkybox(camera);
         std::vector<ShaderProgramName> shaderProgramsToErase = {};
         for (auto& [shaderName, map] : s_modelRUsMap)
         {

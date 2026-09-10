@@ -74,6 +74,7 @@ namespace RuamEngine
         static void ClearScreen();
 
         static void Draw(Camera& camera);
+        static void DrawSkybox(Camera& camera);
 
         static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 

@@ -8,14 +8,14 @@
 
 namespace RuamEngine
 {
-	struct Vertex
+	struct MeshVertex
 	{
 		Vec3 m_position;  // x, y, z
 		Vec2 m_uv;
 		Vec3 m_normal;
 
-		static std::vector<Vertex> createQuad(float size, float x, float y, float texId=0);
-		static std::vector<Vertex> createCube();
+		static std::vector<MeshVertex> createQuad(float size, float x, float y, float texId=0);
+		static std::vector<MeshVertex> createCube();
 		operator std::vector<float>() const
 		{
 			return
@@ -25,6 +25,12 @@ namespace RuamEngine
 				m_normal.x, m_normal.y, m_normal.z,
 			};
 		}
-		static std::vector<float> flattenVertices(const std::vector<Vertex>& vertices);
+		static std::vector<float> flattenVertices(const std::vector<MeshVertex>& vertices);
+	};
+
+
+	struct GizmoVertex
+	{
+	    Vec3 m_position;
 	};
 }

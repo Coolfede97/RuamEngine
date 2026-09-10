@@ -1,4 +1,6 @@
 #include "PhysicsManager.h"
+#include "BoxCollider.h"
+#include "Collision.h"
 #include "Rigidbody.h"
 #include "RuamTime.h"
 #include "Transform.h"
@@ -12,11 +14,29 @@ namespace RuamEngine
         for (Rigidbody* rb : s_rigidbodies)
         {
             if (!rb->m_isKinematic && rb->m_useGravity) rb->m_velocity += rb->m_gravity*RuamTime::DeltaTime();
-
-            // Crazy stuff I need to do
-
             rb->transform()->translate(rb->m_velocity*RuamTime::DeltaTime());
         }
+        std::vector<Collision> collisions = {};
+
+        for (int i = 0; i < s_rigidbodies.size(); i++)
+        {
+            for (int j = i + 1; j < s_rigidbodies.size(); j++)
+            {
+                glm::vec3 normal = glm::vec3(0,0,0);
+                float penetration = 0;
+
+                BoxCollider* boxA = s_rigidbodies[i]->GetBoxCollider();
+                BoxCollider* boxB = s_rigidbodies[j]->GetBoxCollider();
+                if (!boxA || !boxB) continue;
+
+                if (CheckAABBOverlap(boxA, boxB, normal, penetration))
+                {
+                    collisions.push_back({s_rigidbodies[i], s_rigidbodies[j], normal, penetration});
+                }
+            }
+        }
+
+        std::cout << "Collisions: " << collisions.size() << "\n";
     }
 
     void PhysicsManager::AddRigidbody(Rigidbody* rb)

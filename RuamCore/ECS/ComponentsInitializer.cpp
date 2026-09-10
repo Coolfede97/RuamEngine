@@ -1,4 +1,5 @@
 #include "ComponentsInitializer.h"
+#include "BoxCollider.h"
 #include "GlobalLight.h"
 #include "ModelRenderer.h"
 #include "Rigidbody.h"
@@ -16,5 +17,6 @@ namespace RuamEngine
         Sandbox::SandboxRegister();
         GameCamera::GameCameraRegister();
         Rigidbody::RigidbodyRegister();
+        BoxCollider::BoxColliderRegister();
     }
 }

@@ -138,6 +138,17 @@ namespace RuamEngine
 	}
 	void Scene::flushDestroyedEntities()
 	{
+	    for (const auto& entity : m_entities)
+        {
+            if (!entity->destroyFlag()) continue;
+            for (Component* component : entity->getComponents())
+            {
+                m_componentsToStart.erase(
+                    std::remove(m_componentsToStart.begin(), m_componentsToStart.end(), component),
+                    m_componentsToStart.end()
+                );
+            }
+        }
         m_entities.erase(
 		std::remove_if(m_entities.begin(), m_entities.end(), [](std::unique_ptr<Entity>& e){ return e->destroyFlag(); }),
 		m_entities.end()
@@ -145,6 +156,11 @@ namespace RuamEngine
 	}
 	void Scene::flushDestroyedComponents()
 	{
+	    m_componentsToStart.erase(
+            std::remove_if(m_componentsToStart.begin(), m_componentsToStart.end(),
+                [](Component* component){ return component == nullptr || component->destroyFlag(); }),
+            m_componentsToStart.end()
+        );
         for (auto& entity : m_entities)
         {
             for (auto& [type, cmpVector] : entity->m_components)

@@ -2,31 +2,31 @@
 
 namespace RuamEngine
 {
-	std::vector<Vertex> Vertex::createQuad(float size, float x, float y, float texId)
+	std::vector<MeshVertex> MeshVertex::createQuad(float size, float x, float y, float texId)
 	{
 		float half = size / 2;
-		Vertex v0;
+		MeshVertex v0;
 		v0.m_position = { x - half, y - half, 0.0f };
 		v0.m_uv = {0.0f, 0.0f};
 		v0.m_normal = { 0.0f, 0.0f, 1.0f };
-		Vertex v1;
+		MeshVertex v1;
 		v1.m_position = { x + half, y - half, 0.0f };
 		v1.m_uv = {1.0f,0.0f};
 		v1.m_normal = { 0.0f, 0.0f, 1.0f };
-		Vertex v2;
+		MeshVertex v2;
 		v2.m_position = { x + half, y + half, 0.0f };
 		v2.m_uv = {1.0f,1.0f};
 		v2.m_normal = { 0.0f, 0.0f, 1.0f };
-		Vertex v3;
+		MeshVertex v3;
 		v3.m_position = { x - half, y + half, 0.0f };
 		v3.m_uv = {0.0f, 1.0f};
 		v3.m_normal = { 0.0f, 0.0f, 1.0f };
 		return { v0, v1, v2, v3 };
 	}
 
-	std::vector<Vertex> Vertex::createCube()
+	std::vector<MeshVertex> MeshVertex::createCube()
 	{
-		std::vector<Vertex> cube;
+		std::vector<MeshVertex> cube;
 
 		// Face front (Z-)
 		cube.push_back({ {-1.0f, -1.0f, -1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, -1.0f}});
@@ -68,7 +68,7 @@ namespace RuamEngine
 
 	}
 
-	std::vector<float> Vertex::flattenVertices(const std::vector<Vertex>& vertices)
+	std::vector<float> MeshVertex::flattenVertices(const std::vector<MeshVertex>& vertices)
 	{
 		std::vector<float> result;
 		result.reserve(vertices.size() * (3 + 2 + 3));  // pos + uv + normal

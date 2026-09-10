@@ -10,20 +10,19 @@ namespace RuamEngine
 {
 	class Skybox
 	{
+	public:
 	    static ShaderProgramSPtr s_shaderProgram;
-		static VertexArrayUPtr m_vertexArray;
+		static VertexArrayUPtr s_vertexArray;
 	    static bool s_initialized;
 		static CubemapSPtr s_cubemap;
-		static SSBOUPtr<Vertex> s_verticesSSBO;
+		static SSBOUPtr<MeshVertex> s_verticesSSBO;
 		static SSBOUPtr<unsigned int> s_indicesSSBO;
 
-		static std::vector<Vertex> s_vertices;
+		static std::vector<MeshVertex> s_vertices;
 		static std::vector<unsigned int> s_indices;
 
-	public:
 		static void Init();
 		static void ChangeCubemap(const std::string& cubemapPath);
 		static void ChangeCubemap(const std::vector<std::string>& cubemapPaths);
-		static void Draw(glm::mat4 viewMatrix, glm::mat4 projectionMatrix);
 	};
 }
