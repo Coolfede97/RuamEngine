@@ -151,14 +151,17 @@ namespace RuamEngine
 		GLCall(glDrawArraysInstanced(GL_TRIANGLES, 0, Skybox::s_indicesSSBO->currentSize()/sizeof(unsigned int), 1));
     }
 
-    void Renderer::Draw(Camera& camera)
+    void Renderer::DrawModels(Camera& camera)
     {
-        DrawSkybox(camera);
         std::vector<ShaderProgramName> shaderProgramsToErase = {};
         for (auto& [shaderName, map] : s_modelRUsMap)
         {
             ShaderProgramSPtr shaderProgram = ResourceManager::GetShaderProgram(shaderName);
-            if (shaderProgram) shaderProgram->updateCameraMatrices(camera.viewMatrix(), camera.projectionMatrix());
+            if (shaderProgram)
+            {
+                shaderProgram->updateCameraMatrices(camera.viewMatrix(), camera.projectionMatrix());
+                GlobalLight::LoadLightSettings(shaderProgram);
+            }
             else
             {
                 shaderProgramsToErase.push_back(shaderName);
@@ -181,16 +184,25 @@ namespace RuamEngine
                 matricesSSBO->bindBufferBase(SSBOType::modelMatrices);
                 for (MeshSPtr mesh : model->m_meshes)
                 {
-                    mesh->m_vertexArray->bind();
-                    GlobalLight::LoadLightSettings(shaderProgram);
-                    shaderProgram->loadMaterial(mesh->m_material.get());
-                    mesh->submitData();
-                    mesh->bindBuffersBase();
-                    GLCall(glDrawArraysInstanced(GL_TRIANGLES, 0, mesh->m_indices->currentSize()/sizeof(unsigned int), seenInstances.size()));
+                    DrawMesh(mesh, shaderProgram, seenInstances);
                 }
             }
         }
         for (std::string shaderProgramName : shaderProgramsToErase) s_modelRUsMap.erase(shaderProgramName);
+    }
+    void Renderer::DrawMesh(MeshSPtr mesh, ShaderProgramSPtr shaderProgram, std::vector<glm::mat4>& seenInstances)
+    {
+        mesh->m_vertexArray->bind();
+        shaderProgram->loadMaterial(mesh->m_material.get());
+        mesh->submitData();
+        mesh->bindBuffersBase();
+        GLCall(glDrawArraysInstanced(GL_TRIANGLES, 0, mesh->m_indices->currentSize()/sizeof(unsigned int), seenInstances.size()));
+    }
+
+    void Renderer::Draw(Camera& camera)
+    {
+        DrawSkybox(camera);
+        DrawModels(camera);
     }
 
     void Renderer::framebuffer_size_callback(GLFWwindow* window, int width, int height)

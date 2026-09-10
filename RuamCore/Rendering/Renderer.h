@@ -75,6 +75,8 @@ namespace RuamEngine
 
         static void Draw(Camera& camera);
         static void DrawSkybox(Camera& camera);
+        static void DrawModels(Camera& camera);
+        static void DrawMesh(MeshSPtr mesh, ShaderProgramSPtr shaderProgram, std::vector<glm::mat4>& seenInstances);
 
         static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
