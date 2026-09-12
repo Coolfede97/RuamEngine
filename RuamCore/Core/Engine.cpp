@@ -1,5 +1,6 @@
 #include "Engine.h"
 #include "GameCamera.h"
+#include "GizmosManager.h"
 #include "KeyCode.h"
 #include "PhysicsManager.h"
 #include "Renderer.h"
@@ -37,6 +38,7 @@ namespace RuamEngine
         }
         Renderer::Init();
         ComponentsInitializer::InitComponents();
+        GizmosManager::Init();
 
   		Input::SetWindow(Renderer::GetWindow());
   		Input::SetUp(Renderer::GetWindow());
@@ -71,7 +73,7 @@ namespace RuamEngine
 
   		while (!Renderer::WindowShouldClose())
   		{
-  		    // std::cout << "Frame count: " << frameCount++ << "\n";
+  		    std::cout << "Frame count: " << frameCount++ << "----------------\n";
     		CheckIfWantToSaveChanges();
  			SceneManager::CheckForSceneChange();
 

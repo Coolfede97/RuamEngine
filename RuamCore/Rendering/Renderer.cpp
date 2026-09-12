@@ -3,6 +3,7 @@
 #include "Renderer.h"
 #include "FrameBuffer.h"
 #include "GLFW/glfw3.h"
+#include "GizmosManager.h"
 #include "GlobalLight.h"
 #include "RenderingConstants.h"
 #include "RenderingCore.h"
@@ -90,6 +91,11 @@ namespace RuamEngine
         {
             for (auto& [modelPath, matricesSSBO] : map) matricesSSBO->flush();
         }
+
+        GizmosManager::s_colliderVertices->flush();
+        GizmosManager::s_colliderIndices->flush();
+        GizmosManager::s_indexCount = 0;
+        GizmosManager::s_vertexBaseCount = 0;
     }
 
     void Renderer::ClearScreen()
@@ -192,6 +198,7 @@ namespace RuamEngine
     }
     void Renderer::DrawMesh(MeshSPtr mesh, ShaderProgramSPtr shaderProgram, std::vector<glm::mat4>& seenInstances)
     {
+        // This function is expected to be called from DrawModels, which will already have bound the corresponding shader program
         mesh->m_vertexArray->bind();
         shaderProgram->loadMaterial(mesh->m_material.get());
         mesh->submitData();
@@ -199,10 +206,29 @@ namespace RuamEngine
         GLCall(glDrawArraysInstanced(GL_TRIANGLES, 0, mesh->m_indices->currentSize()/sizeof(unsigned int), seenInstances.size()));
     }
 
+    void Renderer::DrawGizmos(Camera& camera)
+    {
+        ShaderProgramSPtr shaderProgram = GizmosManager::s_shaderProgram;
+        shaderProgram->bind();
+        shaderProgram->updateCameraMatrices(camera.viewMatrix(), camera.projectionMatrix());
+        GizmosManager::s_vertexArray->bind();
+
+        GizmosManager::s_colliderVertices->submitData();
+        GizmosManager::s_colliderVertices->bindBufferBase(SSBOType::vertices);
+        GizmosManager::s_colliderIndices->submitData();
+        GizmosManager::s_colliderIndices->bindBufferBase(SSBOType::indices);
+
+        std::cout << "Middle: " << GizmosManager::s_colliderIndices->data()[23] << "\n";
+        std::cout << "Last: " << GizmosManager::s_colliderIndices->data()[47] << "\n";
+
+        glDrawArrays(GL_LINES, 0, GizmosManager::s_indexCount);
+    }
+
     void Renderer::Draw(Camera& camera)
     {
         DrawSkybox(camera);
         DrawModels(camera);
+        DrawGizmos(camera);
     }
 
     void Renderer::framebuffer_size_callback(GLFWwindow* window, int width, int height)

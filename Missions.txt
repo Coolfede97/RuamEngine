@@ -1,4 +1,12 @@
-Make Renderer have different draw calls for each thing (mesh, skybox, gizmo, etc). Then, Draw() will have DrawMesh(mesh, camera), DrawSkybox(skybox, camera), etc
+Check why half size (box collider) works fine in 1 and now in 0.5
+
+Check if can automate box collider size so it matches what we see in the model renderer
+
+Check where positive Z points to
+
+Move rendering assets constanst from ResourceManager.h into some sort of RenderingAssets.h
+
+Make sure initialization is checked when initializing managers
 
 Sort rendering folder
 

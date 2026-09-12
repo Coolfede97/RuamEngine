@@ -29,6 +29,17 @@ namespace RuamEngine
             };
         }
 
+       	void renderUpdate() override;
+
+    private:
+        std::vector<GizmoVertex> m_vertices = {};
+        std::vector<unsigned int> m_indices =
+        {
+            0, 1, 1, 2, 2, 3, 3, 0, // Bottom face
+            4, 5, 5, 6, 6, 7, 7, 4, // Top face
+            0, 4, 1, 5, 2, 6, 3, 7 // 4 lateral edges
+        };
+
         DECL_REGISTER_COMPONENT(BoxCollider);
     };
 }

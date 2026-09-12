@@ -6,7 +6,7 @@ const int SSBOType_indices = 1;
 struct VertexData
 {
     float position[3];
-}
+};
 
 layout(binding = SSBOType_vertices, std430) readonly buffer ssbo0
 {
@@ -35,5 +35,5 @@ void main()
     uint realIndex = indices[gl_VertexID];
     mat4 vp = u_projection * u_view;
     vec4 position = vec4(GetPosition(realIndex), 1.0);
-    gl_Position = vp * modelTransforms[gl_InstanceID] * position;
+    gl_Position = vp * position;
 }

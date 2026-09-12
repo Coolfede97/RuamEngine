@@ -9,11 +9,11 @@
 
 namespace RuamEngine
 {
-    bool Skybox::s_initialized = false;
-    ShaderProgramSPtr Skybox::s_shaderProgram;
-    VertexArrayUPtr Skybox::s_vertexArray;
-    SSBOUPtr<MeshVertex> Skybox::s_verticesSSBO;
-    SSBOUPtr<unsigned int> Skybox::s_indicesSSBO;
+    bool Skybox::s_inited = false;
+    ShaderProgramSPtr Skybox::s_shaderProgram = nullptr;
+    VertexArrayUPtr Skybox::s_vertexArray = nullptr;
+    SSBOUPtr<MeshVertex> Skybox::s_verticesSSBO = nullptr;
+    SSBOUPtr<unsigned int> Skybox::s_indicesSSBO = nullptr;
     CubemapSPtr Skybox::s_cubemap = nullptr;
 
     std::vector<MeshVertex> Skybox::s_vertices = MeshVertex::createCube();
@@ -55,11 +55,16 @@ namespace RuamEngine
 
     void Skybox::Init()
     {
-        s_shaderProgram = std::make_shared<ShaderProgram>(skyboxVertexShaderDefaultPath, skyboxFragmentShaderDefaultPath);
+        if (s_inited)
+        {
+            std::cerr << "Error: Trying to init Skybox when it was already initialized!\n";
+            return;
+        }
+        s_shaderProgram = ResourceManager::LoadShaderProgram(skyboxVertexShaderDefaultPath, skyboxFragmentShaderDefaultPath);
         s_vertexArray = std::make_unique<VertexArray>();
         s_verticesSSBO = std::make_unique<SSBO<MeshVertex>>(baseVertexCount, GL_DYNAMIC_STORAGE_BIT);
         s_indicesSSBO = std::make_unique<SSBO<unsigned int>>(baseIndexCount, GL_DYNAMIC_STORAGE_BIT);
-        s_initialized = true;
+        s_inited = true;
         s_verticesSSBO->pushData(s_vertices);
         s_verticesSSBO->submitData();
         s_indicesSSBO->pushData(s_indices);

@@ -74,6 +74,7 @@ namespace RuamEngine
         static void ClearScreen();
 
         static void Draw(Camera& camera);
+        static void DrawGizmos(Camera& camera);
         static void DrawSkybox(Camera& camera);
         static void DrawModels(Camera& camera);
         static void DrawMesh(MeshSPtr mesh, ShaderProgramSPtr shaderProgram, std::vector<glm::mat4>& seenInstances);
